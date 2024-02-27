@@ -2,7 +2,7 @@ const path = require('path')
 const HtmlWEbpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-    entry: './src/index.js',
+    entry: './src/index.ts',
     module: {
         rules: [
             {
@@ -13,17 +13,16 @@ module.exports = {
                 },
             },
             {
+                test: /\.tsx?$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'ts-loader',
+                },
+            },
+            {
                 test: /\.(png|svg|jpg|jpeg|gif)$/i,
                 type: 'asset/resource',
             },
-            // {
-            //     test: /\.(png|jpg)$/,
-
-            //     loader: 'file-loader',
-            //     options: {
-            //         outputPath: '/',
-            //     },
-            // },
             {
                 mimetype: 'image/svg+xml',
                 scheme: 'data',
@@ -33,6 +32,9 @@ module.exports = {
                 },
             },
         ],
+    },
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js'],
     },
     plugins: [new HtmlWEbpackPlugin({ template: './src/main.html' })],
     // optimization: {
