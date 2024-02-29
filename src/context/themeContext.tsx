@@ -7,13 +7,13 @@ import React, {
     FC,
 } from 'react'
 
-type ThemeValue = 'dark' | 'light'
+type Theme = 'light' | 'dark'
 
 interface Props {
     children?: ReactNode
 }
 
-const ThemeContext = createContext<ThemeValue>('light')
+const ThemeContext = createContext({} as ReturnType<typeof useTheme>)
 
 /** Below is for the Chrome React dev Tools extension
  * to display the name of the context instead
@@ -22,22 +22,17 @@ const ThemeContext = createContext<ThemeValue>('light')
 ThemeContext.displayName = 'ThemeContext'
 
 export const useTheme = () => {
-    const context = useContext(ThemeContext)
-    if (context === undefined) {
-        throw new Error('useValue must be used within a ValueProvider')
-    }
-    return context
-}
-
-const ThemeProvider: FC<Props> = ({ children }) => {
-    const [theme, setTheme] = useState<ThemeValue>('light')
+    const [theme, setTheme] = useState<Theme>('light')
 
     const value = useMemo(() => {
         return { theme, setTheme }
     }, [theme, setTheme])
+    return value
+}
 
+const ThemeProvider: FC<Props> = ({ children }) => {
     return (
-        <ThemeContext.Provider value={value.theme}>
+        <ThemeContext.Provider value={useTheme()}>
             {children}{' '}
         </ThemeContext.Provider>
     )
