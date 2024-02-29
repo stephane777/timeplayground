@@ -1,0 +1,90 @@
+@import '../utils/variables';
+
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Remove outline on focus */
+:focus {
+    outline: 0 none;
+}
+
+/* Removing default font-weight */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul {
+    font-weight: normal;
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+    margin: 0;
+    padding: 0;
+}
+
+/* Remove default button styling */
+button {
+    padding: 0;
+    letter-spacing: 0.025em;
+    border: none;
+    border-radius: 0;
+    background: none;
+    cursor: pointer;
+}
+
+/* Set core body defaults */
+body {
+    min-height: 100vh;
+    scroll-behavior: smooth;
+    text-rendering: optimizeSpeed;
+    font:
+        13px/1.8 'FB',
+        'Futura Book',
+        sans-serif;
+    letter-spacing: 0.025em;
+    background-color: $white;
+}
+
+/* Remove list styles on ul, ol elements with a class attribute */
+ul[class],
+ol[class] {
+    list-style: none;
+}
+
+/* Make images easier to work with */
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* Remove all animations and transitions for people that prefer not to see them */
+/* In macOS: System Preferences > Accessibility > Display > Reduce motion. */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
