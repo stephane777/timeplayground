@@ -1,0 +1,6 @@
+$robotomono-font-path: '../fonts/Roboto_Mono';
+
+@font-face {
+  font-family: 'RM';
+  src: url('#{$robotomono-font-path}/RobotoMono-Regular.ttf') format('truetype');
+}
