@@ -1,0 +1,13 @@
+@import '../../styles/utils/variables';
+
+.theme {
+  min-height: 100vh;
+  &--light {
+    background-color: $light;
+    color: $dark;
+  }
+  &--dark {
+    background-color: $dark;
+    color: $light;
+  }
+}
