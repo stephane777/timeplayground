@@ -11,12 +11,11 @@ const App: FC = () => {
 
   return (
     <div className={classes}>
-      <MainNavbar />
-      <p>
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti ea, aut vel aliquid
-        mollitia, deserunt et quibusdam perferendis amet consectetur porro praesentium cupiditate
-        eius animi natus dolorum, asperiores cum quasi!
-      </p>
+      <header>
+        <MainNavbar />
+      </header>
+      <main></main>
+      <footer></footer>
     </div>
   );
 };
