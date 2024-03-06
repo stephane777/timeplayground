@@ -1,0 +1,19 @@
+@import '../../styles/utils/variables';
+
+.monthCard {
+  &__container {
+    position: absolute;
+    top: 39px;
+    left: 64px;
+    width: 200px;
+    height: auto;
+    border: 1px solid #dee2e6;
+  }
+  &__icon-prevMonth,
+  &__icon-nextMonth {
+    width: 1.4rem;
+    height: 2rem;
+    cursor: pointer;
+    fill: $secondary;
+  }
+}
