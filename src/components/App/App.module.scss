@@ -11,3 +11,10 @@
     color: $light;
   }
 }
+
+.container {
+  &__datePicker {
+    margin: 0 auto;
+    width: 250px;
+  }
+}
