@@ -13,6 +13,7 @@ import styles from './DatePicker.module.scss';
 import classNames from 'classnames/bind';
 import { useTheme } from '../../context/themeContext';
 import MonthCard from '../MonthCard/MonthCard';
+import { utcTime_to_date, maxDayInMonth, isCurrentYearBisextile } from '../../utils';
 const cx = classNames.bind(styles);
 
 interface DatePickerProps {
@@ -21,12 +22,23 @@ interface DatePickerProps {
 }
 
 const DatePicker: React.FC<DatePickerProps> = ({ onFocusChange, focused }) => {
-  const [time, setTime] = useState('');
+  const [time, setTime] = useState<number>(0);
   const [active, setActive] = useState<boolean>(false);
 
   const controlInputRef = useRef<HTMLInputElement | null>(null);
   const monthCardRef = useRef<HTMLDivElement | null>(null);
   const { theme } = useTheme();
+
+  // Effect to update the date input with the current day.
+  useEffect(() => {
+    if (time) {
+      const { year, month, day } = utcTime_to_date(new Date(time).getTime());
+      if (controlInputRef.current) {
+        controlInputRef.current.value = `${day}/${month}/${year}`;
+      }
+    }
+    if (!time) setTime(new Date().getTime());
+  }, [time]);
 
   useEffect(() => {
     const handleClickOutside: EventListener = (event: Event) => {
@@ -46,6 +58,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ onFocusChange, focused }) => {
   const inputTheme = cx({
     'datePicker__input--dark': theme === 'dark',
   });
+
   const inputGroupTheme = cx({
     'datePicker__inputgroup--dark': theme === 'dark',
   });
@@ -73,13 +86,8 @@ const DatePicker: React.FC<DatePickerProps> = ({ onFocusChange, focused }) => {
             <use href={`${sprite}#icon-calendar`}></use>
           </svg>
         </InputGroup.Text>
-        {active && <MonthCard ref={monthCardRef} />}
+        {active && <MonthCard ref={monthCardRef} time={time} setTime={setTime} />}
       </InputGroup>
-      {/* <Form.Text id="datePickerHelp">Form text </Form.Text> */}
-
-      {/* // {error && <span className="datePicker__error">{error}</span>} */}
-
-      {/* {!error && focused && <Grid handlePickerFocus={handlePickerFocus} ref={gridRef} setTime={setTime} time={time} />} */}
     </div>
   );
 };
