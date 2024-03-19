@@ -114,7 +114,6 @@ const MonthCard: React.ForwardRefExoticComponent<
   const dayInMonth = (nbDays: number) => {
     const arrayLength = { length: nbDays };
     const monthArr = Array.from(arrayLength, (v, i) => i);
-    console.log('monthArr: ', monthArr);
     const { timeFirstDay, day: selectedDay } = param;
 
     return monthArr.map((day, i) => {
