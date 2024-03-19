@@ -5,12 +5,9 @@ import styles from './App.module.scss';
 import classNames from 'classnames';
 import DatePicker from '../DatePicker/DatePicker';
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 
 const App: FC = () => {
   const { theme } = useTheme();
-  const [isFocused, setFocused] = React.useState(false);
 
   const classes = classNames(styles[`theme--${theme}`], styles[`theme`]);
 
@@ -22,7 +19,7 @@ const App: FC = () => {
       <main>
         <Container fluid="sm">
           <div className={styles[`container__datePicker`]}>
-            <DatePicker onFocusChange={(focused) => setFocused(focused)} focused={isFocused} />
+            <DatePicker />
           </div>
         </Container>
       </main>
