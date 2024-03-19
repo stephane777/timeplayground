@@ -22,7 +22,12 @@
     width: 1.4rem;
     height: 2rem;
     cursor: pointer;
-    fill: $secondary;
+    &--light {
+      fill: $secondary;
+    }
+    &--dark {
+      fill: var(--bs-gray-300);
+    }
   }
   &__weekday {
     font-size: 12px;
@@ -31,11 +36,21 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    &--light {
+      background-color: var(--bs-gray-400);
+    }
+    &--dark {
+      background-color: var(--bs-gray-600);
+    }
+  }
+
+  &__toggleMonth--dark {
+    background-color: var(--bs-gray-600);
+  }
+  &__toggleMonth--light {
     background-color: var(--bs-gray-400);
   }
-  &__toggleMonth {
-    background-color: var(--bs-gray-400);
-  }
+
   &__day {
     cursor: pointer;
     width: 1.8rem;
