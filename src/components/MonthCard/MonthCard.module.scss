@@ -56,12 +56,20 @@
     width: 1.8rem;
     height: 1.4rem;
     font-size: 12px;
+    border-radius: 5px;
+    margin: 2px;
     display: flex;
     justify-content: center;
-    align-content: center;
-    &--prevMonth {
+    align-items: center;
+    &--prevNextMonth {
       color: var(--bs-gray-500);
-      cursor: initial;
+      // cursor: initial;
+    }
+    &--selected-light {
+      background-color: $primary;
+    }
+    &--selected-dark {
+      background-color: $light;
     }
   }
 }

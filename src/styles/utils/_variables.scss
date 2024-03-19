@@ -1,21 +1,30 @@
 /* Fonts*/
 
 /* App variables */
+// @import '~bootstrap/scss/variables';
 
-$bg-body: #f00;
 /* Bootstrap variable */
 
 $font-family-sans-serif: 'RM';
+$primary: rgb(34, 211, 238);
+$secondary: #455161;
+$success: #589f3d;
+$info: #0dcaf0;
+$warning: #fbc053;
+$danger: #e9265e;
+$light: #4bb9ef;
+// $light: #cecece;
+$dark: #3b3936;
 
 $theme-colors: (
-  'primary': rgb(34, 211, 238),
-  'secondary': #455161,
-  'success': #589f3d,
-  'info': #0dcaf0,
-  'warning': #fbc053,
-  'danger': #e9265e,
-  'light': #4bb9ef,
-  'dark': #3b3936,
+  'primary': $primary,
+  'secondary': $secondary,
+  'success': $success,
+  'info': $info,
+  'warning': $warning,
+  'danger': $danger,
+  'light': $light,
+  'dark': $dark,
 );
 
 @import '~bootstrap/scss/bootstrap';

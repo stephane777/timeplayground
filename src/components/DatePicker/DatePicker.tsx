@@ -19,6 +19,7 @@ const cx = classNames.bind(styles);
 const DatePicker: React.FC = () => {
   const [time, setTime] = useState<number>(0);
   const [active, setActive] = useState<boolean>(false);
+  const [selectedDay, setSelectedDay] = useState<number | null>(null);
 
   const controlInputRef = useRef<HTMLInputElement | null>(null);
   const monthCardRef = useRef<HTMLDivElement | null>(null);
@@ -58,6 +59,11 @@ const DatePicker: React.FC = () => {
     'datePicker__inputgroup--dark': theme === 'dark',
   });
 
+  const calendar_icon_classes = cx({
+    'datePicker__calendar-icon': true,
+    'datePicker__calendar-icon--light': theme === 'light',
+    'datePicker__calendar-icon--dark': theme === 'dark',
+  });
   return (
     <div className={styles[`datePicker`]}>
       <InputGroup className="mb-3 mt-5">
@@ -77,11 +83,19 @@ const DatePicker: React.FC = () => {
         <InputGroup.Text id="cal_icon" className={inputGroupTheme}>
           {/* <svg className="footer__icon-github"> */}
 
-          <svg className={styles[`datePicker__calendar-icon`]}>
+          <svg className={calendar_icon_classes}>
             <use href={`${sprite}#icon-calendar`}></use>
           </svg>
         </InputGroup.Text>
-        {active && <MonthCard ref={monthCardRef} time={time} setTime={setTime} />}
+        {active && (
+          <MonthCard
+            ref={monthCardRef}
+            time={time}
+            setTime={setTime}
+            selectedDay={selectedDay}
+            setSelectedDay={setSelectedDay}
+          />
+        )}
       </InputGroup>
     </div>
   );

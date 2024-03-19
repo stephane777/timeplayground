@@ -7,14 +7,19 @@
   &__calendar-icon {
     width: 1.6rem;
     height: 1.6rem;
-    fill: $secondary;
+    &--light {
+      fill: $secondary;
+    }
+    &--dark {
+      fill: var(--bs-gray-300);
+    }
   }
 
   &__input--dark {
     background-color: $dark;
     color: $white;
     &::placeholder {
-      color: #cecece;
+      color: white;
     }
   }
   &__inputgroup--dark {
