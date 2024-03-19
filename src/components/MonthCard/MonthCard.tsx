@@ -1,11 +1,4 @@
-import React, {
-  forwardRef,
-  ComponentPropsWithRef,
-  ReactNode,
-  Dispatch,
-  EventHandler,
-  MouseEventHandler,
-} from 'react';
+import React, { forwardRef, useState, Dispatch, MouseEventHandler, MouseEvent } from 'react';
 import styles from './MonthCard.module.scss';
 // import sprite from '../assets/img/sprite.svg';
 import sprite from '../../assets/img/svg/sprite.svg';
@@ -17,13 +10,15 @@ import { getParam, getTimeFromDate } from '../../utils';
 interface MonthCardProps {
   time: number;
   setTime: Dispatch<React.SetStateAction<number>>;
+  selectedDay: number | null;
+  setSelectedDay: Dispatch<React.SetStateAction<number | null>>;
   isPrev?: boolean;
   isNext?: boolean;
 }
 
 const MonthCard: React.ForwardRefExoticComponent<
   React.RefAttributes<HTMLDivElement> & MonthCardProps
-> = forwardRef(function ({ time, setTime, isPrev, isNext }, ref) {
+> = forwardRef(function ({ time, setTime, selectedDay, setSelectedDay, isPrev, isNext }, ref) {
   const param = getParam(time);
   const { theme } = useTheme();
 
@@ -54,11 +49,8 @@ const MonthCard: React.ForwardRefExoticComponent<
   // previous Day in month classNames
   const prevAndNext_classes = classNames(
     styles[`monthCard__day`],
-    styles[`monthCard__day--prevMonth`]
+    styles[`monthCard__day--prevNextMonth`]
   );
-
-  // all the day in month classNames
-  const daysInMonth_classes = classNames(styles[`monthCard__day`]);
 
   // icon prev classes
   const icon_prev_classes = classNames(
@@ -81,6 +73,13 @@ const MonthCard: React.ForwardRefExoticComponent<
       })
     ]
   );
+
+  const handleSelectedDay = (e: MouseEvent<HTMLElement>, time: number) => {
+    setTime(time);
+    const value = (e.target as HTMLElement).innerText;
+    setSelectedDay(Number(value));
+  };
+
   // function to render weekdays in the header
   const weekHeader = () => {
     const dayList = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
@@ -111,17 +110,31 @@ const MonthCard: React.ForwardRefExoticComponent<
       .reverse();
   };
 
-  // function to render all the day from 1 to 30/31
+  // function to render all the day from 1 to 28/29 if Feb. otherwise 30/31
   const dayInMonth = (nbDays: number) => {
     const arrayLength = { length: nbDays };
     const monthArr = Array.from(arrayLength, (v, i) => i);
+    console.log('monthArr: ', monthArr);
     const { timeFirstDay, day: selectedDay } = param;
 
     return monthArr.map((day, i) => {
       const time = timeFirstDay + 1000 * 60 * 60 * 24 * i;
-
+      // all the day in month classNames
+      const daysInMonth_classes = classNames(
+        styles[`monthCard__day`],
+        styles[
+          cx({
+            'monthCard__day--selected-light': theme === 'light' && selectedDay === day + 1,
+            'monthCard__day--selected-dark': theme === 'dark' && selectedDay === day + 1,
+          })
+        ]
+      );
       return (
-        <div key={`${day}-${i}`} className={daysInMonth_classes} onClick={() => setTime(time)}>
+        <div
+          key={`${day}-${i}`}
+          className={daysInMonth_classes}
+          onClick={(e) => handleSelectedDay(e, time)}
+        >
           {day + 1}
         </div>
       );
