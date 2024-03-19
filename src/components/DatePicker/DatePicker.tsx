@@ -16,12 +16,7 @@ import MonthCard from '../MonthCard/MonthCard';
 import { utcTime_to_date, maxDayInMonth, isCurrentYearBisextile } from '../../utils';
 const cx = classNames.bind(styles);
 
-interface DatePickerProps {
-  onFocusChange: (focused: boolean) => void;
-  focused: boolean;
-}
-
-const DatePicker: React.FC<DatePickerProps> = ({ onFocusChange, focused }) => {
+const DatePicker: React.FC = () => {
   const [time, setTime] = useState<number>(0);
   const [active, setActive] = useState<boolean>(false);
 
