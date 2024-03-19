@@ -10,6 +10,7 @@ import styles from './MonthCard.module.scss';
 // import sprite from '../assets/img/sprite.svg';
 import sprite from '../../assets/img/svg/sprite.svg';
 import classNames from 'classnames';
+import { useTheme } from '../../context/themeContext';
 const cx = classNames.bind(styles);
 import { getParam, getTimeFromDate } from '../../utils';
 
@@ -24,13 +25,30 @@ const MonthCard: React.ForwardRefExoticComponent<
   React.RefAttributes<HTMLDivElement> & MonthCardProps
 > = forwardRef(function ({ time, setTime, isPrev, isNext }, ref) {
   const param = getParam(time);
+  const { theme } = useTheme();
 
-  // Toggle month classNames
+  // Toggle month theme classNames
+  const togglemonth = cx({
+    'monthCard__toggleMonth--dark': theme === 'dark',
+    'monthCard__toggleMonth--light': theme === 'light',
+  });
+
+  //
   const togglemonth_classes = classNames(
-    styles[`monthCard__toggleMonth`],
+    styles[togglemonth],
     `d-flex`,
     `justify-content-between`,
     `align-items-center`
+  );
+
+  const monthDay_classes = classNames(
+    styles['monthCard__weekday'],
+    styles[
+      cx({
+        'monthCard__weekday--light': theme === 'light',
+        'monthCard__weekday--dark': theme === 'dark',
+      })
+    ]
   );
 
   // previous Day in month classNames
@@ -42,11 +60,32 @@ const MonthCard: React.ForwardRefExoticComponent<
   // all the day in month classNames
   const daysInMonth_classes = classNames(styles[`monthCard__day`]);
 
+  // icon prev classes
+  const icon_prev_classes = classNames(
+    styles['monthCard__icon-prevMonth'],
+    styles[
+      cx({
+        'monthCard__icon-prevMonth--light': theme === 'light',
+        'monthCard__icon-prevMonth--dark': theme === 'dark',
+      })
+    ]
+  );
+
+  // icon next classes
+  const icon_next_classes = classNames(
+    styles['monthCard__icon-nextMonth'],
+    styles[
+      cx({
+        'monthCard__icon-nextMonth--light': theme === 'light',
+        'monthCard__icon-nextMonth--dark': theme === 'dark',
+      })
+    ]
+  );
   // function to render weekdays in the header
   const weekHeader = () => {
     const dayList = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
     return dayList.map((day, i) => (
-      <div key={`${day}-${i}`} className={styles['monthCard__weekday']}>
+      <div key={`${day}-${i}`} className={monthDay_classes}>
         {day}
       </div>
     ));
@@ -129,11 +168,11 @@ const MonthCard: React.ForwardRefExoticComponent<
   return (
     <div ref={ref} className={styles['monthCard__container']}>
       <div className={togglemonth_classes}>
-        <svg className={styles['monthCard__icon-prevMonth']} onClick={handleGoToPreviousMonth}>
+        <svg className={icon_prev_classes} onClick={handleGoToPreviousMonth}>
           <use href={`${sprite}#icon-triangle-left`}></use>
         </svg>
         <span>{`${param.fullMonth} ${param.year}`}</span>
-        <svg className={styles['monthCard__icon-nextMonth']} onClick={handleGoToNextMonth}>
+        <svg className={icon_next_classes} onClick={handleGoToNextMonth}>
           <use href={`${sprite}#icon-triangle-right`}> </use>
         </svg>
       </div>
