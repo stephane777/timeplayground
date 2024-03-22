@@ -4,19 +4,17 @@
   &__container {
     position: absolute;
     top: 39px;
-    left: 64px;
-    width: 204px;
+    left: -140px;
+    width: auto;
     height: auto;
-    border: 1px solid #dee2e6;
+    display: flex;
+    flex-direction: column;
+    &-box {
+      align-self: flex-start;
+      width: 204px;
+    }
   }
-  // &__container--isPrevious-month {
-  //   left: -139px;
-  //   width: 204px;
-  // }
-  // &__container--isNext-month {
-  //   left: 205px;
-  //   width: 204px;
-  // }
+
   &__icon-prevMonth,
   &__icon-nextMonth {
     width: 1.4rem;
@@ -30,12 +28,14 @@
     }
   }
   &__weekday {
+    width: 25px;
+    height: 25px;
     font-size: 12px;
-    width: 1.8rem;
-    height: 1.4rem;
+    margin: 2px;
     display: flex;
     justify-content: center;
     align-items: center;
+
     &--light {
       background-color: var(--bs-gray-400);
     }
@@ -43,18 +43,20 @@
       background-color: var(--bs-gray-600);
     }
   }
-
-  &__toggleMonth--dark {
-    background-color: var(--bs-gray-600);
-  }
-  &__toggleMonth--light {
-    background-color: var(--bs-gray-400);
+  // monthCard__toggleMonth
+  &__toggleMonth {
+    &--dark {
+      background-color: var(--bs-gray-600);
+    }
+    &--light {
+      background-color: var(--bs-gray-400);
+    }
   }
 
   &__day {
     cursor: pointer;
-    width: 1.8rem;
-    height: 1.4rem;
+    width: 25px;
+    height: 25px;
     font-size: 12px;
     border-radius: 5px;
     margin: 2px;

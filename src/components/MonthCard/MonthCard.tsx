@@ -12,15 +12,19 @@ interface MonthCardProps {
   setTime: Dispatch<React.SetStateAction<number>>;
   selectedDay: number | null;
   setSelectedDay: Dispatch<React.SetStateAction<number | null>>;
-  isPrev?: boolean;
-  isNext?: boolean;
 }
+
+type Param = ReturnType<typeof getParam>;
 
 const MonthCard: React.ForwardRefExoticComponent<
   React.RefAttributes<HTMLDivElement> & MonthCardProps
-> = forwardRef(function ({ time, setTime, selectedDay, setSelectedDay, isPrev, isNext }, ref) {
+> = forwardRef(function ({ time, setTime, selectedDay, setSelectedDay }, ref) {
   const param = getParam(time);
   const { theme } = useTheme();
+  const prevMonthTime = new Date(time).setMonth(new Date(time).getMonth() - 1);
+  const nextMonthTime = new Date(time).setMonth(new Date(time).getMonth() + 1);
+  const paramPrevMonth = getParam(prevMonthTime);
+  const paramNextMonth = getParam(nextMonthTime);
 
   // Toggle month theme classNames
   const togglemonth = cx({
@@ -31,19 +35,21 @@ const MonthCard: React.ForwardRefExoticComponent<
   //
   const togglemonth_classes = classNames(
     styles[togglemonth],
+    styles[`monthCard__toggleMonth`],
     `d-flex`,
     `justify-content-between`,
     `align-items-center`
   );
 
-  const monthDay_classes = classNames(
-    styles['monthCard__weekday'],
+  const weekDay_classes = classNames(
     styles[
       cx({
         'monthCard__weekday--light': theme === 'light',
         'monthCard__weekday--dark': theme === 'dark',
       })
-    ]
+    ],
+    'd-flex',
+    'justify-content-center'
   );
 
   // previous Day in month classNames
@@ -74,6 +80,8 @@ const MonthCard: React.ForwardRefExoticComponent<
     ]
   );
 
+  const box_classes = classNames(styles['monthCard__container-box'], 'd-flex', 'flex-wrap', 'text');
+
   const handleSelectedDay = (e: MouseEvent<HTMLElement>, time: number) => {
     setTime(time);
     const value = (e.target as HTMLElement).innerText;
@@ -84,14 +92,14 @@ const MonthCard: React.ForwardRefExoticComponent<
   const weekHeader = () => {
     const dayList = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
     return dayList.map((day, i) => (
-      <div key={`${day}-${i}`} className={monthDay_classes}>
+      <div key={`${day}-${i}`} className={styles['monthCard__weekday']}>
         {day}
       </div>
     ));
   };
 
   // get all the day from the previous Month
-  const prevMonth = () => {
+  const prevMonth = (param: Param) => {
     const { prevMonthDays, timeFirstDay } = param;
     return prevMonthDays
       .map((day, i) => {
@@ -111,7 +119,7 @@ const MonthCard: React.ForwardRefExoticComponent<
   };
 
   // function to render all the day from 1 to 28/29 if Feb. otherwise 30/31
-  const dayInMonth = (nbDays: number) => {
+  const dayInMonth = (nbDays: number, param: Param) => {
     const arrayLength = { length: nbDays };
     const monthArr = Array.from(arrayLength, (v, i) => i);
     const { timeFirstDay, day: selectedDay } = param;
@@ -141,7 +149,7 @@ const MonthCard: React.ForwardRefExoticComponent<
   };
 
   // function to render all the days in next month to complete the current row in the current month
-  const nextMonth = () => {
+  const nextMonth = (param: Param) => {
     const { nextMonthDays, timeLastDay } = param;
     if (!nextMonthDays) return;
     return nextMonthDays.map((day, i) => {
@@ -179,33 +187,38 @@ const MonthCard: React.ForwardRefExoticComponent<
 
   return (
     <div ref={ref} className={styles['monthCard__container']}>
-      <div className={togglemonth_classes}>
-        <svg className={icon_prev_classes} onClick={handleGoToPreviousMonth}>
-          <use href={`${sprite}#icon-triangle-left`}></use>
-        </svg>
-        <span>{`${param.fullMonth} ${param.year}`}</span>
-        <svg className={icon_next_classes} onClick={handleGoToNextMonth}>
-          <use href={`${sprite}#icon-triangle-right`}> </use>
-        </svg>
+      <div>
+        <div className="col-4 offset-4">
+          <div className={togglemonth_classes}>
+            <svg className={icon_prev_classes} onClick={handleGoToPreviousMonth}>
+              <use href={`${sprite}#icon-triangle-left`} className="text"></use>
+            </svg>
+            <span>{`${param.fullMonth} ${param.year}`}</span>
+            <svg className={icon_next_classes} onClick={handleGoToNextMonth}>
+              <use href={`${sprite}#icon-triangle-right`}> </use>
+            </svg>
+          </div>
+          <div className={weekDay_classes}>{weekHeader()}</div>
+        </div>
       </div>
-      <div className={'d-flex justify-content-center'}>{weekHeader()}</div>
-      {/* <div className="d-flex flex-row"> */}
-      {/* <div className="d-flex flex-wrap text">
-          {param && param.weekDayFirstOfMonth >= 0 && prevMonth()}
-          {dayInMonth(param.numberOfDayInMonth)}
-          {nextMonth()}
-        </div> */}
-      <div className="d-flex flex-wrap text">
-        {param && param.weekDayFirstOfMonth >= 0 && prevMonth()}
-        {dayInMonth(param.numberOfDayInMonth)}
-        {nextMonth()}
+      <div className="d-flex">
+        <div className={box_classes}>
+          {paramPrevMonth && paramPrevMonth.weekDayFirstOfMonth >= 0 && prevMonth(paramPrevMonth)}
+          {dayInMonth(paramPrevMonth.numberOfDayInMonth, paramPrevMonth)}
+          {nextMonth(paramPrevMonth)}
+        </div>
+        <div className={box_classes}>
+          {param && param.weekDayFirstOfMonth >= 0 && prevMonth(param)}
+          {dayInMonth(param.numberOfDayInMonth, param)}
+          {nextMonth(param)}
+        </div>
+        <div className={box_classes}>
+          {paramNextMonth && paramNextMonth.weekDayFirstOfMonth >= 0 && prevMonth(paramNextMonth)}
+          {dayInMonth(paramNextMonth.numberOfDayInMonth, paramNextMonth)}
+          {nextMonth(paramNextMonth)}
+        </div>
+        {/* </div> */}
       </div>
-      {/* <div className="d-flex flex-wrap text">
-          {param && param.weekDayFirstOfMonth >= 0 && prevMonth()}
-          {dayInMonth(param.numberOfDayInMonth)}
-          {nextMonth()}
-        </div> */}
-      {/* </div> */}
     </div>
   );
 });
