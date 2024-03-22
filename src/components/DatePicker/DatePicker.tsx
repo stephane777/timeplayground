@@ -21,8 +21,8 @@ const DatePicker: React.FC = () => {
   const [active, setActive] = useState<boolean>(false);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
 
-  const controlInputRef = useRef<HTMLInputElement | null>(null);
-  const monthCardRef = useRef<HTMLDivElement | null>(null);
+  const controlInputRef = useRef<HTMLInputElement>(null);
+  const monthCardRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
 
   // Effect to update the date input with the current day.
@@ -81,8 +81,6 @@ const DatePicker: React.FC = () => {
           onFocus={(e) => setActive(true)}
         />
         <InputGroup.Text id="cal_icon" className={inputGroupTheme}>
-          {/* <svg className="footer__icon-github"> */}
-
           <svg className={calendar_icon_classes}>
             <use href={`${sprite}#icon-calendar`}></use>
           </svg>
