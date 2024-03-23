@@ -1,11 +1,21 @@
-import React, { forwardRef, useState, Dispatch, MouseEventHandler, MouseEvent } from 'react';
+import React, {
+  forwardRef,
+  useRef,
+  useState,
+  Dispatch,
+  MouseEventHandler,
+  MouseEvent,
+  ReactElement,
+} from 'react';
+import { Transition, TransitionStatus } from 'react-transition-group';
 import styles from './MonthCard.module.scss';
 // import sprite from '../assets/img/sprite.svg';
 import sprite from '../../assets/img/svg/sprite.svg';
 import classNames from 'classnames';
 import { useTheme } from '../../context/themeContext';
-const cx = classNames.bind(styles);
 import { getParam, getTimeFromDate } from '../../utils';
+
+const cx = classNames.bind(styles);
 
 interface MonthCardProps {
   time: number;
@@ -19,8 +29,14 @@ type Param = ReturnType<typeof getParam>;
 const MonthCard: React.ForwardRefExoticComponent<
   React.RefAttributes<HTMLDivElement> & MonthCardProps
 > = forwardRef(function ({ time, setTime, selectedDay, setSelectedDay }, ref) {
-  const param = getParam(time);
   const { theme } = useTheme();
+  const [slide, setSlide] = useState<boolean>(false);
+  const [nextOrPrev, setNextOrPrev] = useState<boolean | null>(null);
+  const nodeRef = useRef<HTMLDivElement>(null);
+  const duration = 1000;
+
+  // handle the data to display the hidden prev monthCard, current visible monthCard & the hidden next monthCard.
+  const param = getParam(time);
   const prevMonthTime = new Date(time).setMonth(new Date(time).getMonth() - 1);
   const nextMonthTime = new Date(time).setMonth(new Date(time).getMonth() + 1);
   const paramPrevMonth = getParam(prevMonthTime);
@@ -81,6 +97,19 @@ const MonthCard: React.ForwardRefExoticComponent<
   );
 
   const box_classes = classNames(styles['monthCard__container-box'], 'd-flex', 'flex-wrap', 'text');
+
+  const defaultStyle = {
+    transition: `transform ${600}ms ease-in-out`,
+    transform: 'translateX(0)',
+  };
+
+  const transitionStyles = {
+    entering: { transform: 'translateX(0)' },
+    entered: { transform: 'translateX(0)' },
+    exiting: { transform: `translateX(${nextOrPrev ? '-33%' : '33%'})` },
+    exited: { transform: 'translateX(0)' },
+    unmounted: { transform: 'translateX(0)' },
+  };
 
   const handleSelectedDay = (e: MouseEvent<HTMLElement>, time: number) => {
     setTime(time);
@@ -166,7 +195,7 @@ const MonthCard: React.ForwardRefExoticComponent<
     });
   };
 
-  const handleGoToPreviousMonth: MouseEventHandler<HTMLOrSVGElement> = () => {
+  const handleGoToPreviousMonth = () => {
     const { month, year } = param;
 
     // if month = 01 or 12 year will be incremented or decremented
@@ -175,7 +204,8 @@ const MonthCard: React.ForwardRefExoticComponent<
     const time = getTimeFromDate('01', String(previousMonth), String(previousYear));
     setTime(time);
   };
-  const handleGoToNextMonth: MouseEventHandler<HTMLOrSVGElement> = () => {
+
+  const handleGoToNextMonth = () => {
     const { month, year } = param;
 
     // if month = 01 or 12 year will be incremented or decremented
@@ -190,35 +220,78 @@ const MonthCard: React.ForwardRefExoticComponent<
       <div>
         <div className="col-4 offset-4">
           <div className={togglemonth_classes}>
-            <svg className={icon_prev_classes} onClick={handleGoToPreviousMonth}>
+            <svg
+              className={icon_prev_classes}
+              onClick={() => {
+                setSlide(true);
+                setNextOrPrev(false);
+              }}
+            >
               <use href={`${sprite}#icon-triangle-left`} className="text"></use>
             </svg>
             <span>{`${param.fullMonth} ${param.year}`}</span>
-            <svg className={icon_next_classes} onClick={handleGoToNextMonth}>
+
+            <svg
+              className={icon_next_classes}
+              onClick={() => {
+                setSlide(true);
+                setNextOrPrev(true);
+              }}
+            >
               <use href={`${sprite}#icon-triangle-right`}> </use>
             </svg>
           </div>
           <div className={weekDay_classes}>{weekHeader()}</div>
         </div>
       </div>
-      <div className="d-flex">
-        <div className={box_classes}>
-          {paramPrevMonth && paramPrevMonth.weekDayFirstOfMonth >= 0 && prevMonth(paramPrevMonth)}
-          {dayInMonth(paramPrevMonth.numberOfDayInMonth, paramPrevMonth)}
-          {nextMonth(paramPrevMonth)}
-        </div>
-        <div className={box_classes}>
-          {param && param.weekDayFirstOfMonth >= 0 && prevMonth(param)}
-          {dayInMonth(param.numberOfDayInMonth, param)}
-          {nextMonth(param)}
-        </div>
-        <div className={box_classes}>
-          {paramNextMonth && paramNextMonth.weekDayFirstOfMonth >= 0 && prevMonth(paramNextMonth)}
-          {dayInMonth(paramNextMonth.numberOfDayInMonth, paramNextMonth)}
-          {nextMonth(paramNextMonth)}
-        </div>
-        {/* </div> */}
-      </div>
+      <Transition
+        in={slide}
+        timeout={{
+          exit: 600,
+        }}
+        nodeRef={nodeRef}
+        onEntered={() => {
+          setSlide(false);
+        }}
+        onExited={() => {
+          if (nextOrPrev) {
+            handleGoToNextMonth();
+          } else {
+            handleGoToPreviousMonth();
+          }
+        }}
+      >
+        {(state) => {
+          return (
+            <div
+              key={time}
+              className="d-flex"
+              style={{ ...defaultStyle, ...transitionStyles[state] }}
+              ref={nodeRef}
+            >
+              <div className={box_classes}>
+                {paramPrevMonth &&
+                  paramPrevMonth.weekDayFirstOfMonth >= 0 &&
+                  prevMonth(paramPrevMonth)}
+                {dayInMonth(paramPrevMonth.numberOfDayInMonth, paramPrevMonth)}
+                {nextMonth(paramPrevMonth)}
+              </div>
+              <div className={box_classes}>
+                {param && param.weekDayFirstOfMonth >= 0 && prevMonth(param)}
+                {dayInMonth(param.numberOfDayInMonth, param)}
+                {nextMonth(param)}
+              </div>
+              <div className={box_classes}>
+                {paramNextMonth &&
+                  paramNextMonth.weekDayFirstOfMonth >= 0 &&
+                  prevMonth(paramNextMonth)}
+                {dayInMonth(paramNextMonth.numberOfDayInMonth, paramNextMonth)}
+                {nextMonth(paramNextMonth)}
+              </div>
+            </div>
+          );
+        }}
+      </Transition>
     </div>
   );
 });
