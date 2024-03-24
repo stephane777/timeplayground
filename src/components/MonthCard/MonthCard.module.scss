@@ -4,11 +4,16 @@
   &__container {
     position: absolute;
     top: 39px;
-    left: -140px;
+    // left: -140px;
+    left: 64px;
     width: auto;
     height: auto;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    // &--active {
+    //   left: -140px;
+    // }
     &-box {
       align-self: flex-start;
       width: 204px;
