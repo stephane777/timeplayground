@@ -1,18 +1,24 @@
 @import '../../styles/utils/variables';
-
 .monthCard {
   &__container {
     position: absolute;
     top: 39px;
-    left: -140px;
+    left: 64px;
     width: auto;
     height: auto;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
     &-box {
       align-self: flex-start;
       width: 204px;
     }
+  }
+  &__transition-container {
+    width: 204px;
+    height: 180px;
+    overflow: visible;
+    position: relative;
   }
 
   &__icon-prevMonth,
