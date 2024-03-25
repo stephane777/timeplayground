@@ -1,15 +1,6 @@
-import React, {
-  forwardRef,
-  useRef,
-  useState,
-  Dispatch,
-  MouseEventHandler,
-  MouseEvent,
-  ReactElement,
-} from 'react';
+import React, { forwardRef, useRef, useState, Dispatch, MouseEvent, CSSProperties } from 'react';
 import { Transition, TransitionStatus } from 'react-transition-group';
 import styles from './MonthCard.module.scss';
-// import sprite from '../assets/img/sprite.svg';
 import sprite from '../../assets/img/svg/sprite.svg';
 import classNames from 'classnames';
 import { useTheme } from '../../context/themeContext';
@@ -25,6 +16,10 @@ interface MonthCardProps {
 }
 
 type Param = ReturnType<typeof getParam>;
+
+type TransitionStyle = {
+  [P in TransitionStatus]: CSSProperties;
+};
 
 const MonthCard: React.ForwardRefExoticComponent<
   React.RefAttributes<HTMLDivElement> & MonthCardProps
@@ -104,12 +99,15 @@ const MonthCard: React.ForwardRefExoticComponent<
 
   const box_classes = classNames(styles['monthCard__container-box'], 'd-flex', 'flex-wrap', 'text');
 
-  const defaultStyle = {
-    transition: `transform ${500}ms ease-in-out`,
+  const defaultStyle: CSSProperties = {
+    transition: `transform ${300}ms ease-in-out`,
     transform: 'translateX(0)',
+    position: 'absolute',
+    top: '0',
+    left: activeTransition ? '-204px' : '0',
   };
 
-  const transitionStyles = {
+  const transitionStyles: TransitionStyle = {
     entering: { transform: 'translateX(0)' },
     entered: { transform: 'translateX(0)' },
     exiting: { transform: `translateX(${nextOrPrev ? '-33%' : '33%'})` },
@@ -223,56 +221,43 @@ const MonthCard: React.ForwardRefExoticComponent<
     setActiveTransition(false);
   };
 
-  // const monthCardHeaderActive_classes = cx({
-  //   'col-4': activeTransition,
-  //   'offset-4': activeTransition,
-  // });
-
-  const monthCardActiveContainer_classes = classNames(
-    styles['monthCard__container'],
-    styles[
-      cx({
-        'monthCard__container--active': activeTransition,
-      })
-    ]
-  );
-
   return (
-    <div ref={ref} className={monthCardActiveContainer_classes}>
+    <div ref={ref} className={styles['monthCard__container']}>
       <div>
-        <div>
-          <div className={togglemonth_classes}>
-            <svg
-              className={icon_prev_classes}
-              onClick={() => {
-                setActiveTransition(true);
-                setInProp(true);
-                setNextOrPrev(false);
-              }}
-            >
-              <use href={`${sprite}#icon-triangle-left`} className="text"></use>
-            </svg>
-            <span>{`${param.fullMonth} ${param.year}`}</span>
+        <div className={togglemonth_classes}>
+          <svg
+            className={icon_prev_classes}
+            onClick={() => {
+              setActiveTransition(true);
+              setInProp(true);
+              setNextOrPrev(false);
+            }}
+          >
+            <use href={`${sprite}#icon-triangle-left`} className="text"></use>
+          </svg>
+          <span>{`${param.fullMonth} ${param.year}`}</span>
 
-            <svg
-              className={icon_next_classes}
-              onClick={() => {
-                setActiveTransition(true);
-                setInProp(true);
-                setNextOrPrev(true);
-              }}
-            >
-              <use href={`${sprite}#icon-triangle-right`}> </use>
-            </svg>
-          </div>
-          <div className={weekDay_classes}>{weekHeader()}</div>
+          <svg
+            className={icon_next_classes}
+            onClick={() => {
+              setActiveTransition(true);
+              setInProp(true);
+              setNextOrPrev(true);
+            }}
+          >
+            <use href={`${sprite}#icon-triangle-right`}> </use>
+          </svg>
         </div>
+        <div className={weekDay_classes}>{weekHeader()}</div>
       </div>
-      <div style={{ width: '204px', height: '250px', overflow: 'visible', position: 'relative' }}>
+      <div
+        className={styles['monthCard__transition-container']}
+        style={{ width: '204px', height: '180px', overflow: 'visible', position: 'relative' }}
+      >
         <Transition
           in={inProp}
           timeout={{
-            exit: 500,
+            exit: 300,
           }}
           nodeRef={nodeRef}
           onEntered={() => {
@@ -294,7 +279,6 @@ const MonthCard: React.ForwardRefExoticComponent<
                 style={{
                   ...defaultStyle,
                   ...transitionStyles[state],
-                  ...{ position: 'absolute', top: '0px', left: activeTransition ? '-204px' : '0' },
                 }}
                 ref={nodeRef}
               >
