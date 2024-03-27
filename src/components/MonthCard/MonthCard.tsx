@@ -115,21 +115,24 @@ const MonthCard: React.ForwardRefExoticComponent<
     unmounted: { transform: 'translateX(0)' },
   };
 
-  const handleSelectedDay = (e: MouseEvent<HTMLElement>, time: number) => {
-    setTime(time);
-    const value = (e.target as HTMLElement).innerText;
-    setSelectedDay(Number(value));
-  };
+  const handleSelectedDay = React.useCallback(
+    (e: MouseEvent<HTMLElement>, time: number) => {
+      setTime(time);
+      const value = (e.target as HTMLElement).innerText;
+      setSelectedDay(Number(value));
+    },
+    [time]
+  );
 
   // function to render weekdays in the header
-  const weekHeader = () => {
+  const weekHeader = React.useMemo(() => {
     const dayList = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
     return dayList.map((day, i) => (
       <div key={`${day}-${i}`} className={styles['monthCard__weekday']}>
         {day}
       </div>
     ));
-  };
+  }, []);
 
   // get all the day from the previous Month
   const prevMonth = (param: Param) => {
@@ -248,12 +251,9 @@ const MonthCard: React.ForwardRefExoticComponent<
             <use href={`${sprite}#icon-triangle-right`}> </use>
           </svg>
         </div>
-        <div className={weekDay_classes}>{weekHeader()}</div>
+        <div className={weekDay_classes}>{weekHeader}</div>
       </div>
-      <div
-        className={styles['monthCard__transition-container']}
-        style={{ width: '204px', height: '180px', overflow: 'visible', position: 'relative' }}
-      >
+      <div className={styles['monthCard__transition-container']}>
         <Transition
           in={inProp}
           timeout={{
