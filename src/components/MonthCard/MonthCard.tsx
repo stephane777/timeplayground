@@ -143,7 +143,7 @@ const MonthCard: React.ForwardRefExoticComponent<
         const weekdayPrevMonth = new Date(timeDayPrevMonth).getDate();
         return (
           <div
-            key={`${day}-${i}`}
+            key={`prev-${i}`}
             className={prevAndNext_classes}
             onClick={() => setTime(timeDayPrevMonth)}
           >
@@ -174,7 +174,7 @@ const MonthCard: React.ForwardRefExoticComponent<
       );
       return (
         <div
-          key={`${day}-${i}`}
+          key={`current-${i}`}
           className={daysInMonth_classes}
           onClick={(e) => handleSelectedDay(e, time)}
         >
@@ -192,7 +192,7 @@ const MonthCard: React.ForwardRefExoticComponent<
       const timeDayNextMonth = timeLastDay + 1000 * 60 * 60 * 24 * (i + 1);
       return (
         <div
-          key={`${day}-${i}`}
+          key={`next-${i}`}
           className={prevAndNext_classes}
           onClick={() => setTime(timeDayNextMonth)}
         >
@@ -202,24 +202,13 @@ const MonthCard: React.ForwardRefExoticComponent<
     });
   };
 
-  const handleGoToPreviousMonth = () => {
+  const handleToggleMonth = (increment: number) => {
     const { month, year } = param;
 
     // if month = 01 or 12 year will be incremented or decremented
-    const previousMonth = month === 1 ? 12 : month - 1;
-    const previousYear = month === 1 ? Number(year) - 1 : year;
-    const time = getTimeFromDate('01', String(previousMonth), String(previousYear));
-    setTime(time);
-    setActiveTransition(false);
-  };
-
-  const handleGoToNextMonth = () => {
-    const { month, year } = param;
-
-    // if month = 01 or 12 year will be incremented or decremented
-    const nextMonth = month === 12 ? 1 : month + 1;
-    const nextYear = month === 12 ? Number(year) + 1 : year;
-    const time = getTimeFromDate('01', String(nextMonth), String(nextYear));
+    const newMonth = month === 1 ? 12 : month + increment;
+    const newYear = month === 1 ? Number(year) + increment : year;
+    const time = getTimeFromDate('01', String(newMonth), String(newYear));
     setTime(time);
     setActiveTransition(false);
   };
@@ -264,11 +253,7 @@ const MonthCard: React.ForwardRefExoticComponent<
             setInProp(false);
           }}
           onExited={() => {
-            if (nextOrPrev) {
-              handleGoToNextMonth();
-            } else {
-              handleGoToPreviousMonth();
-            }
+            handleToggleMonth(nextOrPrev ? 1 : -1);
           }}
         >
           {(state) => {

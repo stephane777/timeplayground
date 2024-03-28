@@ -64,6 +64,7 @@ const DatePicker: React.FC = () => {
     'datePicker__calendar-icon--light': theme === 'light',
     'datePicker__calendar-icon--dark': theme === 'dark',
   });
+
   return (
     <div className={styles[`datePicker`]}>
       <InputGroup className="mb-3 mt-5">
