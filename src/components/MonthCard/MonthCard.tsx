@@ -17,6 +17,8 @@ interface MonthCardProps {
 
 type Param = ReturnType<typeof getParam>;
 
+type Increment = 1 | -1;
+
 type TransitionStyle = {
   [P in TransitionStatus]: CSSProperties;
 };
@@ -49,7 +51,6 @@ const MonthCard: React.ForwardRefExoticComponent<
     'monthCard__toggleMonth--light': theme === 'light',
   });
 
-  //
   const togglemonth_classes = classNames(
     styles[togglemonth],
     styles[`monthCard__toggleMonth`],
@@ -104,32 +105,35 @@ const MonthCard: React.ForwardRefExoticComponent<
     transform: 'translateX(0)',
     position: 'absolute',
     top: '0',
-    left: activeTransition ? '-204px' : '0',
+    left: nextOrPrev && activeTransition ? '0' : !nextOrPrev && activeTransition ? '-204px' : '0',
   };
 
   const transitionStyles: TransitionStyle = {
     entering: { transform: 'translateX(0)' },
     entered: { transform: 'translateX(0)' },
-    exiting: { transform: `translateX(${nextOrPrev ? '-33%' : '33%'})` },
+    exiting: { transform: `translateX(${nextOrPrev ? '-50%' : '50%'})` },
     exited: { transform: 'translateX(0)' },
     unmounted: { transform: 'translateX(0)' },
   };
 
-  const handleSelectedDay = (e: MouseEvent<HTMLElement>, time: number) => {
-    setTime(time);
-    const value = (e.target as HTMLElement).innerText;
-    setSelectedDay(Number(value));
-  };
+  const handleSelectedDay = React.useCallback(
+    (e: MouseEvent<HTMLElement>, time: number) => {
+      setTime(time);
+      const value = (e.target as HTMLElement).innerText;
+      setSelectedDay(Number(value));
+    },
+    [time]
+  );
 
   // function to render weekdays in the header
-  const weekHeader = () => {
+  const weekHeader = React.useMemo(() => {
     const dayList = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
     return dayList.map((day, i) => (
       <div key={`${day}-${i}`} className={styles['monthCard__weekday']}>
         {day}
       </div>
     ));
-  };
+  }, []);
 
   // get all the day from the previous Month
   const prevMonth = (param: Param) => {
@@ -140,7 +144,7 @@ const MonthCard: React.ForwardRefExoticComponent<
         const weekdayPrevMonth = new Date(timeDayPrevMonth).getDate();
         return (
           <div
-            key={`${day}-${i}`}
+            key={`prev-${i}`}
             className={prevAndNext_classes}
             onClick={() => setTime(timeDayPrevMonth)}
           >
@@ -171,7 +175,7 @@ const MonthCard: React.ForwardRefExoticComponent<
       );
       return (
         <div
-          key={`${day}-${i}`}
+          key={`current-${i}`}
           className={daysInMonth_classes}
           onClick={(e) => handleSelectedDay(e, time)}
         >
@@ -189,7 +193,7 @@ const MonthCard: React.ForwardRefExoticComponent<
       const timeDayNextMonth = timeLastDay + 1000 * 60 * 60 * 24 * (i + 1);
       return (
         <div
-          key={`${day}-${i}`}
+          key={`next-${i}`}
           className={prevAndNext_classes}
           onClick={() => setTime(timeDayNextMonth)}
         >
@@ -199,24 +203,13 @@ const MonthCard: React.ForwardRefExoticComponent<
     });
   };
 
-  const handleGoToPreviousMonth = () => {
+  const handleToggleMonth = (increment: Increment) => {
     const { month, year } = param;
 
     // if month = 01 or 12 year will be incremented or decremented
-    const previousMonth = month === 1 ? 12 : month - 1;
-    const previousYear = month === 1 ? Number(year) - 1 : year;
-    const time = getTimeFromDate('01', String(previousMonth), String(previousYear));
-    setTime(time);
-    setActiveTransition(false);
-  };
-
-  const handleGoToNextMonth = () => {
-    const { month, year } = param;
-
-    // if month = 01 or 12 year will be incremented or decremented
-    const nextMonth = month === 12 ? 1 : month + 1;
-    const nextYear = month === 12 ? Number(year) + 1 : year;
-    const time = getTimeFromDate('01', String(nextMonth), String(nextYear));
+    const newMonth = month === 1 ? 12 : month + increment;
+    const newYear = month === 1 ? Number(year) + increment : year;
+    const time = getTimeFromDate('01', String(newMonth), String(newYear));
     setTime(time);
     setActiveTransition(false);
   };
@@ -248,12 +241,9 @@ const MonthCard: React.ForwardRefExoticComponent<
             <use href={`${sprite}#icon-triangle-right`}> </use>
           </svg>
         </div>
-        <div className={weekDay_classes}>{weekHeader()}</div>
+        <div className={weekDay_classes}>{weekHeader}</div>
       </div>
-      <div
-        className={styles['monthCard__transition-container']}
-        style={{ width: '204px', height: '180px', overflow: 'visible', position: 'relative' }}
-      >
+      <div className={styles['monthCard__transition-container']}>
         <Transition
           in={inProp}
           timeout={{
@@ -264,33 +254,21 @@ const MonthCard: React.ForwardRefExoticComponent<
             setInProp(false);
           }}
           onExited={() => {
-            if (nextOrPrev) {
-              handleGoToNextMonth();
-            } else {
-              handleGoToPreviousMonth();
-            }
+            handleToggleMonth(nextOrPrev ? 1 : -1);
           }}
         >
           {(state) => {
+            const toggledMonthParam = nextOrPrev ? paramNextMonth : paramPrevMonth;
             return (
               <div
                 key={time}
-                className="d-flex"
+                className={`d-flex flex-row${nextOrPrev ? '' : '-reverse'}`}
                 style={{
                   ...defaultStyle,
                   ...transitionStyles[state],
                 }}
                 ref={nodeRef}
               >
-                {activeTransition && (
-                  <div className={box_classes}>
-                    {paramPrevMonth &&
-                      paramPrevMonth.weekDayFirstOfMonth >= 0 &&
-                      prevMonth(paramPrevMonth)}
-                    {dayInMonth(paramPrevMonth.numberOfDayInMonth, paramPrevMonth)}
-                    {nextMonth(paramPrevMonth)}
-                  </div>
-                )}
                 <div className={box_classes}>
                   {param && param.weekDayFirstOfMonth >= 0 && prevMonth(param)}
                   {dayInMonth(param.numberOfDayInMonth, param)}
@@ -298,11 +276,11 @@ const MonthCard: React.ForwardRefExoticComponent<
                 </div>
                 {activeTransition && (
                   <div className={box_classes}>
-                    {paramNextMonth &&
-                      paramNextMonth.weekDayFirstOfMonth >= 0 &&
-                      prevMonth(paramNextMonth)}
-                    {dayInMonth(paramNextMonth.numberOfDayInMonth, paramNextMonth)}
-                    {nextMonth(paramNextMonth)}
+                    {toggledMonthParam &&
+                      toggledMonthParam.weekDayFirstOfMonth >= 0 &&
+                      prevMonth(toggledMonthParam)}
+                    {dayInMonth(toggledMonthParam.numberOfDayInMonth, toggledMonthParam)}
+                    {nextMonth(toggledMonthParam)}
                   </div>
                 )}
               </div>
