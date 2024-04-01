@@ -36,6 +36,7 @@ const DatePicker: React.FC = () => {
     if (!time) setTime(new Date().getTime());
   }, [time]);
 
+  // Effect to track mouse activity around the DatePicker
   useEffect(() => {
     const handleClickOutside: EventListener = (event: Event) => {
       const isOnInput = controlInputRef?.current?.contains(event.target as Node);

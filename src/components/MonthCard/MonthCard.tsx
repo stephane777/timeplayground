@@ -17,6 +17,8 @@ interface MonthCardProps {
 
 type Param = ReturnType<typeof getParam>;
 
+type Increment = 1 | -1;
+
 type TransitionStyle = {
   [P in TransitionStatus]: CSSProperties;
 };
@@ -49,7 +51,6 @@ const MonthCard: React.ForwardRefExoticComponent<
     'monthCard__toggleMonth--light': theme === 'light',
   });
 
-  //
   const togglemonth_classes = classNames(
     styles[togglemonth],
     styles[`monthCard__toggleMonth`],
@@ -104,13 +105,13 @@ const MonthCard: React.ForwardRefExoticComponent<
     transform: 'translateX(0)',
     position: 'absolute',
     top: '0',
-    left: activeTransition ? '-204px' : '0',
+    left: nextOrPrev && activeTransition ? '0' : !nextOrPrev && activeTransition ? '-204px' : '0',
   };
 
   const transitionStyles: TransitionStyle = {
     entering: { transform: 'translateX(0)' },
     entered: { transform: 'translateX(0)' },
-    exiting: { transform: `translateX(${nextOrPrev ? '-33%' : '33%'})` },
+    exiting: { transform: `translateX(${nextOrPrev ? '-50%' : '50%'})` },
     exited: { transform: 'translateX(0)' },
     unmounted: { transform: 'translateX(0)' },
   };
@@ -202,7 +203,7 @@ const MonthCard: React.ForwardRefExoticComponent<
     });
   };
 
-  const handleToggleMonth = (increment: number) => {
+  const handleToggleMonth = (increment: Increment) => {
     const { month, year } = param;
 
     // if month = 01 or 12 year will be incremented or decremented
@@ -257,25 +258,17 @@ const MonthCard: React.ForwardRefExoticComponent<
           }}
         >
           {(state) => {
+            const toggledMonthParam = nextOrPrev ? paramNextMonth : paramPrevMonth;
             return (
               <div
                 key={time}
-                className="d-flex"
+                className={`d-flex flex-row${nextOrPrev ? '' : '-reverse'}`}
                 style={{
                   ...defaultStyle,
                   ...transitionStyles[state],
                 }}
                 ref={nodeRef}
               >
-                {activeTransition && (
-                  <div className={box_classes}>
-                    {paramPrevMonth &&
-                      paramPrevMonth.weekDayFirstOfMonth >= 0 &&
-                      prevMonth(paramPrevMonth)}
-                    {dayInMonth(paramPrevMonth.numberOfDayInMonth, paramPrevMonth)}
-                    {nextMonth(paramPrevMonth)}
-                  </div>
-                )}
                 <div className={box_classes}>
                   {param && param.weekDayFirstOfMonth >= 0 && prevMonth(param)}
                   {dayInMonth(param.numberOfDayInMonth, param)}
@@ -283,11 +276,11 @@ const MonthCard: React.ForwardRefExoticComponent<
                 </div>
                 {activeTransition && (
                   <div className={box_classes}>
-                    {paramNextMonth &&
-                      paramNextMonth.weekDayFirstOfMonth >= 0 &&
-                      prevMonth(paramNextMonth)}
-                    {dayInMonth(paramNextMonth.numberOfDayInMonth, paramNextMonth)}
-                    {nextMonth(paramNextMonth)}
+                    {toggledMonthParam &&
+                      toggledMonthParam.weekDayFirstOfMonth >= 0 &&
+                      prevMonth(toggledMonthParam)}
+                    {dayInMonth(toggledMonthParam.numberOfDayInMonth, toggledMonthParam)}
+                    {nextMonth(toggledMonthParam)}
                   </div>
                 )}
               </div>
