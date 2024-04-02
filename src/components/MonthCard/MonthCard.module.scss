@@ -14,7 +14,11 @@
       align-self: flex-start;
       width: 204px;
     }
+    &--visible {
+      overflow: visible;
+    }
   }
+
   &__transition-container {
     width: 204px;
     height: 180px;

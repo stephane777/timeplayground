@@ -16,7 +16,12 @@ import MonthCard from '../MonthCard/MonthCard';
 import { utcTime_to_date, maxDayInMonth, isCurrentYearBisextile } from '../../utils';
 const cx = classNames.bind(styles);
 
-const DatePicker: React.FC = () => {
+interface DatePicker {
+  demo?: boolean;
+  demoWithNoKey?: boolean;
+}
+
+const DatePicker: React.FC<DatePicker> = ({ demo }) => {
   const [time, setTime] = useState<number>(0);
   const [active, setActive] = useState<boolean>(false);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
@@ -94,6 +99,9 @@ const DatePicker: React.FC = () => {
             setTime={setTime}
             selectedDay={selectedDay}
             setSelectedDay={setSelectedDay}
+            speed={500}
+            demo
+            demoWithNoKey
           />
         )}
       </InputGroup>

@@ -13,6 +13,9 @@ interface MonthCardProps {
   setTime: Dispatch<React.SetStateAction<number>>;
   selectedDay: number | null;
   setSelectedDay: Dispatch<React.SetStateAction<number | null>>;
+  speed: number;
+  demo?: boolean;
+  demoWithNoKey: boolean;
 }
 
 type Param = ReturnType<typeof getParam>;
@@ -25,7 +28,10 @@ type TransitionStyle = {
 
 const MonthCard: React.ForwardRefExoticComponent<
   React.RefAttributes<HTMLDivElement> & MonthCardProps
-> = forwardRef(function ({ time, setTime, selectedDay, setSelectedDay }, ref) {
+> = forwardRef(function (
+  { time, setTime, selectedDay, setSelectedDay, speed, demo, demoWithNoKey },
+  ref
+) {
   const { theme } = useTheme();
 
   // when activeTransition is true react render prev, current & next month needed for the animation
@@ -101,7 +107,7 @@ const MonthCard: React.ForwardRefExoticComponent<
   const box_classes = classNames(styles['monthCard__container-box'], 'd-flex', 'flex-wrap', 'text');
 
   const defaultStyle: CSSProperties = {
-    transition: `transform ${300}ms ease-in-out`,
+    transition: `transform ${speed}ms ease-in-out`,
     transform: 'translateX(0)',
     position: 'absolute',
     top: '0',
@@ -214,8 +220,17 @@ const MonthCard: React.ForwardRefExoticComponent<
     setActiveTransition(false);
   };
 
+  const monthCard_container_classes = classNames(
+    styles['monthCard__container'],
+    styles[
+      cx({
+        'monthCard__container--visible': demo,
+      })
+    ]
+  );
+
   return (
-    <div ref={ref} className={styles['monthCard__container']}>
+    <div ref={ref} className={monthCard_container_classes}>
       <div>
         <div className={togglemonth_classes}>
           <svg
@@ -247,7 +262,7 @@ const MonthCard: React.ForwardRefExoticComponent<
         <Transition
           in={inProp}
           timeout={{
-            exit: 300,
+            exit: speed,
           }}
           nodeRef={nodeRef}
           onEntered={() => {
@@ -261,7 +276,7 @@ const MonthCard: React.ForwardRefExoticComponent<
             const toggledMonthParam = nextOrPrev ? paramNextMonth : paramPrevMonth;
             return (
               <div
-                key={time}
+                key={demoWithNoKey ? 1 : time}
                 className={`d-flex flex-row${nextOrPrev ? '' : '-reverse'}`}
                 style={{
                   ...defaultStyle,
