@@ -15,7 +15,7 @@ interface MonthCardProps {
   setSelectedDay: Dispatch<React.SetStateAction<number | null>>;
   speed: number;
   demo?: boolean;
-  demoWithNoKey: boolean;
+  demoWithNoKey?: boolean;
 }
 
 type Param = ReturnType<typeof getParam>;
@@ -126,6 +126,7 @@ const MonthCard: React.ForwardRefExoticComponent<
     (e: MouseEvent<HTMLElement>, time: number) => {
       setTime(time);
       const value = (e.target as HTMLElement).innerText;
+      // const value = e.target.valueAsNumber
       setSelectedDay(Number(value));
     },
     [time]

@@ -99,9 +99,7 @@ const DatePicker: React.FC<DatePicker> = ({ demo }) => {
             setTime={setTime}
             selectedDay={selectedDay}
             setSelectedDay={setSelectedDay}
-            speed={500}
-            demo
-            demoWithNoKey
+            speed={300}
           />
         )}
       </InputGroup>
