@@ -1,5 +1,5 @@
 import React from 'react';
-import { Component, ReactNode } from 'react';
+import { Component, ReactNode, ErrorInfo } from 'react';
 import { Link } from 'react-router-dom';
 
 interface Props {
@@ -11,13 +11,16 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  state: State = { hasError: false };
-  static getDerivedStateFromError() {
+  public state: State = { hasError: false };
+
+  public static getDerivedStateFromError(_: Error): State {
     return { hasError: true };
   }
-  componentDidCatch(error: any, info: any) {
+
+  public componentDidCatch(error: Error, info: ErrorInfo) {
     console.error('ErrorBoundary caught an error', error, info);
   }
+
   render() {
     if (this.state.hasError) {
       return (
