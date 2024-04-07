@@ -1,6 +1,37 @@
 $robotomono-font-path: '../fonts/Roboto_Mono';
+$robotoCondensed-font-path: '../fonts/Roboto_Condensed';
 
 @font-face {
   font-family: 'RM';
   src: url('#{$robotomono-font-path}/RobotoMono-Regular.ttf') format('truetype');
 }
+
+@font-face {
+  font-family: 'RCB';
+  src: url('#{$robotoCondensed-font-path}/RobotoCondensed-Black.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'RCBo';
+  src: url('#{$robotoCondensed-font-path}/RobotoCondensed-Bold.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'RCM';
+  src: url('#{$robotoCondensed-font-path}/RobotoCondensed-Medium.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'RCR';
+  src: url('#{$robotoCondensed-font-path}/RobotoCondensed-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'RCSB';
+  src: url('#{$robotoCondensed-font-path}/RobotoCondensed-SemiBold.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'RCT';
+  src: url('#{$robotoCondensed-font-path}/RobotoCondensed-Thin.ttf') format('truetype');
+}
+// @font-face {
+//   font-family: '';
+//   src: url('#{$robotoCondensed-font-path}/RobotoCondensed-.ttf') format('truetype');
+// }
