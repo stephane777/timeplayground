@@ -17,11 +17,12 @@ import { utcTime_to_date, maxDayInMonth, isCurrentYearBisextile } from '../../ut
 const cx = classNames.bind(styles);
 
 interface DatePicker {
-  demo?: boolean;
-  demoWithNoKey?: boolean;
+  speed: number;
+  demo: boolean;
+  demoWithNoKey: boolean;
 }
 
-const DatePicker: React.FC<DatePicker> = ({ demo }) => {
+const DatePicker: React.FC<DatePicker> = ({ speed, demo, demoWithNoKey }) => {
   const [time, setTime] = useState<number>(0);
   const [active, setActive] = useState<boolean>(false);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
@@ -46,6 +47,7 @@ const DatePicker: React.FC<DatePicker> = ({ demo }) => {
     const handleClickOutside: EventListener = (event: Event) => {
       const isOnInput = controlInputRef?.current?.contains(event.target as Node);
       const isOnMonthCard = monthCardRef?.current?.contains(event.target as Node);
+
       if (isOnInput || isOnMonthCard) {
         return;
       }
@@ -99,7 +101,9 @@ const DatePicker: React.FC<DatePicker> = ({ demo }) => {
             setTime={setTime}
             selectedDay={selectedDay}
             setSelectedDay={setSelectedDay}
-            speed={300}
+            speed={speed}
+            demo={demo}
+            demoWithNoKey={demoWithNoKey}
           />
         )}
       </InputGroup>

@@ -4,7 +4,7 @@
     border: 1px solid rgb(222, 226, 230);
     position: absolute;
     top: 39px;
-    left: 64px;
+    left: 55px;
     width: auto;
     height: auto;
     display: flex;
@@ -24,6 +24,12 @@
     height: 180px;
     overflow: visible;
     position: relative;
+    &--light {
+      background-color: var(--bs-gray-100);
+    }
+    &--dark {
+      background-color: var(--bs-gray-800);
+    }
   }
 
   &__icon-prevMonth,

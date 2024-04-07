@@ -104,6 +104,16 @@ const MonthCard: React.ForwardRefExoticComponent<
     ]
   );
 
+  const transition_container_classes = classNames(
+    styles['monthCard__transition-container'],
+    styles[
+      cx({
+        'monthCard__transition-container--light': theme === 'light',
+        'monthCard__transition-container--dark': theme === 'dark',
+      })
+    ]
+  );
+
   const box_classes = classNames(styles['monthCard__container-box'], 'd-flex', 'flex-wrap', 'text');
 
   const defaultStyle: CSSProperties = {
@@ -126,7 +136,7 @@ const MonthCard: React.ForwardRefExoticComponent<
     (e: MouseEvent<HTMLElement>, time: number) => {
       setTime(time);
       const value = (e.target as HTMLElement).innerText;
-      // const value = e.target.valueAsNumber
+
       setSelectedDay(Number(value));
     },
     [time]
@@ -163,7 +173,7 @@ const MonthCard: React.ForwardRefExoticComponent<
   };
 
   // function to render all the day from 1 to 28/29 if Feb. otherwise 30/31
-  const dayInMonth = (nbDays: number, param: Param) => {
+  const dayInMonth = (nbDays: number, param: Param, isCurrentMonth: boolean) => {
     const arrayLength = { length: nbDays };
     const monthArr = Array.from(arrayLength, (v, i) => i);
     const { timeFirstDay, day: selectedDay } = param;
@@ -175,8 +185,10 @@ const MonthCard: React.ForwardRefExoticComponent<
         styles[`monthCard__day`],
         styles[
           cx({
-            'monthCard__day--selected-light': theme === 'light' && selectedDay === day + 1,
-            'monthCard__day--selected-dark': theme === 'dark' && selectedDay === day + 1,
+            'monthCard__day--selected-light':
+              theme === 'light' && isCurrentMonth && selectedDay === day + 1,
+            'monthCard__day--selected-dark':
+              theme === 'dark' && isCurrentMonth && selectedDay === day + 1,
           })
         ]
       );
@@ -259,7 +271,7 @@ const MonthCard: React.ForwardRefExoticComponent<
         </div>
         <div className={weekDay_classes}>{weekHeader}</div>
       </div>
-      <div className={styles['monthCard__transition-container']}>
+      <div className={transition_container_classes}>
         <Transition
           in={inProp}
           timeout={{
@@ -287,7 +299,7 @@ const MonthCard: React.ForwardRefExoticComponent<
               >
                 <div className={box_classes}>
                   {param && param.weekDayFirstOfMonth >= 0 && prevMonth(param)}
-                  {dayInMonth(param.numberOfDayInMonth, param)}
+                  {dayInMonth(param.numberOfDayInMonth, param, true)}
                   {nextMonth(param)}
                 </div>
                 {activeTransition && (
@@ -295,7 +307,7 @@ const MonthCard: React.ForwardRefExoticComponent<
                     {toggledMonthParam &&
                       toggledMonthParam.weekDayFirstOfMonth >= 0 &&
                       prevMonth(toggledMonthParam)}
-                    {dayInMonth(toggledMonthParam.numberOfDayInMonth, toggledMonthParam)}
+                    {dayInMonth(toggledMonthParam.numberOfDayInMonth, toggledMonthParam, false)}
                     {nextMonth(toggledMonthParam)}
                   </div>
                 )}
