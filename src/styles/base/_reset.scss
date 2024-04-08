@@ -58,10 +58,6 @@ body {
   min-height: 100vh;
   scroll-behavior: smooth;
   text-rendering: optimizeSpeed;
-  font:
-    13px/1.8 'FB',
-    'Futura Book',
-    sans-serif;
   letter-spacing: 0.025em;
   background-color: $white;
 }
@@ -81,6 +77,16 @@ img {
 #root {
   min-height: 100vh;
 }
+
+p {
+  font-size: $font-size-base * 1.15;
+}
+
+pre,
+code {
+  color: inherit !important;
+}
+
 /* Remove all animations and transitions for people that prefer not to see them */
 /* In macOS: System Preferences > Accessibility > Display > Reduce motion. */
 @media (prefers-reduced-motion: reduce) {
