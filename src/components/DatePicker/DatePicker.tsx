@@ -18,8 +18,8 @@ const cx = classNames.bind(styles);
 
 interface DatePicker {
   speed: number;
-  demo: boolean;
-  demoWithNoKey: boolean;
+  demo?: 'render2month' | 'transition' | 'renderNewMonth';
+  demoWithNoKey?: boolean;
 }
 
 const DatePicker: React.FC<DatePicker> = ({ speed, demo, demoWithNoKey }) => {
@@ -75,7 +75,7 @@ const DatePicker: React.FC<DatePicker> = ({ speed, demo, demoWithNoKey }) => {
 
   return (
     <div className={styles[`datePicker`]}>
-      <InputGroup className="mb-3 mt-5">
+      <InputGroup>
         <Form.Label htmlFor="date" className="align-self-center me-4">
           Date
         </Form.Label>

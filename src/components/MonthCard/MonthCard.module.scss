@@ -13,6 +13,12 @@
     &-box {
       align-self: flex-start;
       width: 204px;
+      &--light {
+        background-color: var(--bs-gray-100);
+      }
+      &--dark {
+        background-color: var(--bs-gray-800);
+      }
     }
     &--visible {
       overflow: visible;
@@ -24,6 +30,7 @@
     height: 180px;
     overflow: visible;
     position: relative;
+    z-index: 1000;
     &--light {
       background-color: var(--bs-gray-100);
     }
@@ -42,6 +49,10 @@
     }
     &--dark {
       fill: var(--bs-gray-300);
+    }
+    &--disabled {
+      fill: var(--bs-gray-200);
+      cursor: not-allowed;
     }
   }
   &__weekday {

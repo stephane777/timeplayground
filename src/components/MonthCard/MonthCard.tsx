@@ -1,4 +1,12 @@
-import React, { forwardRef, useRef, useState, Dispatch, MouseEvent, CSSProperties } from 'react';
+import React, {
+  forwardRef,
+  useRef,
+  useState,
+  Dispatch,
+  MouseEvent,
+  CSSProperties,
+  MouseEventHandler,
+} from 'react';
 import { Transition, TransitionStatus } from 'react-transition-group';
 import styles from './MonthCard.module.scss';
 import sprite from '../../assets/img/svg/sprite.svg';
@@ -14,7 +22,7 @@ interface MonthCardProps {
   selectedDay: number | null;
   setSelectedDay: Dispatch<React.SetStateAction<number | null>>;
   speed: number;
-  demo?: boolean;
+  demo?: 'render2month' | 'transition' | 'renderNewMonth';
   demoWithNoKey?: boolean;
 }
 
@@ -40,7 +48,7 @@ const MonthCard: React.ForwardRefExoticComponent<
   // react-transition-group Transition state
   const [inProp, setInProp] = useState<boolean>(false);
 
-  // state to handle which month the user is toggling is previous or next month
+  // state to handle which month the user is toggling is previous (false) or next month (true)
   const [nextOrPrev, setNextOrPrev] = useState<boolean | null>(null);
   const nodeRef = useRef<HTMLDivElement>(null);
 
@@ -50,6 +58,8 @@ const MonthCard: React.ForwardRefExoticComponent<
   const nextMonthTime = new Date(time).setMonth(new Date(time).getMonth() + 1);
   const paramPrevMonth = getParam(prevMonthTime);
   const paramNextMonth = getParam(nextMonthTime);
+
+  const isDemo = demo === 'render2month' || demo === 'renderNewMonth' || demo === 'transition';
 
   // Toggle month theme classNames
   const togglemonth = cx({
@@ -86,10 +96,13 @@ const MonthCard: React.ForwardRefExoticComponent<
   const icon_prev_classes = classNames(
     styles['monthCard__icon-prevMonth'],
     styles[
-      cx({
+      (cx({
         'monthCard__icon-prevMonth--light': theme === 'light',
         'monthCard__icon-prevMonth--dark': theme === 'dark',
-      })
+      }),
+      cx({
+        'monthCard__icon-prevMonth--disabled': demo === 'transition',
+      }))
     ]
   );
 
@@ -114,7 +127,18 @@ const MonthCard: React.ForwardRefExoticComponent<
     ]
   );
 
-  const box_classes = classNames(styles['monthCard__container-box'], 'd-flex', 'flex-wrap', 'text');
+  const box_classes = classNames(
+    styles['monthCard__container-box'],
+    styles[
+      cx({
+        'monthCard__container-box--light': theme === 'light',
+        'monthCard__container-box--dark': theme === 'dark',
+      })
+    ],
+    'd-flex',
+    'flex-wrap',
+    'text'
+  );
 
   const defaultStyle: CSSProperties = {
     transition: `transform ${speed}ms ease-in-out`,
@@ -237,10 +261,19 @@ const MonthCard: React.ForwardRefExoticComponent<
     styles['monthCard__container'],
     styles[
       cx({
-        'monthCard__container--visible': demo,
+        'monthCard__container--visible': isDemo,
       })
     ]
   );
+
+  const handlePreviousOnClick: MouseEventHandler<SVGSVGElement> = (e) => {
+    e.preventDefault();
+    setActiveTransition(true);
+    if (demo !== 'render2month') {
+      setInProp(true);
+    }
+    setNextOrPrev(false);
+  };
 
   return (
     <div ref={ref} className={monthCard_container_classes}>
@@ -248,11 +281,7 @@ const MonthCard: React.ForwardRefExoticComponent<
         <div className={togglemonth_classes}>
           <svg
             className={icon_prev_classes}
-            onClick={() => {
-              setActiveTransition(true);
-              setInProp(true);
-              setNextOrPrev(false);
-            }}
+            onClick={demo === 'transition' ? () => null : handlePreviousOnClick}
           >
             <use href={`${sprite}#icon-triangle-left`} className="text"></use>
           </svg>
@@ -262,7 +291,10 @@ const MonthCard: React.ForwardRefExoticComponent<
             className={icon_next_classes}
             onClick={() => {
               setActiveTransition(true);
-              setInProp(true);
+              if (demo !== 'render2month') {
+                setInProp(true);
+              }
+
               setNextOrPrev(true);
             }}
           >
@@ -282,7 +314,9 @@ const MonthCard: React.ForwardRefExoticComponent<
             setInProp(false);
           }}
           onExited={() => {
-            handleToggleMonth(nextOrPrev ? 1 : -1);
+            if (demo !== 'transition') {
+              handleToggleMonth(nextOrPrev ? 1 : -1);
+            }
           }}
         >
           {(state) => {
