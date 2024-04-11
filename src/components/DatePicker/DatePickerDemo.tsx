@@ -16,6 +16,12 @@ const DatePickerDemo: FC = () => {
   return (
     <>
       <section>
+        <h1 className="">Date Picker</h1>
+        <div className={styles[`container__datePicker`]}>
+          <DatePicker speed={300} />
+        </div>
+      </section>
+      <section>
         <h3 className="my-5">Overview:</h3>
         <p>
           This was a project I've build few years back and it is time to refactor it with Typescript
