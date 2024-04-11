@@ -105,7 +105,7 @@ const DatePickerDemo: FC = () => {
               theme={hybrid}
               customStyle={{ overflowX: 'scroll' }}
               text={codeblocks.render2months}
-              highlight="23-27,35-39"
+              // highlight="23-27,35-39"
             />
           </Row>
         </Container>
@@ -140,7 +140,7 @@ const DatePickerDemo: FC = () => {
               theme={hybrid}
               customStyle={{ overflowX: 'scroll' }}
               text={codeblocks.transition}
-              highlight="27,40-42"
+              // highlight="27,40-42"
             />
           </Row>
         </Container>
