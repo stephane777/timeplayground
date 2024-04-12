@@ -5,8 +5,9 @@ import styles from './App.module.scss';
 import classNames from 'classnames';
 import { Layout } from '../Layout';
 
-const Date_Picker_Page = lazy(() => import('../DatePicker/DatePickerDemo'));
-const Date_Range_Page = lazy(() => import('../DateRange/DateRangeDemo'));
+const Date_Picker_Page = lazy(() => import('../../pages/DatePickerPage'));
+const Date_Range_Page = lazy(() => import('../../pages/DateRangePage'));
+const Berlin_Clock_Page = lazy(() => import('../../pages/BerlinClockPage'));
 
 import ErrorBoundary from '../../utils/errorBoundaries';
 
@@ -24,6 +25,10 @@ const router = createBrowserRouter(
         {
           path: 'datePicker',
           element: <Date_Picker_Page />,
+        },
+        {
+          path: 'berlinclock',
+          element: <Berlin_Clock_Page />,
         },
       ],
     },
