@@ -4,7 +4,7 @@ import DatePicker from '../components/DatePicker/DatePicker';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import codeblocks from './codeblocks';
+import codeblocks from '../codeblocks/datepicker_cb';
 import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
 import Figure from 'react-bootstrap/Figure';
