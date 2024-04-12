@@ -1,37 +1,56 @@
-import React, { FC, ReactNode } from 'react';
-import MainNavbar from '../MainNavbar/MainNavbar';
-import DateRange from '../DateRange/DateRange';
+import React, { Suspense, lazy, FC, ReactNode } from 'react';
+import { createBrowserRouter, RouterProvider, Route } from 'react-router-dom';
 import { useTheme } from '../../context/themeContext';
 import styles from './App.module.scss';
 import classNames from 'classnames';
-import DatePicker from '../DatePicker/DatePicker';
-import Container from 'react-bootstrap/Container';
-import DatePickerDemo from '../DatePicker/DatePickerDemo';
-// import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
+import { Layout } from '../Layout';
+
+const Date_Picker_Page = lazy(() => import('../DatePicker/DatePickerDemo'));
+const Date_Range_Page = lazy(() => import('../DateRange/DateRangeDemo'));
+
 import ErrorBoundary from '../../utils/errorBoundaries';
 
-const App: FC<{ children: ReactNode }> = ({ children }) => {
+const router = createBrowserRouter(
+  [
+    {
+      path: '/',
+      element: <Layout />,
+      errorElement: <div>{'Error element'}</div>,
+      children: [
+        {
+          path: 'daterange',
+          element: <Date_Range_Page />,
+        },
+        {
+          path: 'datePicker',
+          element: <Date_Picker_Page />,
+        },
+      ],
+    },
+  ],
+  {
+    basename: '/',
+  }
+);
+
+const App: FC<{ children?: ReactNode }> = ({ children }) => {
   const { theme } = useTheme();
 
   const theme_classes = classNames(styles[`theme--${theme}`], styles[`theme`]);
 
   return (
     <ErrorBoundary>
-      {/* <Router> */}
       <div className={theme_classes}>
-        <header>
-          <MainNavbar />
-        </header>
-        <main>
-          <Container fluid="sm" className="pt-5">
-            {children}
-          </Container>
-        </main>
-        <footer className="my-5">Footer</footer>
+        <Suspense fallback={<Loader text="page" />}>
+          <RouterProvider router={router} />
+        </Suspense>
       </div>
-      {/* </Router> */}
     </ErrorBoundary>
   );
 };
+
+const Loader: FC<{ text: string }> = ({ text }) => (
+  <div style={{ background: 'hsl(65, 65, 60)' }}>Loading {text}...</div>
+);
 
 export { App };

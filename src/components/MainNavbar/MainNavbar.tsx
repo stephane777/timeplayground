@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import ToggleTheme from '../ToggleTheme/ToggleTheme';
 import { useTheme } from '../../context/themeContext';
 import styles from './MainNavbar.module.scss';
@@ -26,16 +26,16 @@ const MainNavbar: FC = () => {
         {/* <Stack direction="horizontal" gap={3} className="ms-auto"> */}
         <Navbar.Collapse id="main-navbar-nav">
           <Nav className="ms-auto" navbarScroll>
-            <Nav.Link as={Link} to="/">
+            <Nav.Link as={NavLink} to="/">
               Home
             </Nav.Link>
-            <Nav.Link as={Link} to="/datepicker">
+            <Nav.Link as={NavLink} to="/datepicker">
               Date Picker
             </Nav.Link>
-            <Nav.Link as={Link} to="/daterange">
+            <Nav.Link as={NavLink} to="/daterange">
               Date Range
             </Nav.Link>
-            <Nav.Link as={Link} to="berlinclock">
+            <Nav.Link as={NavLink} to="berlinclock">
               Berlin Clock
             </Nav.Link>
             {/* <ToggleTheme /> */}
