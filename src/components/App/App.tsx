@@ -19,12 +19,16 @@ const router = createBrowserRouter(
       errorElement: <div>{'Error element'}</div>,
       children: [
         {
-          path: 'daterange',
+          index: true,
           element: <Date_Range_Page />,
         },
         {
           path: 'datePicker',
           element: <Date_Picker_Page />,
+        },
+        {
+          path: 'daterange',
+          element: <Date_Range_Page />,
         },
         {
           path: 'berlinclock',
