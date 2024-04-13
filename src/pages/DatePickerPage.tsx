@@ -10,14 +10,14 @@ import Badge from 'react-bootstrap/Badge';
 import Figure from 'react-bootstrap/Figure';
 import img2 from '../assets/img/png/MonthCard_Next.png';
 import img1 from '../assets/img/png/MonthCard_prev.png';
-import styles from '../components/App/App.module.scss';
+import styles from '../components/DatePicker/DatePicker.module.scss';
 
 const DatePickerDemo: FC = () => {
   return (
     <>
       <section>
         <h1 className="">Date Picker</h1>
-        <div className={styles[`container__datePicker`]}>
+        <div className={styles[`datePicker__container`]}>
           <DatePicker speed={300} />
         </div>
       </section>
@@ -56,7 +56,7 @@ const DatePickerDemo: FC = () => {
         <Container>
           <Row>
             <Col lg="3">
-              <div className={styles[`container__datePicker`]}>
+              <div className={styles[`datePicker__container`]}>
                 <DatePicker speed={1000} demo="render2month" demoWithNoKey={false} />
               </div>
             </Col>
@@ -121,7 +121,7 @@ const DatePickerDemo: FC = () => {
         <Container>
           <Row className="mb-5">
             <Col lg="3">
-              <div className={styles[`container__datePicker`]}>
+              <div className={styles[`datePicker__container`]}>
                 <DatePicker speed={1000} demo={'transition'} />
               </div>
             </Col>
@@ -156,7 +156,7 @@ const DatePickerDemo: FC = () => {
         <Container>
           <Row>
             <Col lg="3">
-              <div className={styles[`container__datePicker`]}>
+              <div className={styles[`datePicker__container`]}>
                 <DatePicker speed={1000} demo={'renderNewMonth'} demoWithNoKey={true} />
               </div>
             </Col>
@@ -187,7 +187,7 @@ const DatePickerDemo: FC = () => {
           </Row>
           <Row>
             <Col lg="3">
-              <div className={styles[`container__datePicker`]}>
+              <div className={styles[`datePicker__container`]}>
                 <DatePicker speed={1000} demo={'renderNewMonth'} demoWithNoKey={false} />
               </div>
             </Col>

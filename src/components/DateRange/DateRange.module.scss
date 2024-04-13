@@ -25,4 +25,8 @@
   &__inputgroup--dark {
     background-color: $dark;
   }
+  &__container {
+    margin: 0 auto;
+    width: 460px;
+  }
 }
