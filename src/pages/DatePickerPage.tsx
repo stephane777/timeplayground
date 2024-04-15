@@ -4,23 +4,24 @@ import DatePicker from '../components/DatePicker/DatePicker';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import codeblocks from './codeblocks';
+import codeblocks from '../codeblocks/datepicker_cb';
 import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
 import Figure from 'react-bootstrap/Figure';
 import img2 from '../assets/img/png/MonthCard_Next.png';
 import img1 from '../assets/img/png/MonthCard_prev.png';
-import styles from '../components/App/App.module.scss';
+import styles from '../components/DatePicker/DatePicker.module.scss';
 
 const DatePickerDemo: FC = () => {
   return (
     <>
       <section>
         <h1 className="">Date Picker</h1>
-        <div className={styles[`container__datePicker`]}>
+        <div className={styles[`datePicker__container`]}>
           <DatePicker speed={300} />
         </div>
       </section>
+
       <section>
         <h3 className="my-5">Overview:</h3>
         <p>
@@ -56,7 +57,7 @@ const DatePickerDemo: FC = () => {
         <Container>
           <Row>
             <Col lg="3">
-              <div className={styles[`container__datePicker`]}>
+              <div className={styles[`datePicker__container`]}>
                 <DatePicker speed={1000} demo="render2month" demoWithNoKey={false} />
               </div>
             </Col>
@@ -67,21 +68,27 @@ const DatePickerDemo: FC = () => {
                 <br /> Clicking the arrow left will render the MonthCard component with the current
                 month along with the previous month on the left.
                 <br /> To handle the different phase we need 3 pieces of state:
-                <ol>
-                  <li>
+              </p>
+              <ol>
+                <li>
+                  <p>
                     <Badge bg="secondary">activeTransition</Badge> when true the date picker is
                     rendered with 2 months.
-                  </li>
-                  <li>
+                  </p>
+                </li>
+                <li>
+                  <p>
                     <Badge bg="secondary">inProp</Badge> state is needed for react-transition-group
                     Transition component
-                  </li>
-                  <li>
+                  </p>
+                </li>
+                <li>
+                  <p>
                     <Badge bg="secondary">nextOrPrev</Badge> state to handle which month previous or
                     next the user want to see.
-                  </li>
-                </ol>
-              </p>
+                  </p>
+                </li>
+              </ol>
             </Col>
           </Row>
 
@@ -109,8 +116,9 @@ const DatePickerDemo: FC = () => {
               language="tsx"
               showLineNumbers
               theme={hybrid}
-              customStyle={{ overflowX: 'scroll' }}
+              // customStyle={{ overflowX: 'scroll' }}
               text={codeblocks.render2months}
+              codeBlock
               // highlight="23-27,35-39"
             />
           </Row>
@@ -121,7 +129,7 @@ const DatePickerDemo: FC = () => {
         <Container>
           <Row className="mb-5">
             <Col lg="3">
-              <div className={styles[`container__datePicker`]}>
+              <div className={styles[`datePicker__container`]}>
                 <DatePicker speed={1000} demo={'transition'} />
               </div>
             </Col>
@@ -156,52 +164,64 @@ const DatePickerDemo: FC = () => {
         <Container>
           <Row>
             <Col lg="3">
-              <div className={styles[`container__datePicker`]}>
+              <div className={styles[`datePicker__container`]}>
                 <DatePicker speed={1000} demo={'renderNewMonth'} demoWithNoKey={true} />
               </div>
             </Col>
             <Col lg="9">
-              We can now trigger <Badge bg="secondary">time</Badge> state update with the new time,
-              this will rerender DatePicker component and update the input with only one month
-              showing in the dropdown because <Badge bg="secondary">activeTransition</Badge> was set
-              to false at the same time. <br />
-              Oh it seems we have an issue here. We supposed to have the animation ending at the
-              time DatePicker component is rendered with the new month. It looks like that the
-              Transition container which have the css animation applied translate from half a month
-              card length.
-              <br />
+              <p>
+                We can now trigger <Badge bg="secondary">time</Badge> state update with the new
+                time, this will rerender DatePicker component and update the input with only one
+                month showing in the dropdown because <Badge bg="secondary">activeTransition</Badge>{' '}
+                was set to false at the same time. <br />
+                Oh it seems we have an issue here. We supposed to have the animation ending at the
+                time DatePicker component is rendered with the new month. It looks like that the
+                Transition container which have the css animation applied translate from half a
+                month card length.
+                <br />
+              </p>
               All phases :
               <ol>
                 <li>
-                  User click left/right arrow, the animation kick off. The transition contanier show
-                  2 months so translate +/-50% will move 1 month card length.
+                  <p>
+                    User click left/right arrow, the animation kick off. The transition contanier
+                    show 2 months so translate +/-50% will move 1 month card length.
+                  </p>
                 </li>
                 <li>
-                  The animation is ending with the new month card visible, triggering a{' '}
-                  <Badge bg="secondary">time</Badge> state update{' '}
+                  <p>
+                    The animation is ending with the new month card visible, triggering a{' '}
+                    <Badge bg="secondary">time</Badge> state update{' '}
+                  </p>
                 </li>
-                <li>DatePicker component rerender with the new month card selected</li>
-                <li>DatePicker show the new month card with -/+50% offset.</li>
+                <li>
+                  <p>DatePicker component rerender with the new month card selected</p>
+                </li>
+                <li>
+                  <p>DatePicker show the new month card with -/+50% offset.</p>
+                </li>
               </ol>
             </Col>
           </Row>
           <Row>
             <Col lg="3">
-              <div className={styles[`container__datePicker`]}>
+              <div className={styles[`datePicker__container`]}>
                 <DatePicker speed={1000} demo={'renderNewMonth'} demoWithNoKey={false} />
               </div>
             </Col>
             <Col lg="9">
-              React rerender the DatePicker component following <Badge bg="secondary">time</Badge>{' '}
-              state update. While this component should rerender all its children we can assume that
-              the Transition container hasn't changed at all, so during the reconciliation phase
-              React doesn't unmount this dom node. Because of this the css transition is still the
-              same and we can see it translating back to its initial position. To fix this we need
-              to tell React to unmount Transition container when a new time is set. We can simply
-              add a key tag to the transition container with the value of{' '}
-              <Badge bg="secondary">time</Badge> state. That way each time we set a new time the
-              transition container is unmounted from the Dom and a new one is mounted. The final
-              work is now to make only month card length visible.
+              <p>
+                React rerender the DatePicker component following <Badge bg="secondary">time</Badge>{' '}
+                state update. While this component should rerender all its children we can assume
+                that the Transition container hasn't changed at all, so during the reconciliation
+                phase React doesn't unmount this dom node. Because of this the css transition is
+                still the same and we can see it translating back to its initial position. To fix
+                this we need to tell React to unmount Transition container when a new time is set.
+                We can simply add a key tag to the transition container with the value of{' '}
+                <Badge bg="secondary">time</Badge> state. That way each time we set a new time the
+                transition container is unmounted from the Dom and a new one is mounted. The final
+                work is now to make only month card length visible.
+              </p>
             </Col>
           </Row>
         </Container>

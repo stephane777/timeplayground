@@ -10,14 +10,14 @@ import Badge from 'react-bootstrap/Badge';
 import Figure from 'react-bootstrap/Figure';
 import img2 from '../../assets/img/png/MonthCard_Next.png';
 import img1 from '../../assets/img/png/MonthCard_prev.png';
-import styles from '../components/App/App.module.scss';
+import styles from '../components/DateRange/DateRange.module.scss';
 
 const DatePickerDemo: FC = () => {
   return (
     <>
       <section>
         <h1 className="">Date Range</h1>
-        <div className={styles[`container__datePicker`]}>
+        <div className={styles[`dateRange__container`]}>
           <DateRange speed={300} />
         </div>
       </section>
