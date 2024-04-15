@@ -1,11 +1,4 @@
-import React, {
-  useRef,
-  useState,
-  useEffect,
-  MouseEventHandler,
-  ReactNode,
-  MouseEvent,
-} from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import sprite from '../../assets/img/svg/sprite.svg';
@@ -13,7 +6,6 @@ import styles from './DateRange.module.scss';
 import classNames from 'classnames/bind';
 import { useTheme } from '../../context/themeContext';
 
-// import { utcTime_to_date } from './utils';
 import moment from 'moment';
 import RangeCard from '../RangeCard/RangeCard';
 const cx = classNames.bind(styles);
@@ -27,7 +19,6 @@ interface DateRange {
 const DateRange: React.FC<DateRange> = ({ speed, demo, demoWithNoKey }) => {
   const [time, setTime] = useState<string>(moment().format('YYYY/MM/DD'));
   const [active, setActive] = useState<boolean>(false);
-  // const [selectedDay, setSelectedDay] = useState<number | null>(null);
 
   const controlInputRef = useRef<HTMLInputElement>(null);
   const monthCardRef = useRef<HTMLDivElement>(null);
@@ -100,8 +91,6 @@ const DateRange: React.FC<DateRange> = ({ speed, demo, demoWithNoKey }) => {
             ref={monthCardRef}
             time={time}
             setTime={setTime}
-            // selectedDay={selectedDay}
-            // setSelectedDay={setSelectedDay}
             speed={speed}
             // demo={demo}
             // demoWithNoKey={demoWithNoKey}
