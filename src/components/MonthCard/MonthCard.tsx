@@ -2,10 +2,12 @@ import React, {
   forwardRef,
   useRef,
   useState,
+  useMemo,
   Dispatch,
   MouseEvent,
   CSSProperties,
   MouseEventHandler,
+  memo,
 } from 'react';
 import { Transition, TransitionStatus } from 'react-transition-group';
 import styles from './MonthCard.module.scss';
@@ -53,10 +55,10 @@ const MonthCard: React.ForwardRefExoticComponent<
   const nodeRef = useRef<HTMLDivElement>(null);
 
   // handle the data to display the hidden prev monthCard, current visible monthCard & the hidden next monthCard.
-  const param = getParam(time);
+  const param: Param = getParam(time);
   const prevMonthTime = new Date(time).setMonth(new Date(time).getMonth() - 1);
   const nextMonthTime = new Date(time).setMonth(new Date(time).getMonth() + 1);
-  const paramPrevMonth = getParam(prevMonthTime);
+  const paramPrevMonth: Param = getParam(prevMonthTime);
   const paramNextMonth = getParam(nextMonthTime);
 
   const isDemo = demo === 'render2month' || demo === 'renderNewMonth' || demo === 'transition';
