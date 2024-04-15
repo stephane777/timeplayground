@@ -1,0 +1,105 @@
+@import '../../styles/utils/variables';
+.rangeCard {
+  &__container {
+    border: 1px solid rgb(222, 226, 230);
+    position: absolute;
+    top: 39px;
+    left: 55px;
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    &-box {
+      align-self: flex-start;
+      width: 204px;
+      &--light {
+        background-color: var(--bs-gray-100);
+      }
+      &--dark {
+        background-color: var(--bs-gray-800);
+      }
+    }
+    &--visible {
+      overflow: visible;
+    }
+  }
+
+  &__transition-container {
+    width: 204px;
+    height: 180px;
+    overflow: visible;
+    position: relative;
+    z-index: 1000;
+    &--light {
+      background-color: var(--bs-gray-100);
+    }
+    &--dark {
+      background-color: var(--bs-gray-800);
+    }
+  }
+
+  &__icon-prevMonth,
+  &__icon-nextMonth {
+    width: 1.4rem;
+    height: 2rem;
+    cursor: pointer;
+    &--light {
+      fill: $secondary;
+    }
+    &--dark {
+      fill: var(--bs-gray-300);
+    }
+    &--disabled {
+      fill: var(--bs-gray-200);
+      cursor: not-allowed;
+    }
+  }
+  &__weekday {
+    width: 25px;
+    height: 25px;
+    font-size: 12px;
+    margin: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &--light {
+      background-color: var(--bs-gray-400);
+    }
+    &--dark {
+      background-color: var(--bs-gray-600);
+    }
+  }
+  // monthCard__toggleMonth
+  &__toggleMonth {
+    &--dark {
+      background-color: var(--bs-gray-600);
+    }
+    &--light {
+      background-color: var(--bs-gray-400);
+    }
+  }
+
+  &__day {
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    font-size: 12px;
+    border-radius: 5px;
+    margin: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &--prevNextMonth {
+      color: var(--bs-gray-500);
+      // cursor: initial;
+    }
+    &--selected-light {
+      background-color: $primary;
+    }
+    &--selected-dark {
+      background-color: $light;
+    }
+  }
+}
