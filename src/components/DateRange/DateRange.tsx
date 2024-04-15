@@ -12,8 +12,10 @@ import sprite from '../../assets/img/svg/sprite.svg';
 import styles from './DateRange.module.scss';
 import classNames from 'classnames/bind';
 import { useTheme } from '../../context/themeContext';
-import MonthCard from '../MonthCard/MonthCard';
-import { utcTime_to_date, maxDayInMonth, isCurrentYearBisextile } from '../../utils';
+
+// import { utcTime_to_date } from './utils';
+import moment from 'moment';
+import RangeCard from '../RangeCard/RangeCard';
 const cx = classNames.bind(styles);
 
 interface DateRange {
@@ -23,9 +25,9 @@ interface DateRange {
 }
 
 const DateRange: React.FC<DateRange> = ({ speed, demo, demoWithNoKey }) => {
-  const [time, setTime] = useState<number>(0);
+  const [time, setTime] = useState<string>(moment().format('YYYY/MM/DD'));
   const [active, setActive] = useState<boolean>(false);
-  const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  // const [selectedDay, setSelectedDay] = useState<number | null>(null);
 
   const controlInputRef = useRef<HTMLInputElement>(null);
   const monthCardRef = useRef<HTMLDivElement>(null);
@@ -34,12 +36,11 @@ const DateRange: React.FC<DateRange> = ({ speed, demo, demoWithNoKey }) => {
   // Effect to update the date input with the current day.
   useEffect(() => {
     if (time) {
-      const { year, month, day } = utcTime_to_date(new Date(time).getTime());
       if (controlInputRef.current) {
-        controlInputRef.current.value = `${day}/${month}/${year}`;
+        controlInputRef.current.value = moment(time).format('DD/MM/YYYY');
       }
     }
-    if (!time) setTime(new Date().getTime());
+    if (!time) setTime(moment().format('DD/MM/YYYY'));
   }, [time]);
 
   // Effect to track mouse activity around the DateRange
@@ -94,18 +95,18 @@ const DateRange: React.FC<DateRange> = ({ speed, demo, demoWithNoKey }) => {
             <use href={`${sprite}#icon-calendar`}></use>
           </svg>
         </InputGroup.Text>
-        {/* {active && (
-            <MonthCard
-              ref={monthCardRef}
-              time={time}
-              setTime={setTime}
-              selectedDay={selectedDay}
-              setSelectedDay={setSelectedDay}
-              speed={speed}
-              demo={demo}
-              demoWithNoKey={demoWithNoKey}
-            />
-          )} */}
+        {active && (
+          <RangeCard
+            ref={monthCardRef}
+            time={time}
+            setTime={setTime}
+            // selectedDay={selectedDay}
+            // setSelectedDay={setSelectedDay}
+            speed={speed}
+            // demo={demo}
+            // demoWithNoKey={demoWithNoKey}
+          />
+        )}
       </InputGroup>
     </div>
   );
