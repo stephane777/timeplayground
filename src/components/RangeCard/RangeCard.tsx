@@ -53,8 +53,8 @@ const RangeCard: React.ForwardRefExoticComponent<
   const prevMonthTime = moment(time).startOf('month').subtract(1, 'month').format('YYYY/MM/DD');
   const nextMonthTime = moment(time).startOf('month').add(1, 'month').format('YYYY/MM/DD');
 
-  const paramPrevMonth: Param = getParam(moment(time, 'DD/MM/YYYY').subtract(1, 'month').format());
-  const paramNextMonth: Param = getParam(moment(time, 'DD/MM/YYYY').add(1, 'month').format());
+  const paramPrevMonth: Param = getParam(prevMonthTime);
+  const paramNextMonth: Param = getParam(nextMonthTime);
 
   // const isDemo = demo === 'render2month' || demo === 'renderNewMonth' || demo === 'transition';
 
@@ -321,6 +321,8 @@ const RangeCard: React.ForwardRefExoticComponent<
         >
           {(state) => {
             const toggledMonthParam = nextOrPrev ? paramNextMonth : paramPrevMonth;
+            console.log('nextOrPrev: ', nextOrPrev);
+            console.dir(paramNextMonth);
             return (
               <div
                 //   key={demoWithNoKey ? 1 : time}
