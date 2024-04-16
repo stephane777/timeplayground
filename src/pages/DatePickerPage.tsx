@@ -18,7 +18,7 @@ const DatePickerDemo: FC = () => {
       <section>
         <h1 className="">Date Picker</h1>
         <div className={styles[`datePicker__container`]}>
-          <DatePicker speed={300} />
+          <DatePicker speed={1000} />
         </div>
       </section>
 
