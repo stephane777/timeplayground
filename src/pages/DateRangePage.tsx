@@ -18,7 +18,7 @@ const DatePickerDemo: FC = () => {
       <section>
         <h1 className="">Date Range</h1>
         <div className={styles[`dateRange__container`]}>
-          <DateRange speed={300} />
+          <DateRange speed={500} />
         </div>
       </section>
     </>

@@ -1,11 +1,4 @@
-import React, {
-  useRef,
-  useState,
-  useEffect,
-  MouseEventHandler,
-  ReactNode,
-  MouseEvent,
-} from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import sprite from '../../assets/img/svg/sprite.svg';
@@ -13,7 +6,6 @@ import styles from './DateRange.module.scss';
 import classNames from 'classnames/bind';
 import { useTheme } from '../../context/themeContext';
 
-// import { utcTime_to_date } from './utils';
 import moment from 'moment';
 import RangeCard from '../RangeCard/RangeCard';
 const cx = classNames.bind(styles);
@@ -25,9 +17,10 @@ interface DateRange {
 }
 
 const DateRange: React.FC<DateRange> = ({ speed, demo, demoWithNoKey }) => {
-  const [time, setTime] = useState<string>(moment().format('YYYY/MM/DD'));
+  const [currentMonth, setCurrentMonth] = useState<string>(moment().format('YYYY/MM/DD'));
+  const [startTime, setStartTime] = useState<string | null>(null);
+  const [endTime, setEndTime] = useState<string | null>(null);
   const [active, setActive] = useState<boolean>(false);
-  // const [selectedDay, setSelectedDay] = useState<number | null>(null);
 
   const controlInputRef = useRef<HTMLInputElement>(null);
   const monthCardRef = useRef<HTMLDivElement>(null);
@@ -35,13 +28,13 @@ const DateRange: React.FC<DateRange> = ({ speed, demo, demoWithNoKey }) => {
 
   // Effect to update the date input with the current day.
   useEffect(() => {
-    if (time) {
-      if (controlInputRef.current) {
-        controlInputRef.current.value = moment(time).format('DD/MM/YYYY');
-      }
+    if (controlInputRef.current) {
+      const start = startTime ? moment(startTime).format('DD/MM/YYYY') : 'DD/MM/YYYY';
+      const end = endTime ? moment(endTime).format('DD/MM/YYYY') : 'DD/MM/YYYY';
+
+      controlInputRef.current.value = `${start} - ${end}`;
     }
-    if (!time) setTime(moment().format('DD/MM/YYYY'));
-  }, [time]);
+  }, [startTime, endTime]);
 
   // Effect to track mouse activity around the DateRange
   useEffect(() => {
@@ -98,10 +91,12 @@ const DateRange: React.FC<DateRange> = ({ speed, demo, demoWithNoKey }) => {
         {active && (
           <RangeCard
             ref={monthCardRef}
-            time={time}
-            setTime={setTime}
-            // selectedDay={selectedDay}
-            // setSelectedDay={setSelectedDay}
+            currentMonth={currentMonth}
+            setCurrentMonth={setCurrentMonth}
+            startTime={startTime}
+            setStartTime={setStartTime}
+            endTime={endTime}
+            setEndTime={setEndTime}
             speed={speed}
             // demo={demo}
             // demoWithNoKey={demoWithNoKey}
