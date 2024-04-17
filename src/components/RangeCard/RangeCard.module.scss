@@ -96,5 +96,10 @@
       border-radius: 0;
       background-color: $light;
     }
+    &--today {
+      border-radius: 5px;
+      background-color: $danger;
+      color: $white;
+    }
   }
 }
