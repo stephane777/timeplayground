@@ -11,15 +11,15 @@
     flex-direction: column;
     overflow: hidden;
     padding: 16px;
+    &--light {
+      background-color: $white;
+    }
+    &--dark {
+      background-color: var(--bs-gray-800);
+    }
     &-box {
       align-self: flex-start;
-      width: 204px;
-      &--light {
-        background-color: $white;
-      }
-      &--dark {
-        background-color: var(--bs-gray-800);
-      }
+      width: 184px;
     }
     &--visible {
       overflow: visible;
@@ -27,17 +27,11 @@
   }
 
   &__transition-container {
-    width: 408px;
+    width: 384px;
     height: 180px;
     overflow: visible;
     position: relative;
     z-index: 1000;
-    &--light {
-      background-color: $white;
-    }
-    &--dark {
-      background-color: var(--bs-gray-800);
-    }
   }
 
   &__icon-prevMonth,
@@ -57,44 +51,27 @@
     }
   }
   &__weekday {
-    width: 25px;
-    height: 25px;
+    width: 26px;
+    height: 26px;
     font-size: 12px;
-    margin: 2px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-bottom: 1px solid rgb(222, 226, 230);
-    &--light {
-      background-color: $white;
-    }
-    &--dark {
-      background-color: var(--bs-gray-600);
-    }
-  }
-  // monthCard__toggleMonth
-  &__toggleMonth {
-    &--dark {
-      background-color: var(--bs-gray-600);
-    }
-    &--light {
-      background-color: $white;
-    }
   }
 
   &__day {
     cursor: pointer;
-    width: 25px;
-    height: 25px;
+    width: 26px;
+    height: 26px;
     font-size: 12px;
-    border-radius: 5px;
-    margin: 2px;
+
+    margin: 1px 0;
     display: flex;
     justify-content: center;
     align-items: center;
     &--prevNextMonth {
       color: var(--bs-gray-500);
-      // cursor: initial;
     }
     &--selected-light {
       background-color: $primary;
@@ -104,6 +81,20 @@
     }
     &--hidden {
       visibility: hidden;
+    }
+    &--startTime {
+      border-radius: 10px 0 0 10px;
+    }
+    &--endTime {
+      border-radius: 0 10px 10px 0;
+    }
+    &--between-light {
+      border-radius: 0;
+      background-color: $primary;
+    }
+    &--between-dark {
+      border-radius: 0;
+      background-color: $light;
     }
   }
 }

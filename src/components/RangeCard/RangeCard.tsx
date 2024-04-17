@@ -83,31 +83,6 @@ const RangeCard: React.ForwardRefExoticComponent<
 
   // const isDemo = demo === 'render2month' || demo === 'renderNewMonth' || demo === 'transition';
 
-  // Toggle month theme classNames
-  const togglemonth = cx({
-    'rangeCard__toggleMonth--dark': theme === 'dark',
-    'rangeCard__toggleMonth--light': theme === 'light',
-  });
-
-  const togglemonth_classes = classNames(
-    styles[togglemonth],
-    styles[`rangeCard__toggleMonth`],
-    `d-flex`,
-    `justify-content-between`,
-    `align-items-center`
-  );
-
-  const weekDay_classes = classNames(
-    styles[
-      cx({
-        'rangeCard__weekday--light': theme === 'light',
-        'rangeCard__weekday--dark': theme === 'dark',
-      })
-    ],
-    'd-flex',
-    'justify-content-center'
-  );
-
   // previous Day in month classNames
   const prevAndNext_classes = classNames(
     styles[`rangeCard__day`],
@@ -119,8 +94,7 @@ const RangeCard: React.ForwardRefExoticComponent<
     styles['rangeCard__icon-prevMonth'],
     styles[
       cx({
-        'rangeCard__icon-prevMonth--light': theme === 'light',
-        'rangeCard__icon-prevMonth--dark': theme === 'dark',
+        [`rangeCard__icon-prevMonth--${theme}`]: true,
       })
       // cx({
       //   'monthCard__icon-prevMonth--disabled': demo === 'transition',
@@ -133,33 +107,21 @@ const RangeCard: React.ForwardRefExoticComponent<
     styles['rangeCard__icon-nextMonth'],
     styles[
       cx({
-        'rangeCard__icon-nextMonth--light': theme === 'light',
-        'rangeCard__icon-nextMonth--dark': theme === 'dark',
+        [`rangeCard__icon-nextMonth--${theme}`]: true,
       })
     ]
   );
 
-  const transition_container_classes = classNames(
-    styles['rangeCard__transition-container'],
-    styles[
-      cx({
-        'rangeCard__transition-container--light': theme === 'light',
-        'rangeCard__transition-container--dark': theme === 'dark',
-      })
-    ]
-  );
+  const box_classes = classNames(styles['rangeCard__container-box'], 'd-flex', 'flex-wrap', 'text');
 
-  const box_classes = classNames(
-    styles['rangeCard__container-box'],
-    styles[
-      cx({
-        'rangeCard__container-box--light': theme === 'light',
-        'rangeCard__container-box--dark': theme === 'dark',
-      })
-    ],
-    'd-flex',
-    'flex-wrap',
-    'text'
+  const rangeCard_container_classes = classNames(
+    styles['rangeCard__container'],
+    styles[cx({ [`rangeCard__container--${theme}`]: true })]
+    //   styles[
+    //     cx({
+    //       'monthCard__container--visible': isDemo,
+    //     })
+    //   ]
   );
 
   const defaultStyle: CSSProperties = {
@@ -178,12 +140,29 @@ const RangeCard: React.ForwardRefExoticComponent<
     unmounted: { transform: 'translateX(0)' },
   };
 
-  const handleSelectedDay = React.useCallback(
-    (e: MouseEvent<HTMLElement>, time: string) => {
-      setStartTime(startTime);
-    },
-    [startTime]
-  );
+  const handleSelectedDay = (e: MouseEvent<HTMLElement>, time: string) => {
+    const isNewTimeBeforeStartTime = startTime && moment(time).isBefore(startTime, 'day');
+    const isNewTimeSameAsStartTime = startTime && moment(time).isSame(startTime, 'day');
+    if (!startTime && !endTime) {
+      setStartTime(time);
+      return;
+    }
+    if (startTime && !endTime && isNewTimeSameAsStartTime) {
+      return;
+    }
+    if (startTime && !endTime && isNewTimeBeforeStartTime) {
+      setStartTime(time);
+      return;
+    }
+    if (startTime && !endTime && !isNewTimeBeforeStartTime) {
+      setEndTime(time);
+      return;
+    }
+    if (startTime && endTime) {
+      setStartTime(time);
+      setEndTime(null);
+    }
+  };
 
   // function to render weekdays in the header
   const weekHeader = React.useMemo(() => {
@@ -210,7 +189,7 @@ const RangeCard: React.ForwardRefExoticComponent<
           <div
             key={`prev-${i}`}
             className={prevAndNext_classes}
-            onClick={() => setStartTime(timeDayPrevMonth)}
+            onClick={(e) => handleSelectedDay(e, timeDayPrevMonth)}
           >
             {weekdayPrevMonth}
           </div>
@@ -220,21 +199,23 @@ const RangeCard: React.ForwardRefExoticComponent<
   };
 
   // function to render all the day from 1 to 28/29 if Feb. otherwise 30/31
-  const dayInMonth = ({ timeFirstDay, numberOfDayInMonth }: Param, isCurrentMonth: boolean) => {
+  const dayInMonth = ({ timeFirstDay, numberOfDayInMonth }: Param) => {
     const monthArr = Array.from({ length: numberOfDayInMonth }, (v, i) => i);
-    const selectedDay = moment(startTime).date();
 
     return monthArr.map((day, i) => {
       const day_time = moment(timeFirstDay).add(day, 'day').format('YYYY/MM/DD');
-
+      const isStartTime = moment(day_time).isSame(startTime, 'day');
+      const isEndTime = moment(day_time).isSame(endTime, 'day');
+      const isBetween =
+        moment(day_time).isAfter(startTime, 'day') && moment(day_time).isBefore(endTime, 'day');
       const daysInMonth_classes = classNames(
         styles[`rangeCard__day`],
+        styles[cx({ [`rangeCard__day--selected-${theme}`]: isStartTime || isEndTime })],
         styles[
           cx({
-            'rangeCard__day--selected-light':
-              theme === 'light' && isCurrentMonth && selectedDay === day + 1,
-            'rangeCard__day--selected-dark':
-              theme === 'dark' && isCurrentMonth && selectedDay === day + 1,
+            'rangeCard__day--endTime': isEndTime,
+            'rangeCard__day--startTime': isStartTime,
+            [`rangeCard__day--between-${theme}`]: isBetween,
           })
         ]
       );
@@ -259,11 +240,12 @@ const RangeCard: React.ForwardRefExoticComponent<
       const timeDayNextMonth = moment(timeLastDay)
         .add(day + 1, 'day')
         .format('YYYY/MM/DD');
+
       return (
         <div
           key={`next-${i}`}
           className={prevAndNext_classes}
-          onClick={() => setStartTime(timeDayNextMonth)}
+          onClick={(e) => handleSelectedDay(e, timeDayNextMonth)}
         >
           {day + 1}
         </div>
@@ -282,15 +264,6 @@ const RangeCard: React.ForwardRefExoticComponent<
     setActiveTransition(false);
   };
 
-  const rangeCard_container_classes = classNames(
-    styles['rangeCard__container']
-    //   styles[
-    //     cx({
-    //       'monthCard__container--visible': isDemo,
-    //     })
-    //   ]
-  );
-
   const handlePreviousOnClick: MouseEventHandler<SVGSVGElement> = (e) => {
     setActiveTransition(true);
     //   if (demo !== 'render2month') {
@@ -299,11 +272,19 @@ const RangeCard: React.ForwardRefExoticComponent<
     setNextOrPrev(false);
   };
 
+  const handleNextOnClick: MouseEventHandler<SVGSVGElement> = (e) => {
+    setActiveTransition(true);
+    // if (demo !== 'render2month') {
+    setInProp(true);
+    // }
+    setNextOrPrev(true);
+  };
+
   return (
     <div ref={ref} className={rangeCard_container_classes}>
-      <div>
-        <div className={togglemonth_classes}>
-          <div className="d-flex gap-5 align-items-center">
+      <div className="d-flex gap-3">
+        <div className="d-flex flex-column">
+          <div className="d-flex align-items-center justify-content-center">
             <svg
               className={icon_prev_classes}
               //   onClick={demo === 'transition' ? () => null : handlePreviousOnClick}
@@ -311,31 +292,22 @@ const RangeCard: React.ForwardRefExoticComponent<
             >
               <use href={`${sprite}#icon-triangle-left`} className="text"></use>
             </svg>
-            <span>{`${param.fullMonth} ${param.year}`}</span>
+            <span className="flex-grow-1 d-flex justify-content-center">{`${param.fullMonth} ${param.year}`}</span>
           </div>
-          <div className="d-flex gap-5 align-items-center">
-            <span>{`${param2.fullMonth} ${param2.year}`}</span>
-            <svg
-              className={icon_next_classes}
-              onClick={() => {
-                setActiveTransition(true);
-                // if (demo !== 'render2month') {
-                setInProp(true);
-                // }
-
-                setNextOrPrev(true);
-              }}
-            >
+          <div className="d-flex justify-content-center">{weekHeader}</div>
+        </div>
+        <div className="d-flex flex-column">
+          <div className="d-flex align-items-center justify-content-center ">
+            <span className="flex-grow-1 d-flex justify-content-center">{`${param2.fullMonth} ${param2.year}`}</span>
+            <svg className={icon_next_classes} onClick={handleNextOnClick}>
               <use href={`${sprite}#icon-triangle-right`}> </use>
             </svg>
           </div>
-        </div>
-        <div className="d-flex gap-3">
-          <div className={weekDay_classes}>{weekHeader}</div>
-          <div className={weekDay_classes}>{weekHeader}</div>
+          <div className="d-flex justify-content-center">{weekHeader}</div>
         </div>
       </div>
-      <div className={transition_container_classes}>
+
+      <div className={styles['rangeCard__transition-container']}>
         <Transition
           in={inProp}
           timeout={{
@@ -368,19 +340,19 @@ const RangeCard: React.ForwardRefExoticComponent<
                 <div className="d-flex gap-3">
                   <div key={currentMonth} className={box_classes}>
                     {prevMonth(param)}
-                    {dayInMonth(param, true)}
+                    {dayInMonth(param)}
                     {nextMonth(param)}
                   </div>
                   <div key={currentMonth2} className={box_classes}>
                     {prevMonth(param2)}
-                    {dayInMonth(param2, true)}
+                    {dayInMonth(param2)}
                     {nextMonth(param2)}
                   </div>
                 </div>
                 {activeTransition && (
                   <div className={box_classes}>
                     {prevMonth(toggledMonthParam)}
-                    {dayInMonth(toggledMonthParam, false)}
+                    {dayInMonth(toggledMonthParam)}
                     {nextMonth(toggledMonthParam)}
                   </div>
                 )}
