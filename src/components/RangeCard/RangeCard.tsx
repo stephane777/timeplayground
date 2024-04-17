@@ -213,13 +213,6 @@ const RangeCard: React.ForwardRefExoticComponent<
       const isTodayAndNotSelected =
         moment(day_time).isSame(now, 'day') && !isStartTime && !isEndTime && !isBetween;
 
-      // if ( moment(day_time).isSame(now, 'day')){
-      //     console.group('Today')
-      //     console.log('moment(day_time).isSame(now, \'day\'): ', moment(day_time).isSame(now, 'day'))
-      //     console.log('isStartTime: ', isStartTime)
-      //     console.groupEnd()
-      // }
-
       const daysInMonth_classes = classNames(
         styles[`rangeCard__day`],
         styles[cx({ [`rangeCard__day--selected-${theme}`]: isStartTime || isEndTime })],
