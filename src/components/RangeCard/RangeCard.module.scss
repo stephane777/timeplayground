@@ -4,7 +4,7 @@
     border: 1px solid rgb(222, 226, 230);
     position: absolute;
     top: 39px;
-    left: 55px;
+    left: 59px;
     width: auto;
     height: auto;
     display: flex;
@@ -95,6 +95,11 @@
     &--between-dark {
       border-radius: 0;
       background-color: $light;
+    }
+    &--today {
+      border-radius: 5px;
+      background-color: $danger;
+      color: $white;
     }
   }
 }

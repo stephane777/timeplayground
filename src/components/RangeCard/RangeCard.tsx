@@ -129,7 +129,7 @@ const RangeCard: React.ForwardRefExoticComponent<
     transform: 'translateX(0)',
     position: 'absolute',
     top: '0',
-    left: nextOrPrev && activeTransition ? '0' : !nextOrPrev && activeTransition ? '-219px' : '0',
+    left: nextOrPrev && activeTransition ? '0' : !nextOrPrev && activeTransition ? '-200px' : '0',
   };
 
   const transitionStyles: TransitionStyle = {
@@ -204,10 +204,15 @@ const RangeCard: React.ForwardRefExoticComponent<
 
     return monthArr.map((day, i) => {
       const day_time = moment(timeFirstDay).add(day, 'day').format('YYYY/MM/DD');
+      const now = moment().format('YYYY/MM/DD');
       const isStartTime = moment(day_time).isSame(startTime, 'day');
       const isEndTime = moment(day_time).isSame(endTime, 'day');
       const isBetween =
         moment(day_time).isAfter(startTime, 'day') && moment(day_time).isBefore(endTime, 'day');
+
+      const isTodayAndNotSelected =
+        moment(day_time).isSame(now, 'day') && !isStartTime && !isEndTime && !isBetween;
+
       const daysInMonth_classes = classNames(
         styles[`rangeCard__day`],
         styles[cx({ [`rangeCard__day--selected-${theme}`]: isStartTime || isEndTime })],
@@ -216,6 +221,7 @@ const RangeCard: React.ForwardRefExoticComponent<
             'rangeCard__day--endTime': isEndTime,
             'rangeCard__day--startTime': isStartTime,
             [`rangeCard__day--between-${theme}`]: isBetween,
+            'rangeCard__day--today': isTodayAndNotSelected,
           })
         ]
       );
