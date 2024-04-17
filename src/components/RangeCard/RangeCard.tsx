@@ -129,7 +129,7 @@ const RangeCard: React.ForwardRefExoticComponent<
     transform: 'translateX(0)',
     position: 'absolute',
     top: '0',
-    left: nextOrPrev && activeTransition ? '0' : !nextOrPrev && activeTransition ? '-219px' : '0',
+    left: nextOrPrev && activeTransition ? '0' : !nextOrPrev && activeTransition ? '-200px' : '0',
   };
 
   const transitionStyles: TransitionStyle = {
@@ -208,6 +208,7 @@ const RangeCard: React.ForwardRefExoticComponent<
       const isEndTime = moment(day_time).isSame(endTime, 'day');
       const isBetween =
         moment(day_time).isAfter(startTime, 'day') && moment(day_time).isBefore(endTime, 'day');
+
       const daysInMonth_classes = classNames(
         styles[`rangeCard__day`],
         styles[cx({ [`rangeCard__day--selected-${theme}`]: isStartTime || isEndTime })],
