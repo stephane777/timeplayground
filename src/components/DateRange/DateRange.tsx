@@ -63,8 +63,7 @@ const DateRange: React.FC<DateRange> = ({ speed, demo, demoWithNoKey }) => {
 
   const calendar_icon_classes = cx({
     'dateRange__calendar-icon': true,
-    'dateRange__calendar-icon--light': theme === 'light',
-    'dateRange__calendar-icon--dark': theme === 'dark',
+    [`dateRange__calendar-icon--${theme}`]: true,
   });
 
   return (
