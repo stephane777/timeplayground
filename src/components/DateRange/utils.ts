@@ -5,6 +5,7 @@ export const getParam = (time: string) => {
   const timeFirstDay = currentDate.startOf('month').format('YYYY/MM/DD');
   const numberOfDayInMonth = currentDate.daysInMonth();
   const timeLastDay = currentDate.endOf('month').format('YYYY/MM/DD');
+
   // weekDayFirstOfMonth is needed to place the 1 day of the month at the right place
   // if weekDayFirstOfMonth is Sunday than means it should be 7 to match the Grid implementation
   // Grid is : Mo Tu We Th Fr Sa Su not Su Mo Tu We Th Fr Sa
@@ -21,6 +22,7 @@ export const getParam = (time: string) => {
   const nextMonthDays = Array.from({ length: 7 - weekDayLastOfMonth }, (v, i) => i) || [];
 
   const result = {
+    today: moment().format('YYYY/MM/DD'),
     year: currentDate.year(),
     fullMonth: currentDate.format('MMMM'),
     numberOfDayInMonth,
