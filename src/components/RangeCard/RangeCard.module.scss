@@ -15,7 +15,7 @@
       background-color: $white;
     }
     &--dark {
-      background-color: var(--bs-gray-800);
+      background-color: $gray-800;
     }
     &-box {
       align-self: flex-start;
@@ -43,10 +43,10 @@
       fill: $secondary;
     }
     &--dark {
-      fill: var(--bs-gray-300);
+      fill: $gray-300;
     }
     &--disabled {
-      fill: var(--bs-gray-200);
+      fill: $gray-200;
       cursor: not-allowed;
     }
   }
@@ -71,7 +71,7 @@
     justify-content: center;
     align-items: center;
     &--prevNextMonth {
-      color: var(--bs-gray-500);
+      color: $gray-500;
     }
     &--selected-light {
       background-color: $primary;
@@ -100,6 +100,14 @@
       border-radius: 5px;
       background-color: $danger;
       color: $white;
+    }
+    &--disabled-light {
+      color: $gray-200;
+      cursor: not-allowed;
+    }
+    &--disabled-dark {
+      color: $gray-600;
+      cursor: not-allowed;
     }
   }
 }

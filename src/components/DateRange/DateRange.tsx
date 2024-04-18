@@ -12,11 +12,19 @@ const cx = classNames.bind(styles);
 
 interface DateRange {
   speed: number;
+  disablePastDay?: boolean;
+  highlightToday?: boolean;
   demo?: 'render2month' | 'transition' | 'renderNewMonth';
   demoWithNoKey?: boolean;
 }
 
-const DateRange: React.FC<DateRange> = ({ speed, demo, demoWithNoKey }) => {
+const DateRange: React.FC<DateRange> = ({
+  speed,
+  disablePastDay,
+  highlightToday,
+  demo,
+  demoWithNoKey,
+}) => {
   const [currentMonth, setCurrentMonth] = useState<string>(moment().format('YYYY/MM/DD'));
   const [startTime, setStartTime] = useState<string | null>(null);
   const [endTime, setEndTime] = useState<string | null>(null);
@@ -97,6 +105,8 @@ const DateRange: React.FC<DateRange> = ({ speed, demo, demoWithNoKey }) => {
             endTime={endTime}
             setEndTime={setEndTime}
             speed={speed}
+            disablePastDay={disablePastDay}
+            highlightToday={highlightToday}
             // demo={demo}
             // demoWithNoKey={demoWithNoKey}
           />

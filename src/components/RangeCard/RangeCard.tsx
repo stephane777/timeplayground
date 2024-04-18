@@ -25,6 +25,8 @@ interface RangeCardProps {
   endTime: string | null;
   setEndTime: Dispatch<SetStateAction<string | null>>;
   speed: number;
+  disablePastDay?: boolean;
+  highlightToday?: boolean;
   demo?: 'render2month' | 'transition' | 'renderNewMonth';
   demoWithNoKey?: boolean;
 }
@@ -48,6 +50,8 @@ const RangeCard: React.ForwardRefExoticComponent<
     endTime,
     setEndTime,
     speed,
+    disablePastDay,
+    highlightToday,
     demo,
     demoWithNoKey,
   },
@@ -140,26 +144,26 @@ const RangeCard: React.ForwardRefExoticComponent<
     unmounted: { transform: 'translateX(0)' },
   };
 
-  const handleSelectedDay = (e: MouseEvent<HTMLElement>, time: string) => {
-    const isNewTimeBeforeStartTime = startTime && moment(time).isBefore(startTime, 'day');
-    const isNewTimeSameAsStartTime = startTime && moment(time).isSame(startTime, 'day');
+  const handleSelectedDay = (e: MouseEvent<HTMLDivElement>, selectedTime: string) => {
+    const isNewTimeBeforeStartTime = startTime && moment(selectedTime).isBefore(startTime, 'day');
+    const isNewTimeSameAsStartTime = startTime && moment(selectedTime).isSame(startTime, 'day');
     if (!startTime && !endTime) {
-      setStartTime(time);
+      setStartTime(selectedTime);
       return;
     }
     if (startTime && !endTime && isNewTimeSameAsStartTime) {
       return;
     }
     if (startTime && !endTime && isNewTimeBeforeStartTime) {
-      setStartTime(time);
+      setStartTime(selectedTime);
       return;
     }
     if (startTime && !endTime && !isNewTimeBeforeStartTime) {
-      setEndTime(time);
+      setEndTime(selectedTime);
       return;
     }
     if (startTime && endTime) {
-      setStartTime(time);
+      setStartTime(selectedTime);
       setEndTime(null);
     }
   };
@@ -176,7 +180,7 @@ const RangeCard: React.ForwardRefExoticComponent<
 
   //   get all the day from the previous Month
   const prevMonth = (param: Param, isHidden?: boolean) => {
-    const { prevMonthDays, timeFirstDay } = param;
+    const { prevMonthDays, timeFirstDay, today } = param;
 
     return prevMonthDays
       .map((day, i) => {
@@ -185,11 +189,22 @@ const RangeCard: React.ForwardRefExoticComponent<
           .format('YYYY/MM/DD');
 
         const weekdayPrevMonth = moment(timeDayPrevMonth).date();
+        const isDayPast = disablePastDay && moment(today).isAfter(timeDayPrevMonth, 'day');
+
+        const prevMonth_classes = classNames(
+          prevAndNext_classes,
+          styles[
+            cx({
+              [`rangeCard__day--disabled-${theme}`]: isDayPast,
+            })
+          ]
+        );
+
         return (
           <div
             key={`prev-${i}`}
-            className={prevAndNext_classes}
-            onClick={(e) => handleSelectedDay(e, timeDayPrevMonth)}
+            className={prevMonth_classes}
+            onClick={isDayPast ? () => null : (e) => handleSelectedDay(e, timeDayPrevMonth)}
           >
             {weekdayPrevMonth}
           </div>
@@ -199,19 +214,24 @@ const RangeCard: React.ForwardRefExoticComponent<
   };
 
   // function to render all the day from 1 to 28/29 if Feb. otherwise 30/31
-  const dayInMonth = ({ timeFirstDay, numberOfDayInMonth }: Param) => {
+  const dayInMonth = ({ timeFirstDay, numberOfDayInMonth, today }: Param) => {
     const monthArr = Array.from({ length: numberOfDayInMonth }, (v, i) => i);
 
     return monthArr.map((day, i) => {
       const day_time = moment(timeFirstDay).add(day, 'day').format('YYYY/MM/DD');
-      const now = moment().format('YYYY/MM/DD');
       const isStartTime = moment(day_time).isSame(startTime, 'day');
       const isEndTime = moment(day_time).isSame(endTime, 'day');
       const isBetween =
         moment(day_time).isAfter(startTime, 'day') && moment(day_time).isBefore(endTime, 'day');
 
       const isTodayAndNotSelected =
-        moment(day_time).isSame(now, 'day') && !isStartTime && !isEndTime && !isBetween;
+        highlightToday &&
+        moment(day_time).isSame(today, 'day') &&
+        !isStartTime &&
+        !isEndTime &&
+        !isBetween;
+
+      const isDayPast = disablePastDay && moment(today).isAfter(day_time, 'day');
 
       const daysInMonth_classes = classNames(
         styles[`rangeCard__day`],
@@ -222,6 +242,7 @@ const RangeCard: React.ForwardRefExoticComponent<
             'rangeCard__day--startTime': isStartTime,
             [`rangeCard__day--between-${theme}`]: isBetween,
             'rangeCard__day--today': isTodayAndNotSelected,
+            [`rangeCard__day--disabled-${theme}`]: isDayPast,
           })
         ]
       );
@@ -229,7 +250,7 @@ const RangeCard: React.ForwardRefExoticComponent<
         <div
           key={`current-${i}`}
           className={daysInMonth_classes}
-          onClick={(e) => handleSelectedDay(e, day_time)}
+          onClick={isDayPast ? () => null : (e) => handleSelectedDay(e, day_time)}
         >
           {day + 1}
         </div>
@@ -239,19 +260,29 @@ const RangeCard: React.ForwardRefExoticComponent<
 
   // function to render all the days in next month to complete the current row in the current month
   const nextMonth = (param: Param, isHidden?: boolean) => {
-    const { nextMonthDays, timeLastDay } = param;
+    const { nextMonthDays, timeLastDay, today } = param;
     if (!nextMonthDays) return;
 
     return nextMonthDays.map((day, i) => {
       const timeDayNextMonth = moment(timeLastDay)
         .add(day + 1, 'day')
         .format('YYYY/MM/DD');
+      const isDayPast = disablePastDay && moment(today).isAfter(timeDayNextMonth, 'day');
+
+      const nextMonth_classes = classNames(
+        prevAndNext_classes,
+        styles[
+          cx({
+            [`rangeCard__day--disabled-${theme}`]: isDayPast,
+          })
+        ]
+      );
 
       return (
         <div
           key={`next-${i}`}
-          className={prevAndNext_classes}
-          onClick={(e) => handleSelectedDay(e, timeDayNextMonth)}
+          className={nextMonth_classes}
+          onClick={isDayPast ? () => null : (e) => handleSelectedDay(e, timeDayNextMonth)}
         >
           {day + 1}
         </div>
@@ -260,8 +291,6 @@ const RangeCard: React.ForwardRefExoticComponent<
   };
 
   const handleToggleMonth = (increment: Increment) => {
-    // const newTime = moment(currentMonth).startOf('month').format('YYYY/MM/DD');
-
     const newMonth =
       increment > 0
         ? moment(currentMonth).add(1, 'month').format('YYYY/MM/DD')
