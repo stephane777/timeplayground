@@ -1,8 +1,8 @@
 @import '../../styles/utils/variables';
 .rangeCard {
   &__container {
-    border: 1px solid rgb(222, 226, 230);
     position: absolute;
+    border-radius: 4px;
     top: 39px;
     left: 59px;
     width: auto;
@@ -13,9 +13,13 @@
     padding: 16px;
     &--light {
       background-color: $white;
+      border: 1px solid $gray-300;
+      box-shadow: 2px 2px 5px $gray-400;
     }
     &--dark {
       background-color: $gray-800;
+      border: 1px solid $gray-600;
+      box-shadow: 2px 2px 5px $gray-600;
     }
     &-box {
       align-self: flex-start;
@@ -28,7 +32,7 @@
 
   &__transition-container {
     width: 384px;
-    height: 180px;
+    height: 160px;
     overflow: visible;
     position: relative;
     z-index: 1000;
@@ -57,7 +61,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-bottom: 1px solid rgb(222, 226, 230);
+    border-bottom: 1px solid $gray-300;
   }
 
   &__day {
@@ -74,27 +78,28 @@
       color: $gray-500;
     }
     &--selected-light {
-      background-color: $primary;
+      background-color: $blue-600;
+      color: $white;
     }
     &--selected-dark {
-      background-color: $light;
+      background-color: $blue-600;
     }
     &--hidden {
       visibility: hidden;
     }
     &--startTime {
-      border-radius: 10px 0 0 10px;
+      border-radius: 12px 0 0 12px;
     }
     &--endTime {
-      border-radius: 0 10px 10px 0;
+      border-radius: 0 12px 12px 0;
     }
     &--between-light {
       border-radius: 0;
-      background-color: $primary;
+      background-color: #eff6fa;
     }
     &--between-dark {
       border-radius: 0;
-      background-color: $light;
+      background-color: $blue-400;
     }
     &--today {
       border-radius: 5px;

@@ -107,6 +107,8 @@ const DateRange: React.FC<DateRange> = ({
             speed={speed}
             disablePastDay={disablePastDay}
             highlightToday={highlightToday}
+            active={active}
+            setActive={setActive}
             // demo={demo}
             // demoWithNoKey={demoWithNoKey}
           />
