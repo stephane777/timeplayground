@@ -8,6 +8,7 @@ import React, {
   CSSProperties,
   SetStateAction,
 } from 'react';
+import Button from 'react-bootstrap/Button';
 import { Transition, TransitionStatus } from 'react-transition-group';
 import styles from './RangeCard.module.scss';
 import sprite from '../../assets/img/svg/sprite.svg';
@@ -15,6 +16,7 @@ import classNames from 'classnames';
 import { useTheme } from '../../context/themeContext';
 import { getParam } from '../DateRange/utils';
 import moment from 'moment';
+import { Badge } from 'react-bootstrap';
 const cx = classNames.bind(styles);
 
 interface RangeCardProps {
@@ -25,6 +27,8 @@ interface RangeCardProps {
   endTime: string | null;
   setEndTime: Dispatch<SetStateAction<string | null>>;
   speed: number;
+  active: boolean;
+  setActive: Dispatch<SetStateAction<boolean>>;
   disablePastDay?: boolean;
   highlightToday?: boolean;
   demo?: 'render2month' | 'transition' | 'renderNewMonth';
@@ -50,6 +54,8 @@ const RangeCard: React.ForwardRefExoticComponent<
     endTime,
     setEndTime,
     speed,
+    active,
+    setActive,
     disablePastDay,
     highlightToday,
     demo,
@@ -87,6 +93,9 @@ const RangeCard: React.ForwardRefExoticComponent<
 
   // const isDemo = demo === 'render2month' || demo === 'renderNewMonth' || demo === 'transition';
 
+  // Duration computed once startTime & endTime are selected
+  const duration =
+    startTime && endTime && moment.duration(moment(endTime).diff(startTime)).asDays();
   // previous Day in month classNames
   const prevAndNext_classes = classNames(
     styles[`rangeCard__day`],
@@ -226,10 +235,10 @@ const RangeCard: React.ForwardRefExoticComponent<
 
       const isTodayAndNotSelected =
         highlightToday &&
-        moment(day_time).isSame(today, 'day') &&
         !isStartTime &&
         !isEndTime &&
-        !isBetween;
+        !isBetween &&
+        moment(day_time).isSame(today, 'day');
 
       const isDayPast = disablePastDay && moment(today).isAfter(day_time, 'day');
 
@@ -299,20 +308,13 @@ const RangeCard: React.ForwardRefExoticComponent<
     setActiveTransition(false);
   };
 
-  const handlePreviousOnClick: MouseEventHandler<SVGSVGElement> = (e) => {
+  const handleArrowClick = (e: MouseEvent<SVGSVGElement>, isNextOrPrevious: boolean) => {
+    e.preventDefault();
     setActiveTransition(true);
     //   if (demo !== 'render2month') {
     setInProp(true);
     //   }
-    setNextOrPrev(false);
-  };
-
-  const handleNextOnClick: MouseEventHandler<SVGSVGElement> = (e) => {
-    setActiveTransition(true);
-    // if (demo !== 'render2month') {
-    setInProp(true);
-    // }
-    setNextOrPrev(true);
+    setNextOrPrev(isNextOrPrevious);
   };
 
   return (
@@ -323,7 +325,7 @@ const RangeCard: React.ForwardRefExoticComponent<
             <svg
               className={icon_prev_classes}
               //   onClick={demo === 'transition' ? () => null : handlePreviousOnClick}
-              onClick={handlePreviousOnClick}
+              onClick={(e) => handleArrowClick(e, false)}
             >
               <use href={`${sprite}#icon-triangle-left`} className="text"></use>
             </svg>
@@ -334,7 +336,7 @@ const RangeCard: React.ForwardRefExoticComponent<
         <div className="d-flex flex-column">
           <div className="d-flex align-items-center justify-content-center ">
             <span className="flex-grow-1 d-flex justify-content-center">{`${param2.fullMonth} ${param2.year}`}</span>
-            <svg className={icon_next_classes} onClick={handleNextOnClick}>
+            <svg className={icon_next_classes} onClick={(e) => handleArrowClick(e, true)}>
               <use href={`${sprite}#icon-triangle-right`}> </use>
             </svg>
           </div>
@@ -395,6 +397,40 @@ const RangeCard: React.ForwardRefExoticComponent<
             );
           }}
         </Transition>
+      </div>
+      <div className="m-0 d-flex justify-content-between">
+        <div>{duration && <Badge pill bg="secondary">{`Duration :${duration}`}</Badge>}</div>
+        <div className="d-flex gap-2">
+          {startTime && endTime && (
+            <Button
+              onClick={() => setActive(false)}
+              size="sm"
+              className="m-0 p-0 link-primary text-decoration-none"
+              variant="link"
+            >
+              {'Done'}
+            </Button>
+          )}
+          <Button
+            onClick={() => setStartTime(param.today)}
+            size="sm"
+            className="m-0 p-0 link-primary text-decoration-none"
+            variant="link"
+          >
+            {'Today'}
+          </Button>
+          <Button
+            onClick={() => {
+              setStartTime(null);
+              setEndTime(null);
+            }}
+            size="sm"
+            className="m-0 p-0 link-primary text-decoration-none"
+            variant="link"
+          >
+            {'Clear'}
+          </Button>
+        </div>
       </div>
     </div>
   );
