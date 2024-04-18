@@ -241,6 +241,12 @@ const RangeCard: React.ForwardRefExoticComponent<
         moment(day_time).isSame(today, 'day');
 
       const isDayPast = disablePastDay && moment(today).isAfter(day_time, 'day');
+      const isWeekend =
+        !isDayPast &&
+        !isStartTime &&
+        !isEndTime &&
+        !isBetween &&
+        [0, 6].includes(moment(day_time).day());
 
       const daysInMonth_classes = classNames(
         styles[`rangeCard__day`],
@@ -252,6 +258,7 @@ const RangeCard: React.ForwardRefExoticComponent<
             [`rangeCard__day--between-${theme}`]: isBetween,
             'rangeCard__day--today': isTodayAndNotSelected,
             [`rangeCard__day--disabled-${theme}`]: isDayPast,
+            'rangeCard__day--weekend': isWeekend,
           })
         ]
       );

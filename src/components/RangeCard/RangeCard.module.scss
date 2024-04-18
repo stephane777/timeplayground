@@ -114,5 +114,9 @@
       color: $gray-600;
       cursor: not-allowed;
     }
+
+    &--weekend {
+      color: $blue-600;
+    }
   }
 }
