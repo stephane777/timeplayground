@@ -20,7 +20,7 @@ const router = createBrowserRouter(
       children: [
         {
           index: true,
-          element: <Date_Range_Page />,
+          element: <Berlin_Clock_Page />,
         },
         {
           path: 'datePicker',
