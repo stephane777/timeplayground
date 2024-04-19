@@ -6,7 +6,9 @@ const BerlinClockPage: FC = () => {
   return (
     <section>
       <h1 className="">Berlin Clock</h1>
-      <div className={styles[`container__datePicker`]}></div>
+      <div className={styles[`container__datePicker`]}>
+        <BerlinClock time={'12:56:01'} />
+      </div>
     </section>
   );
 };
