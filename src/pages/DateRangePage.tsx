@@ -12,17 +12,20 @@ import img2 from '../../assets/img/png/MonthCard_Next.png';
 import img1 from '../../assets/img/png/MonthCard_prev.png';
 import styles from '../components/DateRange/DateRange.module.scss';
 
-const DatePickerDemo: FC = () => {
+const DateRangePage: FC = () => {
   return (
     <>
       <section>
-        <h1 className="">Date Range</h1>
-        <div className={styles[`dateRange__container`]}>
-          <DateRange speed={500} disablePastDay highlightToday />
-        </div>
+        <Container fluid="sm" className="pt-5">
+          <h1 className="">Date Range</h1>
+
+          <div className={styles[`dateRange__container`]}>
+            <DateRange speed={500} disablePastDay highlightToday />
+          </div>
+        </Container>
       </section>
     </>
   );
 };
 
-export default DatePickerDemo;
+export default DateRangePage;
