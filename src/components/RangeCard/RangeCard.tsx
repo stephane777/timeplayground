@@ -4,7 +4,6 @@ import React, {
   useState,
   Dispatch,
   MouseEvent,
-  MouseEventHandler,
   CSSProperties,
   SetStateAction,
 } from 'react';
