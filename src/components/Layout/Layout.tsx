@@ -10,9 +10,7 @@ const Layout: FC = () => {
         <MainNavbar />
       </header>
       <main>
-        <Container fluid="sm" className="pt-5">
-          <Outlet />
-        </Container>
+        <Outlet />
       </main>
       <footer className="my-5">Footer</footer>
     </>

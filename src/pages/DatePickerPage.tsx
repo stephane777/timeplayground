@@ -14,7 +14,7 @@ import styles from '../components/DatePicker/DatePicker.module.scss';
 
 const DatePickerDemo: FC = () => {
   return (
-    <>
+    <Container fluid="sm" className="pt-5">
       <section>
         <h1 className="">Date Picker</h1>
         <div className={styles[`datePicker__container`]}>
@@ -226,7 +226,7 @@ const DatePickerDemo: FC = () => {
           </Row>
         </Container>
       </section>
-    </>
+    </Container>
   );
 };
 export default DatePickerDemo;
