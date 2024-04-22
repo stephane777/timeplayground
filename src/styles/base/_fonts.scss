@@ -1,6 +1,8 @@
 $robotomono-font-path: '../fonts/Roboto_Mono';
 $robotoCondensed-font-path: '../fonts/Roboto_Condensed';
 $ubuntu-font-path: '../fonts/Ubuntu';
+$digital-7-path: '../fonts/Digital-7';
+
 @font-face {
   font-family: 'RM';
   src: url('#{$robotomono-font-path}/RobotoMono-Regular.ttf') format('truetype');
@@ -35,4 +37,9 @@ $ubuntu-font-path: '../fonts/Ubuntu';
 @font-face {
   font-family: 'UL';
   src: url('#{$ubuntu-font-path}/Ubuntu-Light.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'D7';
+  src: url('#{$digital-7-path}/digital-7.ttf') format('truetype');
 }
