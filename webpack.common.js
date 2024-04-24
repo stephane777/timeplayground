@@ -36,6 +36,9 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
+    client: {
+      overlay: false,
+    },
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.scss'],
