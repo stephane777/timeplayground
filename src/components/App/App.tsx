@@ -48,13 +48,11 @@ const App: FC<{ children?: ReactNode }> = ({ children }) => {
   const theme_classes = classNames(styles[`theme--${theme}`], styles[`theme`]);
 
   return (
-    <ErrorBoundary>
-      <div className={theme_classes}>
-        <Suspense fallback={<Loader text="page" />}>
-          <RouterProvider router={router} />
-        </Suspense>
-      </div>
-    </ErrorBoundary>
+    <div className={theme_classes}>
+      <Suspense fallback={<Loader text="page" />}>
+        <RouterProvider router={router} />
+      </Suspense>
+    </div>
   );
 };
 
