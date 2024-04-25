@@ -4,23 +4,23 @@
 //     width: 250px;
 //     height: 64px;
 //     background-color: $dark;
-//     border: 6px solid $gray-600;
+//     border: 6px solid $berlinClock;
 //     display: flex;
 // }
 
 .berlinClock {
   &__container {
-    background: linear-gradient(#08f, #fff);
+    // background: linear-gradient(white, lightgray);
     min-height: 90vh;
   }
   &__second {
     width: 100px;
     height: 100px;
 
-    background-color: $dark;
+    background-color: $secondary;
     // clip-path: circle(40%);
     border-radius: 50%;
-    border: 8px solid $gray-600;
+    border: 8px solid $berlinClock;
     &--Y {
       background-image: radial-gradient(yellow, red);
     }
@@ -31,19 +31,21 @@
   &__join {
     height: 12px;
     width: 48px;
-    background-color: $gray-600;
+    background-color: $berlinClock;
+    margin: 0 48px;
+    border-radius: -5px;
   }
   &__row-cells-container {
     border-radius: 20px;
     width: 300px;
     height: 60px;
-    background-color: $dark;
-    border: 4px solid $gray-600;
+    background-color: $secondary;
+    border: 4px solid $berlinClock;
     display: flex;
   }
   &__row-cell {
     flex: 1;
-    border: 4px solid $gray-600;
+    border: 4px solid $berlinClock;
     &:first-child {
       border-radius: 15px 0 0 15px;
     }
@@ -64,6 +66,16 @@
     font-family: 'D7';
     font-weight: bold;
     font-size: 6rem;
-    color: $dark;
+    letter-spacing: 0.3rem;
+    &--dark {
+      color: $white;
+    }
+    &--light {
+      color: $secondary;
+    }
+  }
+  &__dropdown {
+    // background-color: $dark;
+    // color: $white;
   }
 }
