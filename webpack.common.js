@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWEbpackPlugin = require('html-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   entry: './src/index.tsx',
@@ -35,11 +36,14 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
+    client: {
+      overlay: false,
+    },
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.scss'],
   },
-  plugins: [new HtmlWEbpackPlugin({ template: './src/main.html' })],
+  plugins: [new Dotenv(), new HtmlWEbpackPlugin({ template: './src/main.html' })],
   // optimization: {
   //     splitChunks: {
   //         chunks: 'all',
