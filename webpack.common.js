@@ -1,6 +1,6 @@
 const path = require('path');
-const HtmlWEbpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './src/index.tsx',
@@ -25,6 +25,10 @@ module.exports = {
         type: 'asset/resource',
       },
       {
+        test: /\.(ico)$/,
+        use: 'file-loader?name=assets/[name].[ext]',
+      },
+      {
         mimetype: 'image/svg+xml',
         scheme: 'data',
         type: 'asset/resource',
@@ -34,16 +38,13 @@ module.exports = {
       },
     ],
   },
-  devServer: {
-    historyApiFallback: true,
-    client: {
-      overlay: false,
-    },
-  },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.scss'],
   },
-  plugins: [new Dotenv(), new HtmlWEbpackPlugin({ template: './src/main.html' })],
+  plugins: [
+    new Dotenv(),
+    new HtmlWebpackPlugin({ template: './public/main.html', favicon: './public/favicon.ico' }),
+  ],
   // optimization: {
   //     splitChunks: {
   //         chunks: 'all',

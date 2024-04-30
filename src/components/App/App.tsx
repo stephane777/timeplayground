@@ -9,8 +9,6 @@ const Date_Picker_Page = lazy(() => import('../../pages/DatePickerPage'));
 const Date_Range_Page = lazy(() => import('../../pages/DateRangePage'));
 const Berlin_Clock_Page = lazy(() => import('../../pages/BerlinClockPage'));
 
-import ErrorBoundary from '../../utils/errorBoundaries';
-
 const router = createBrowserRouter(
   [
     {
