@@ -18,13 +18,7 @@ interface DateRange {
   demoWithNoKey?: boolean;
 }
 
-const DateRange: React.FC<DateRange> = ({
-  speed,
-  disablePastDay,
-  highlightToday,
-  demo,
-  demoWithNoKey,
-}) => {
+const DateRange: React.FC<DateRange> = ({ speed, disablePastDay, highlightToday }) => {
   const [currentMonth, setCurrentMonth] = useState<string>(moment().format('YYYY/MM/DD'));
   const [startTime, setStartTime] = useState<string | null>(null);
   const [endTime, setEndTime] = useState<string | null>(null);
@@ -88,7 +82,7 @@ const DateRange: React.FC<DateRange> = ({
           placeholder="DD/MM/YYYY - DD/MM/YYYY"
           ref={controlInputRef}
           className={inputTheme}
-          onFocus={(e) => setActive(true)}
+          onFocus={() => setActive(true)}
         />
         <InputGroup.Text id="cal_icon" className={inputGroupTheme}>
           <svg className={calendar_icon_classes}>
@@ -109,8 +103,6 @@ const DateRange: React.FC<DateRange> = ({
             highlightToday={highlightToday}
             active={active}
             setActive={setActive}
-            // demo={demo}
-            // demoWithNoKey={demoWithNoKey}
           />
         )}
       </InputGroup>

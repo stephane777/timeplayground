@@ -1,7 +1,6 @@
-import React, { FC, ClassAttributes, ReactNode } from 'react';
-import styles from './ToggleTheme.module.scss';
+import React, { FC, ReactNode } from 'react';
+
 import { useTheme } from '../../context/themeContext';
-import { Theme } from '../../context/themeContext';
 
 interface Props {
   children?: ReactNode;

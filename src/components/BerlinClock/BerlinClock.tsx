@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FC, Suspense, SetStateAction } from 'react';
+import React, { useState, useEffect, FC, SetStateAction } from 'react';
 import moment from 'moment';
 import moment_tz from 'moment-timezone';
 import classNames from 'classnames';
@@ -38,7 +38,7 @@ interface TimezonesProps {
 type Categorized_tz = Record<string, string[]>;
 
 const convertTime = (time: string): BerlinClockState => {
-  let [h, m, s] = time.split(':').map(Number);
+  const [h, m, s] = time.split(':').map(Number);
   return {
     second: s % 2 ? 'O' : 'Y',
     fiveHoursCell: Array.from({ length: 4 })
@@ -65,7 +65,7 @@ const convertTime = (time: string): BerlinClockState => {
   };
 };
 
-const BerlinClock: FC<BerlinClockProps> = ({ time }) => {
+const BerlinClock: FC<BerlinClockProps> = () => {
   const [selectedTimezone, setSelectedTimezone] = useState<{ zone: string; country?: string }>({
     zone: 'Europe',
     country: 'Berlin',
@@ -257,7 +257,7 @@ const Timezones: React.FC<TimezonesProps> = ({
         </Col>
         <Col lg="3">
           <FormSelect
-            disabled={!selectedTimezone.country && !Boolean(zoneHasCountry)}
+            disabled={!selectedTimezone.country && !zoneHasCountry}
             data-bs-theme={theme}
             aria-label="Select Country"
             className={styles['berlinClock__dropdown']}

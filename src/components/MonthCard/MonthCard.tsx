@@ -2,12 +2,11 @@ import React, {
   forwardRef,
   useRef,
   useState,
-  useMemo,
   Dispatch,
   MouseEvent,
+  KeyboardEvent,
   CSSProperties,
   MouseEventHandler,
-  memo,
 } from 'react';
 import { Transition, TransitionStatus } from 'react-transition-group';
 import styles from './MonthCard.module.scss';
@@ -38,10 +37,7 @@ type TransitionStyle = {
 
 const MonthCard: React.ForwardRefExoticComponent<
   React.RefAttributes<HTMLDivElement> & MonthCardProps
-> = forwardRef(function (
-  { time, setTime, selectedDay, setSelectedDay, speed, demo, demoWithNoKey },
-  ref
-) {
+> = forwardRef(function ({ time, setTime, setSelectedDay, speed, demo, demoWithNoKey }, ref) {
   const { theme } = useTheme();
 
   // when activeTransition is true react render prev, current & next month needed for the animation
@@ -158,15 +154,15 @@ const MonthCard: React.ForwardRefExoticComponent<
     unmounted: { transform: 'translateX(0)' },
   };
 
-  const handleSelectedDay = React.useCallback(
-    (e: MouseEvent<HTMLElement>, time: number) => {
-      setTime(time);
-      const value = (e.target as HTMLElement).innerText;
+  const handleSelectedDay = (
+    e: MouseEvent<HTMLDivElement> | KeyboardEvent<HTMLDivElement>,
+    time: number
+  ) => {
+    setTime(time);
+    const value = (e.target as HTMLElement).innerText;
 
-      setSelectedDay(Number(value));
-    },
-    [time]
-  );
+    setSelectedDay(Number(value));
+  };
 
   // function to render weekdays in the header
   const weekHeader = React.useMemo(() => {
@@ -182,14 +178,17 @@ const MonthCard: React.ForwardRefExoticComponent<
   const prevMonth = (param: Param) => {
     const { prevMonthDays, timeFirstDay } = param;
     return prevMonthDays
-      .map((day, i) => {
+      .map((_, i) => {
         const timeDayPrevMonth = timeFirstDay - 1000 * 60 * 60 * 24 * (i + 1);
         const weekdayPrevMonth = new Date(timeDayPrevMonth).getDate();
         return (
           <div
             key={`prev-${i}`}
+            role="button"
             className={prevAndNext_classes}
+            onKeyUp={() => setTime(timeDayPrevMonth)}
             onClick={() => setTime(timeDayPrevMonth)}
+            tabIndex={0}
           >
             {weekdayPrevMonth}
           </div>
@@ -221,8 +220,11 @@ const MonthCard: React.ForwardRefExoticComponent<
       return (
         <div
           key={`current-${i}`}
+          role="button"
           className={daysInMonth_classes}
           onClick={(e) => handleSelectedDay(e, time)}
+          onKeyUp={(e) => handleSelectedDay(e, time)}
+          tabIndex={0}
         >
           {day + 1}
         </div>
@@ -239,8 +241,11 @@ const MonthCard: React.ForwardRefExoticComponent<
       return (
         <div
           key={`next-${i}`}
+          role="button"
           className={prevAndNext_classes}
           onClick={() => setTime(timeDayNextMonth)}
+          onKeyUp={() => setTime(timeDayNextMonth)}
+          tabIndex={0}
         >
           {i + 1}
         </div>

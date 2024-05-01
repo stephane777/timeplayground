@@ -4,6 +4,7 @@ import React, {
   useState,
   Dispatch,
   MouseEvent,
+  KeyboardEvent,
   CSSProperties,
   SetStateAction,
 } from 'react';
@@ -53,12 +54,9 @@ const RangeCard: React.ForwardRefExoticComponent<
     endTime,
     setEndTime,
     speed,
-    active,
     setActive,
     disablePastDay,
     highlightToday,
-    demo,
-    demoWithNoKey,
   },
   ref
 ) {
@@ -152,7 +150,10 @@ const RangeCard: React.ForwardRefExoticComponent<
     unmounted: { transform: 'translateX(0)' },
   };
 
-  const handleSelectedDay = (e: MouseEvent<HTMLDivElement>, selectedTime: string) => {
+  const handleSelectedDay = (
+    e: MouseEvent<HTMLDivElement> | KeyboardEvent<HTMLDivElement>,
+    selectedTime: string
+  ) => {
     const isNewTimeBeforeStartTime = startTime && moment(selectedTime).isBefore(startTime, 'day');
     const isNewTimeSameAsStartTime = startTime && moment(selectedTime).isSame(startTime, 'day');
     if (!startTime && !endTime) {
@@ -187,7 +188,7 @@ const RangeCard: React.ForwardRefExoticComponent<
   }, []);
 
   //   get all the day from the previous Month
-  const prevMonth = (param: Param, isHidden?: boolean) => {
+  const prevMonth = (param: Param) => {
     const { prevMonthDays, timeFirstDay, today } = param;
 
     return prevMonthDays
@@ -211,8 +212,11 @@ const RangeCard: React.ForwardRefExoticComponent<
         return (
           <div
             key={`prev-${i}`}
+            role="button"
             className={prevMonth_classes}
             onClick={isDayPast ? () => null : (e) => handleSelectedDay(e, timeDayPrevMonth)}
+            onKeyUp={isDayPast ? () => null : (e) => handleSelectedDay(e, timeDayPrevMonth)}
+            tabIndex={0}
           >
             {weekdayPrevMonth}
           </div>
@@ -264,8 +268,11 @@ const RangeCard: React.ForwardRefExoticComponent<
       return (
         <div
           key={`current-${i}`}
+          role="button"
           className={daysInMonth_classes}
           onClick={isDayPast ? () => null : (e) => handleSelectedDay(e, day_time)}
+          onKeyUp={isDayPast ? () => null : (e) => handleSelectedDay(e, day_time)}
+          tabIndex={0}
         >
           {day + 1}
         </div>
@@ -274,7 +281,7 @@ const RangeCard: React.ForwardRefExoticComponent<
   };
 
   // function to render all the days in next month to complete the current row in the current month
-  const nextMonth = (param: Param, isHidden?: boolean) => {
+  const nextMonth = (param: Param) => {
     const { nextMonthDays, timeLastDay, today } = param;
     if (!nextMonthDays) return;
 
@@ -296,8 +303,11 @@ const RangeCard: React.ForwardRefExoticComponent<
       return (
         <div
           key={`next-${i}`}
+          role="button"
           className={nextMonth_classes}
           onClick={isDayPast ? () => null : (e) => handleSelectedDay(e, timeDayNextMonth)}
+          onKeyDown={isDayPast ? () => null : (e) => handleSelectedDay(e, timeDayNextMonth)}
+          tabIndex={0}
         >
           {day + 1}
         </div>
