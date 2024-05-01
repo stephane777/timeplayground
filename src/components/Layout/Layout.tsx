@@ -1,6 +1,5 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import MainNavbar from '../MainNavbar/MainNavbar';
-import { Container } from 'react-bootstrap';
 import { Outlet } from 'react-router-dom';
 import ErrorBoundary from '../../utils/errorBoundaries';
 

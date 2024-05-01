@@ -1,16 +1,12 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import ToggleTheme from '../ToggleTheme/ToggleTheme';
 import { useTheme } from '../../context/themeContext';
 import styles from './MainNavbar.module.scss';
 
-// import Button from 'react-bootstrap/Button'
-import Stack from 'react-bootstrap/Stack';
 import Container from 'react-bootstrap/Container';
-// import Row from 'react-bootstrap/Row'
-// import Col from 'react-bootstrap/Col'
 
 const MainNavbar: FC = () => {
   const { theme } = useTheme();
@@ -23,7 +19,6 @@ const MainNavbar: FC = () => {
           aria-controls="main-navbar-nav"
           className={styles[`mainNavBar__toggler-icon`]}
         />
-        {/* <Stack direction="horizontal" gap={3} className="ms-auto"> */}
         <Navbar.Collapse id="main-navbar-nav">
           <Nav className="ms-auto" navbarScroll>
             <Nav.Link as={NavLink} to="/">

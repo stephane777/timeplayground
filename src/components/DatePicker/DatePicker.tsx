@@ -1,11 +1,4 @@
-import React, {
-  useRef,
-  useState,
-  useEffect,
-  MouseEventHandler,
-  ReactNode,
-  MouseEvent,
-} from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import sprite from '../../assets/img/svg/sprite.svg';
@@ -13,7 +6,7 @@ import styles from './DatePicker.module.scss';
 import classNames from 'classnames/bind';
 import { useTheme } from '../../context/themeContext';
 import MonthCard from '../MonthCard/MonthCard';
-import { utcTime_to_date, maxDayInMonth, isCurrentYearBisextile } from '../../utils';
+import { utcTime_to_date } from '../../utils';
 const cx = classNames.bind(styles);
 
 interface DatePicker {
@@ -87,7 +80,7 @@ const DatePicker: React.FC<DatePicker> = ({ speed, demo, demoWithNoKey }) => {
           placeholder="DD/MM/YYYY"
           ref={controlInputRef}
           className={inputTheme}
-          onFocus={(e) => setActive(true)}
+          onFocus={() => setActive(true)}
         />
         <InputGroup.Text id="cal_icon" className={inputGroupTheme}>
           <svg className={calendar_icon_classes}>

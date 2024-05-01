@@ -25,8 +25,8 @@ const DatePickerDemo: FC = () => {
       <section>
         <h3 className="my-5">Overview:</h3>
         <p>
-          This was a project I've build few years back and it is time to refactor it with Typescript
-          and a smooth animation with{' '}
+          This was a project I&apos;ve build few years back and it is time to refactor it with
+          Typescript and a smooth animation with{' '}
           <Button
             className="p-0 text-decoration-none border-0"
             variant="link"
@@ -36,7 +36,7 @@ const DatePickerDemo: FC = () => {
           </Button>
           .
           <br />
-          The date picker is built with Form.Control type='text' from{' '}
+          The date picker is built with Form.Control type=&apos;text&apos; from{' '}
           <Button
             className="p-0 text-decoration-none border-0"
             variant="link"
@@ -46,10 +46,10 @@ const DatePickerDemo: FC = () => {
           </Button>{' '}
           package. The dropdown is entirely built with React.
           <br />
-          Before jumping into details let's break down what we need to achieve. First when the user
-          click the arrow right or left we need to render 2 months side by side. Then the transition
-          is active for few milliseconds. When the animation is ending setting the new state{' '}
-          <Badge bg="secondary">time</Badge> which will render the new month.
+          Before jumping into details let&apos;s break down what we need to achieve. First when the
+          user click the arrow right or left we need to render 2 months side by side. Then the
+          transition is active for few milliseconds. When the animation is ending setting the new
+          state <Badge bg="secondary">time</Badge> which will render the new month.
         </p>
       </section>
       <section>
@@ -213,14 +213,14 @@ const DatePickerDemo: FC = () => {
               <p>
                 React rerender the DatePicker component following <Badge bg="secondary">time</Badge>{' '}
                 state update. While this component should rerender all its children we can assume
-                that the Transition container hasn't changed at all, so during the reconciliation
-                phase React doesn't unmount this dom node. Because of this the css transition is
-                still the same and we can see it translating back to its initial position. To fix
-                this we need to tell React to unmount Transition container when a new time is set.
-                We can simply add a key tag to the transition container with the value of{' '}
-                <Badge bg="secondary">time</Badge> state. That way each time we set a new time the
-                transition container is unmounted from the Dom and a new one is mounted. The final
-                work is now to make only month card length visible.
+                that the Transition container hasn&apos;t changed at all, so during the
+                reconciliation phase React doesn&apos;t unmount this dom node. Because of this the
+                css transition is still the same and we can see it translating back to its initial
+                position. To fix this we need to tell React to unmount Transition container when a
+                new time is set. We can simply add a key tag to the transition container with the
+                value of <Badge bg="secondary">time</Badge> state. That way each time we set a new
+                time the transition container is unmounted from the Dom and a new one is mounted.
+                The final work is now to make only month card length visible.
               </p>
             </Col>
           </Row>
