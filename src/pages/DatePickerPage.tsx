@@ -12,7 +12,7 @@ import img2 from '../assets/img/png/MonthCard_Next.png';
 import img1 from '../assets/img/png/MonthCard_prev.png';
 import styles from '../components/DatePicker/DatePicker.module.scss';
 
-const DatePickerDemo: FC = () => {
+const DatePickerPage: FC = () => {
   return (
     <Container fluid="sm" className="pt-5">
       <section>
@@ -229,4 +229,4 @@ const DatePickerDemo: FC = () => {
     </Container>
   );
 };
-export default DatePickerDemo;
+export default DatePickerPage;
