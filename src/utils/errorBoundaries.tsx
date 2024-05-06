@@ -35,10 +35,13 @@ class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         <Container fluid="md">
-          <div className="d-flex flex-column justify-content-center my-5">
+          <div
+            className="d-flex flex-column justify-content-center my-5"
+            data-testid="errorboundary"
+          >
             <h4>
               There was an error with this listing. <Link to="/">Click here</Link> to back to the
-              home page.
+              {/* There was an error with this listing. to back to the home page. */}
             </h4>
             <br />
             <hr />

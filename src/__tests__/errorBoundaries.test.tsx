@@ -1,23 +1,13 @@
-import { ReactNode } from 'react';
 import { render, screen } from '@testing-library/react';
 import ErrorBoundary from '../utils/errorBoundaries';
-import { userEvent } from '@testing-library/user-event';
-import { BrowserRouter } from 'react-router-dom';
+
+import { renderWithRouter } from '../utils/testingHelpers/renderWithRouter';
 
 describe('Error boundary', () => {
   const realError = console.error;
 
   const ThrowError = () => {
     throw new Error('Test error boundary!');
-  };
-
-  const renderWithRouter = (ui: ReactNode, { route = '/' } = {}) => {
-    window.history.pushState({}, 'Test page', route);
-
-    return {
-      user: userEvent.setup(),
-      ...render(ui, { wrapper: BrowserRouter }),
-    };
   };
 
   beforeEach(() => {
