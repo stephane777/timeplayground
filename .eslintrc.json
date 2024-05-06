@@ -5,6 +5,7 @@
     "es2021": true,
     "node": true
   },
+
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
@@ -55,5 +56,11 @@
       }
     }
   },
-  "ignorePatterns": ["dist", "public", "node_modules", "webpack.*.js"]
+  "ignorePatterns": ["dist", "public", "node_modules", "webpack.*.js"],
+  "overrides": [
+    {
+      "extends": ["plugin:@typescript-eslint/disable-type-checked"],
+      "files": ["./**/*.js"]
+    }
+  ]
 }
