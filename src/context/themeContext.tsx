@@ -6,7 +6,12 @@ interface Props {
   children?: ReactNode;
 }
 
-const ThemeContext = createContext({} as ReturnType<typeof usePassedDownValues>);
+interface ContextValue {
+  theme: Theme;
+  setTheme?: React.Dispatch<React.SetStateAction<Theme>>;
+}
+
+export const ThemeContext = createContext<ContextValue>({ theme: 'light' });
 
 /** Below is for the Chrome React dev Tools extension
  * to display the name of the context instead
