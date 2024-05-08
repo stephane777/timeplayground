@@ -11,14 +11,14 @@ const ToggleTheme: FC<Props> = (props: Props) => {
   const { theme, setTheme } = useTheme();
 
   const handleToggleTheme: React.MouseEventHandler<HTMLButtonElement> = () => {
-    setTheme((theme) => (theme === 'light' ? 'dark' : 'light'));
+    setTheme!((theme) => (theme === 'light' ? 'dark' : 'light'));
   };
 
   return (
     <div className={props.className}>
       {/* dark */}
       {theme === 'dark' && (
-        <button type="button" onClick={handleToggleTheme}>
+        <button type="button" onClick={handleToggleTheme} aria-label="light button">
           <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 32 32">
             <g fill="none" fillRule="evenodd" transform="translate(-440 -200)">
               <path
@@ -36,7 +36,7 @@ const ToggleTheme: FC<Props> = (props: Props) => {
       )}
       {/* light */}
       {theme === 'light' && (
-        <button onClick={handleToggleTheme}>
+        <button aria-label="dark button" onClick={handleToggleTheme}>
           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
             <g fill="none" fillRule="evenodd" transform="translate(-442 -200)">
               <g fill="currentColor" transform="translate(356 144)">
