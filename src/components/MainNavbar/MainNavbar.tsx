@@ -13,7 +13,7 @@ const MainNavbar: FC = () => {
   return (
     <Navbar expand="lg" bg={theme} data-bs-theme={theme}>
       <Container>
-        <Navbar.Brand href="#home">Time Playground</Navbar.Brand>
+        <Navbar.Brand href="/">Time Playground</Navbar.Brand>
         <ToggleTheme className="me-auto" />
         <Navbar.Toggle
           aria-controls="main-navbar-nav"
@@ -21,9 +21,6 @@ const MainNavbar: FC = () => {
         />
         <Navbar.Collapse id="main-navbar-nav">
           <Nav className="ms-auto" navbarScroll>
-            <Nav.Link as={NavLink} to="/">
-              Home
-            </Nav.Link>
             <Nav.Link as={NavLink} to="/datepicker">
               Date Picker
             </Nav.Link>
@@ -33,10 +30,8 @@ const MainNavbar: FC = () => {
             <Nav.Link as={NavLink} to="berlinclock">
               Berlin Clock
             </Nav.Link>
-            {/* <ToggleTheme /> */}
           </Nav>
         </Navbar.Collapse>
-        {/* </Stack> */}
       </Container>
     </Navbar>
   );
