@@ -14,6 +14,7 @@ module.exports = {
     // '.+\\.(css|styl|less|sass|scss)$': 'jest-css-modules-transform',
   },
   setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
+  setupFiles: ['whatwg-fetch'],
   collectCoverageFrom: ['**/*.{ts,tsx}', '!**/*.d.ts', '!**/node_modules/**', '!**/vendor/**'],
   coverageThreshold: {
     global: {
