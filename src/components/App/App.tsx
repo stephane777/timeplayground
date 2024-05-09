@@ -1,5 +1,6 @@
-import React, { Suspense, lazy, FC, ReactNode } from 'react';
+import { Suspense, lazy, FC, ReactNode } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
 import { useTheme } from '../../context/themeContext';
 import styles from './App.module.scss';
 import classNames from 'classnames';
@@ -9,36 +10,55 @@ const Date_Picker_Page = lazy(() => import('../../pages/DatePickerPage'));
 const Date_Range_Page = lazy(() => import('../../pages/DateRangePage'));
 const Berlin_Clock_Page = lazy(() => import('../../pages/BerlinClockPage'));
 
-const router = createBrowserRouter(
-  [
-    {
-      path: '/',
-      element: <Layout />,
-      errorElement: <div>{'Error element'}</div>,
-      children: [
-        {
-          index: true,
-          element: <Berlin_Clock_Page />,
-        },
-        {
-          path: 'datePicker',
-          element: <Date_Picker_Page />,
-        },
-        {
-          path: 'daterange',
-          element: <Date_Range_Page />,
-        },
-        {
-          path: 'berlinclock',
-          element: <Berlin_Clock_Page />,
-        },
-      ],
-    },
-  ],
-  {
-    basename: '/',
-  }
+const Loader: FC<{ text: string }> = ({ text }) => (
+  <div style={{ background: 'hsl(65, 65, 60)' }}>Loading {text}...</div>
 );
+
+export const routes = [
+  {
+    path: '/',
+    element: <Layout />,
+    errorElement: <div>{'Error element'}</div>,
+    children: [
+      {
+        index: true,
+        element: (
+          <Suspense fallback={<Loader text="Berlin Clock page" />}>
+            <Berlin_Clock_Page />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'datepicker',
+        element: (
+          <Suspense fallback={<Loader text="Date picker page" />}>
+            <Date_Picker_Page />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'daterange',
+        element: (
+          <Suspense fallback={<Loader text="Date Range page" />}>
+            <Date_Range_Page />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'berlinclock',
+        element: (
+          <Suspense fallback={<Loader text="Berlin Clock page" />}>
+            <Berlin_Clock_Page />
+          </Suspense>
+        ),
+      },
+    ],
+  },
+];
+
+const router = createBrowserRouter(routes, {
+  basename: '/',
+});
 
 const App: FC<{ children?: ReactNode }> = () => {
   const { theme } = useTheme();
@@ -47,15 +67,9 @@ const App: FC<{ children?: ReactNode }> = () => {
 
   return (
     <div className={theme_classes}>
-      <Suspense fallback={<Loader text="page" />}>
-        <RouterProvider router={router} />
-      </Suspense>
+      <RouterProvider router={router} />
     </div>
   );
 };
 
-const Loader: FC<{ text: string }> = ({ text }) => (
-  <div style={{ background: 'hsl(65, 65, 60)' }}>Loading {text}...</div>
-);
-
-export { App };
+export { App, Loader };
