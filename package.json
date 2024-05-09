@@ -12,7 +12,7 @@
     "format": "prettier --write .",
     "test": "jest",
     "test:watch": "NODE_ENV=test jest --watch",
-    "test:coverage": "jest --coverage",
+    "test:coverage": "jest --coverage --coverageDirectory='coverage'",
     "prepare": "husky && husky install"
   },
   "keywords": [
@@ -72,7 +72,8 @@
     "webpack": "^5.90.1",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1",
-    "webpack-merge": "^5.10.0"
+    "webpack-merge": "^5.10.0",
+    "whatwg-fetch": "^3.6.20"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
