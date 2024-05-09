@@ -2,6 +2,7 @@ import { render } from '@testing-library/react';
 // import { userEvent } from '@testing-library/user-event';
 import { RouterProvider, createMemoryRouter, RouteObject } from 'react-router-dom';
 import { isValidElement, ReactNode } from 'react';
+import userEvent from '@testing-library/user-event';
 
 export function renderWithRouterV6(
   children: ReactNode | Pick<RouteObject, 'element' | 'path'>,
@@ -16,5 +17,8 @@ export function renderWithRouterV6(
     initialIndex: 1,
   });
 
-  return render(<RouterProvider router={router} />);
+  return {
+    user: userEvent.setup(),
+    ...render(<RouterProvider router={router} />),
+  };
 }
