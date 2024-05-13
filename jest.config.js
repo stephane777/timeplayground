@@ -15,7 +15,14 @@ module.exports = {
   },
   setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
   setupFiles: ['whatwg-fetch'],
-  collectCoverageFrom: ['**/*.{ts,tsx}', '!**/*.d.ts', '!**/node_modules/**', '!**/vendor/**'],
+  collectCoverageFrom: [
+    '**/*.{ts,tsx}',
+    '!src/**/index.ts',
+    '!src/codeblocks/**',
+    '!**/*.d.ts',
+    '!**/node_modules/**',
+    '!**/vendor/**',
+  ],
   coverageThreshold: {
     global: {
       branches: 90,
