@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, fireEvent, screen, cleanup } from '@testing-library/react';
 import DatePicker from '../DatePicker/DatePicker';
 import moment from 'moment';
 import userEvent from '@testing-library/user-event';
@@ -31,6 +31,7 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.clearAllMocks();
+  cleanup();
 });
 
 describe('Month Card with Transition', () => {
@@ -58,4 +59,7 @@ describe('Month Card with Transition', () => {
     expect(Transition).toHaveBeenNthCalledWith(1, { in: false, ...defaultProps }, context);
     expect(Transition).toHaveBeenNthCalledWith(2, { in: true, ...defaultProps }, context);
   });
+
+  // it('should show the next month after click the next month button')
+  // it('should show the previous month after click the previous month button')
 });
