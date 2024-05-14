@@ -27,7 +27,7 @@ interface MonthCardProps {
   demoWithNoKey?: boolean;
 }
 
-type Param = ReturnType<typeof getParam>;
+export type Param = ReturnType<typeof getParam>;
 
 type Increment = 1 | -1;
 
@@ -183,6 +183,7 @@ const MonthCard: React.ForwardRefExoticComponent<
         const weekdayPrevMonth = new Date(timeDayPrevMonth).getDate();
         return (
           <div
+            aria-label={`previous-${weekdayPrevMonth}`}
             key={`prev-${i}`}
             role="button"
             className={prevAndNext_classes}
@@ -206,6 +207,7 @@ const MonthCard: React.ForwardRefExoticComponent<
     return monthArr.map((day, i) => {
       const time = timeFirstDay + 1000 * 60 * 60 * 24 * i;
       // all the day in month classNames
+
       const daysInMonth_classes = classNames(
         styles[`monthCard__day`],
         styles[
@@ -219,6 +221,7 @@ const MonthCard: React.ForwardRefExoticComponent<
       );
       return (
         <div
+          aria-label={`current-${day + 1}`}
           key={`current-${i}`}
           role="button"
           className={daysInMonth_classes}
@@ -240,6 +243,7 @@ const MonthCard: React.ForwardRefExoticComponent<
       const timeDayNextMonth = timeLastDay + 1000 * 60 * 60 * 24 * (i + 1);
       return (
         <div
+          aria-label={`next-${i + 1}`}
           key={`next-${i}`}
           role="button"
           className={prevAndNext_classes}
@@ -287,14 +291,21 @@ const MonthCard: React.ForwardRefExoticComponent<
       <div>
         <div className={togglemonth_classes}>
           <svg
+            role="img"
+            aria-labelledby="svgPrevious"
+            focusable={true}
             className={icon_prev_classes}
             onClick={demo === 'transition' ? () => null : handlePreviousOnClick}
           >
+            <title id="svgPrevious">Previous Month</title>
             <use href={`${sprite}#icon-triangle-left`} className="text"></use>
           </svg>
-          <span>{`${param.fullMonth} ${param.year}`}</span>
+          <span data-testid="monthCard_selected_month">{`${param.fullMonth} ${param.year}`}</span>
 
           <svg
+            role="img"
+            aria-labelledby="svgNext"
+            focusable={true}
             className={icon_next_classes}
             onClick={() => {
               setActiveTransition(true);
@@ -305,6 +316,7 @@ const MonthCard: React.ForwardRefExoticComponent<
               setNextOrPrev(true);
             }}
           >
+            <title id="svgNext">Next Month</title>
             <use href={`${sprite}#icon-triangle-right`}> </use>
           </svg>
         </div>
@@ -330,6 +342,7 @@ const MonthCard: React.ForwardRefExoticComponent<
             const toggledMonthParam = nextOrPrev ? paramNextMonth : paramPrevMonth;
             return (
               <div
+                id="monthCard_transition_ref"
                 key={demoWithNoKey ? 1 : time}
                 className={`d-flex flex-row${nextOrPrev ? '' : '-reverse'}`}
                 style={{

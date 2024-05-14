@@ -76,14 +76,20 @@ const DatePicker: React.FC<DatePicker> = ({ speed, demo, demoWithNoKey }) => {
           type="text"
           id="date"
           aria-describedby="cal_icon"
-          aria-label="date"
+          aria-label="date picker"
           placeholder="DD/MM/YYYY"
           ref={controlInputRef}
           className={inputTheme}
           onFocus={() => setActive(true)}
         />
         <InputGroup.Text id="cal_icon" className={inputGroupTheme}>
-          <svg className={calendar_icon_classes}>
+          <svg
+            className={calendar_icon_classes}
+            role="img"
+            aria-labelledby="svgTitle"
+            focusable="false"
+          >
+            <title id="svgTitle">date picker icon</title>
             <use href={`${sprite}#icon-calendar`}></use>
           </svg>
         </InputGroup.Text>
