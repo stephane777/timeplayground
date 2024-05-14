@@ -171,22 +171,14 @@ const BerlinClock: FC<BerlinClockProps> = () => {
       </span>
       <hr />
 
-      {all_timezones ? (
-        <TimezonesWithMemo
-          setSelectedTimezone={setSelectedTimezone}
-          selectedTimezone={selectedTimezone}
-          theme={theme}
-          all_timezones={all_timezones}
-        />
-      ) : (
-        <LoadingTz text="Loading timezone" />
-      )}
+      <TimezonesWithMemo
+        setSelectedTimezone={setSelectedTimezone}
+        selectedTimezone={selectedTimezone}
+        theme={theme}
+        all_timezones={all_timezones}
+      />
     </div>
   );
-};
-
-const LoadingTz: FC<{ text: string }> = ({ text }) => {
-  return <h4>{text}</h4>;
 };
 
 const BuildCell: FC<{ cells: Array<'Y' | 'R' | 'O'> }> = ({ cells }) => {
