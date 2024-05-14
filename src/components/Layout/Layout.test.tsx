@@ -1,7 +1,5 @@
 import { render, screen } from '@testing-library/react';
-
 import { Layout } from './Layout';
-
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 describe('Layout', () => {
@@ -13,7 +11,6 @@ describe('Layout', () => {
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<FakeComponent />} />
-            ff
           </Route>
         </Routes>
       </MemoryRouter>
@@ -24,7 +21,7 @@ describe('Layout', () => {
     expect(screen.getByRole('button', { name: 'Toggle navigation' }));
     expect(screen.getByRole('main')).toBeInTheDocument();
     expect(screen.getByRole('contentinfo')).toBeInTheDocument();
-    expect(screen.getAllByRole('link')).toHaveLength(5);
+    expect(screen.getAllByRole('link')).toHaveLength(4);
 
     // test Outlet
     expect(screen.queryByText('fake text')).toBeInTheDocument();

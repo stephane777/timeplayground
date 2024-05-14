@@ -11,11 +11,11 @@ import Col from 'react-bootstrap/Col';
 
 const cx = classNames.bind(styles);
 
-interface BerlinClockProps {
-  time: string | null; // 15:45:06
+export interface BerlinClockProps {
+  time?: string | null; // 15:45:06
 }
 
-interface BerlinClockState {
+export interface BerlinClockState {
   second: 'Y' | 'O';
   fiveHoursCell: Array<'R' | 'O'>;
   hours: Array<'R' | 'O'>;
@@ -37,7 +37,7 @@ interface TimezonesProps {
 
 type Categorized_tz = Record<string, string[]>;
 
-const convertTime = (time: string): BerlinClockState => {
+export const convertTime = (time: string): BerlinClockState => {
   const [h, m, s] = time.split(':').map(Number);
   return {
     second: s % 2 ? 'O' : 'Y',
@@ -127,7 +127,10 @@ const BerlinClock: FC<BerlinClockProps> = () => {
   );
 
   return (
-    <div className="d-flex flex-column align-items-center justify-content-center mt-5">
+    <div
+      data-testid="berlin_clock"
+      className="d-flex flex-column align-items-center justify-content-center mt-5"
+    >
       {/** SECOND*/}
       <div className={second_classes}></div>
       <div className={styles['berlinClock__join']}></div>
@@ -159,31 +162,23 @@ const BerlinClock: FC<BerlinClockProps> = () => {
       <div className={styles['berlinClock__row-cells-container']}>
         <BuildCell cells={state.minutes} />
       </div>
-      <span className={digital_time_classes}>
+      <span data-testid="timezone_country_time" className={digital_time_classes}>
         {selectedTimezone.country
           ? moment()
               .tz(`${selectedTimezone.zone}/${selectedTimezone.country}`)
-              .format('HH:mm:ssf ZZ')
+              .format('HH:mm:ss ZZ')
           : moment().tz(selectedTimezone.zone).format('HH:mm:ss ZZ')}
       </span>
       <hr />
 
-      {all_timezones ? (
-        <TimezonesWithMemo
-          setSelectedTimezone={setSelectedTimezone}
-          selectedTimezone={selectedTimezone}
-          theme={theme}
-          all_timezones={all_timezones}
-        />
-      ) : (
-        <LoadingTz text="Loading timezone" />
-      )}
+      <TimezonesWithMemo
+        setSelectedTimezone={setSelectedTimezone}
+        selectedTimezone={selectedTimezone}
+        theme={theme}
+        all_timezones={all_timezones}
+      />
     </div>
   );
-};
-
-const LoadingTz: FC<{ text: string }> = ({ text }) => {
-  return <h4>{text}</h4>;
 };
 
 const BuildCell: FC<{ cells: Array<'Y' | 'R' | 'O'> }> = ({ cells }) => {
@@ -242,17 +237,18 @@ const Timezones: React.FC<TimezonesProps> = ({
             defaultValue={selectedTimezone.zone}
           >
             <option>Select zone</option>
-            {Object.keys(all_timezones)?.map((tz, index) => {
-              // const timez = ` ${timezones[tz] ? '( ' + timezones[tz]?.length + ' )' : ''}`;
-              const timez =
-                all_timezones[tz]?.length > 0 ? `${tz} (${all_timezones[tz].length})` : tz;
+            {Object.keys(all_timezones)
 
-              return (
-                <option value={tz} key={`${index}-${tz}`}>
-                  {timez}
-                </option>
-              );
-            })}
+              .map((tz, index) => {
+                const timez =
+                  all_timezones[tz]?.length > 0 ? `${tz} (${all_timezones[tz].length})` : tz;
+
+                return (
+                  <option value={tz} key={`${index}-${tz}`}>
+                    {timez}
+                  </option>
+                );
+              })}
           </FormSelect>
         </Col>
         <Col lg="3">
@@ -282,4 +278,4 @@ const Timezones: React.FC<TimezonesProps> = ({
 
 const TimezonesWithMemo = React.memo(Timezones);
 
-export default BerlinClock;
+export { BerlinClock };
