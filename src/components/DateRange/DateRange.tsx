@@ -19,7 +19,7 @@ interface DateRange {
 }
 
 const DateRange: React.FC<DateRange> = ({ speed, disablePastDay, highlightToday }) => {
-  const [currentMonth, setCurrentMonth] = useState<string>(moment().format('YYYY/MM/DD'));
+  const [currentMonth, setCurrentMonth] = useState<string>(moment().format('YYYY-MM-DD'));
   const [startTime, setStartTime] = useState<string | null>(null);
   const [endTime, setEndTime] = useState<string | null>(null);
   const [active, setActive] = useState<boolean>(false);
@@ -31,8 +31,8 @@ const DateRange: React.FC<DateRange> = ({ speed, disablePastDay, highlightToday 
   // Effect to update the date input with the current day.
   useEffect(() => {
     if (controlInputRef.current) {
-      const start = startTime ? moment(startTime).format('DD/MM/YYYY') : 'DD/MM/YYYY';
-      const end = endTime ? moment(endTime).format('DD/MM/YYYY') : 'DD/MM/YYYY';
+      const start = startTime ? moment(startTime).format('DD-MM-YYYY') : 'DD-MM-YYYY';
+      const end = endTime ? moment(endTime).format('DD-MM-YYYY') : 'DD-MM-YYYY';
 
       controlInputRef.current.value = `${start} - ${end}`;
     }
@@ -79,7 +79,7 @@ const DateRange: React.FC<DateRange> = ({ speed, disablePastDay, highlightToday 
           id="date"
           aria-describedby="cal_icon"
           aria-label="date range"
-          placeholder="DD/MM/YYYY - DD/MM/YYYY"
+          placeholder="DD-MM-YYYY - DD-MM-YYYY"
           ref={controlInputRef}
           className={inputTheme}
           onFocus={() => setActive(true)}
