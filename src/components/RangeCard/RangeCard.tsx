@@ -97,11 +97,10 @@ const RangeCard: React.ForwardRefExoticComponent<
   const paramPrevMonth: Param = getParam(prevMonthTime);
   const paramNextMonth: Param = getParam(nextMonthTime);
 
-  // const isDemo = demo === 'render2month' || demo === 'renderNewMonth' || demo === 'transition';
-
   // Duration computed once startTime & endTime are selected
   const duration =
     startTime && endTime && moment.duration(moment(endTime).diff(startTime)).asDays();
+
   // previous Day in month classNames
   const prevAndNext_classes = classNames(
     styles[`rangeCard__day`],
@@ -115,9 +114,6 @@ const RangeCard: React.ForwardRefExoticComponent<
       cx({
         [`rangeCard__icon-prevMonth--${theme}`]: true,
       })
-      // cx({
-      //   'monthCard__icon-prevMonth--disabled': demo === 'transition',
-      // })
     ]
   );
 
@@ -136,11 +132,6 @@ const RangeCard: React.ForwardRefExoticComponent<
   const rangeCard_container_classes = classNames(
     styles['rangeCard__container'],
     styles[cx({ [`rangeCard__container--${theme}`]: true })]
-    //   styles[
-    //     cx({
-    //       'monthCard__container--visible': isDemo,
-    //     })
-    //   ]
   );
 
   const defaultStyle: CSSProperties = {
@@ -205,11 +196,10 @@ const RangeCard: React.ForwardRefExoticComponent<
         const timeDayPrevMonth = moment(timeFirstDay)
           .subtract(day + 1, 'day')
           .format('YYYY-MM-DD');
-        // console.log('today: ', today);
-        // console.log('timeDayPrevMonth: ', timeDayPrevMonth);
-        const weekdayPrevMonth = moment(timeDayPrevMonth).date();
 
-        const isDayPast = moment(today).isAfter(timeDayPrevMonth, 'day');
+        const weekdayPrevMonth = moment(timeDayPrevMonth).date();
+        const isDayPast = disablePastDay && moment(today).isAfter(timeDayPrevMonth, 'day');
+
         const prevMonth_classes = classNames(
           prevAndNext_classes,
           styles[
@@ -222,6 +212,7 @@ const RangeCard: React.ForwardRefExoticComponent<
         return (
           <div
             key={`prev-${i}`}
+            aria-label={`previous-${day + 1}`}
             role="button"
             className={prevMonth_classes}
             onClick={isDayPast ? () => null : (e) => handleSelectedDay(e, timeDayPrevMonth)}
@@ -278,8 +269,9 @@ const RangeCard: React.ForwardRefExoticComponent<
       );
       return (
         <div
-          key={`current-${i}`}
           role="button"
+          aria-label={`current-${day + 1}`}
+          key={`current-${i}`}
           className={daysInMonth_classes}
           onClick={isDayPast ? () => null : (e) => handleSelectedDay(e, day_time)}
           onKeyUp={isDayPast ? () => null : (e) => handleSelectedDay(e, day_time)}
@@ -314,6 +306,7 @@ const RangeCard: React.ForwardRefExoticComponent<
       return (
         <div
           key={`next-${i}`}
+          aria-label={`next-${day + 1}`}
           role="button"
           className={nextMonth_classes}
           onClick={isDayPast ? () => null : (e) => handleSelectedDay(e, timeDayNextMonth)}
@@ -338,9 +331,7 @@ const RangeCard: React.ForwardRefExoticComponent<
   const handleArrowClick = (e: MouseEvent<SVGSVGElement>, isNextOrPrevious: boolean) => {
     e.preventDefault();
     setActiveTransition(true);
-    //   if (demo !== 'render2month') {
     setInProp(true);
-    //   }
     setNextOrPrev(isNextOrPrevious);
   };
 
@@ -398,9 +389,7 @@ const RangeCard: React.ForwardRefExoticComponent<
             setInProp(false);
           }}
           onExited={() => {
-            // if (demo !== 'transition') {
             handleToggleMonth(nextOrPrev ? 1 : -1);
-            // }
           }}
         >
           {(state) => {
@@ -418,12 +407,12 @@ const RangeCard: React.ForwardRefExoticComponent<
                 ref={nodeRef}
               >
                 <div className="d-flex gap-3">
-                  <div key={currentMonth} className={box_classes}>
+                  <div data-testid="rangeCard_month1" key={currentMonth} className={box_classes}>
                     {prevMonth(param)}
                     {dayInMonth(param)}
                     {nextMonth(param)}
                   </div>
-                  <div key={currentMonth2} className={box_classes}>
+                  <div data-testid="rangeCard_month2" key={currentMonth2} className={box_classes}>
                     {prevMonth(param2)}
                     {dayInMonth(param2)}
                     {nextMonth(param2)}
