@@ -35,7 +35,7 @@ interface RangeCardProps {
   demoWithNoKey?: boolean;
 }
 
-type Param = ReturnType<typeof getParam>;
+export type Param = ReturnType<typeof getParam>;
 
 type Increment = 1 | -1;
 
@@ -74,25 +74,33 @@ const RangeCard: React.ForwardRefExoticComponent<
 
   // time and param for the visible monthCard month and month +1
   // The dropdown shows currentMonth & currentMonth2
-  const currentMonth2 = moment(currentMonth).startOf('month').add(1, 'month').format('YYYY/MM/DD');
-  const param: Param = getParam(moment(currentMonth).startOf('month').format('YYYY/MM/DD'));
+
+  const currentMonth2 = moment(new Date(currentMonth))
+    .startOf('month')
+    .add(1, 'month')
+    .format('YYYY/MM/DD');
+  const param: Param = getParam(
+    moment(new Date(currentMonth)).startOf('month').format('YYYY-MM-DD')
+  );
   const param2: Param = getParam(currentMonth2);
 
   // handle the data to display the hidden prev monthCard, current visible monthCard & the hidden next monthCard.
-  const prevMonthTime = moment(currentMonth)
+  const prevMonthTime = moment(new Date(currentMonth))
     .startOf('month')
     .subtract(1, 'month')
-    .format('YYYY/MM/DD');
-  const nextMonthTime = moment(currentMonth2).startOf('month').add(1, 'month').format('YYYY/MM/DD');
+    .format('YYYY-MM-DD');
+  const nextMonthTime = moment(new Date(currentMonth2))
+    .startOf('month')
+    .add(1, 'month')
+    .format('YYYY-MM-DD');
 
   const paramPrevMonth: Param = getParam(prevMonthTime);
   const paramNextMonth: Param = getParam(nextMonthTime);
 
-  // const isDemo = demo === 'render2month' || demo === 'renderNewMonth' || demo === 'transition';
-
   // Duration computed once startTime & endTime are selected
   const duration =
     startTime && endTime && moment.duration(moment(endTime).diff(startTime)).asDays();
+
   // previous Day in month classNames
   const prevAndNext_classes = classNames(
     styles[`rangeCard__day`],
@@ -106,9 +114,6 @@ const RangeCard: React.ForwardRefExoticComponent<
       cx({
         [`rangeCard__icon-prevMonth--${theme}`]: true,
       })
-      // cx({
-      //   'monthCard__icon-prevMonth--disabled': demo === 'transition',
-      // })
     ]
   );
 
@@ -127,11 +132,6 @@ const RangeCard: React.ForwardRefExoticComponent<
   const rangeCard_container_classes = classNames(
     styles['rangeCard__container'],
     styles[cx({ [`rangeCard__container--${theme}`]: true })]
-    //   styles[
-    //     cx({
-    //       'monthCard__container--visible': isDemo,
-    //     })
-    //   ]
   );
 
   const defaultStyle: CSSProperties = {
@@ -195,7 +195,7 @@ const RangeCard: React.ForwardRefExoticComponent<
       .map((day, i) => {
         const timeDayPrevMonth = moment(timeFirstDay)
           .subtract(day + 1, 'day')
-          .format('YYYY/MM/DD');
+          .format('YYYY-MM-DD');
 
         const weekdayPrevMonth = moment(timeDayPrevMonth).date();
         const isDayPast = disablePastDay && moment(today).isAfter(timeDayPrevMonth, 'day');
@@ -212,6 +212,7 @@ const RangeCard: React.ForwardRefExoticComponent<
         return (
           <div
             key={`prev-${i}`}
+            aria-label={`previous-${day + 1}`}
             role="button"
             className={prevMonth_classes}
             onClick={isDayPast ? () => null : (e) => handleSelectedDay(e, timeDayPrevMonth)}
@@ -230,26 +231,27 @@ const RangeCard: React.ForwardRefExoticComponent<
     const monthArr = Array.from({ length: numberOfDayInMonth }, (v, i) => i);
 
     return monthArr.map((day, i) => {
-      const day_time = moment(timeFirstDay).add(day, 'day').format('YYYY/MM/DD');
-      const isStartTime = moment(day_time).isSame(startTime, 'day');
-      const isEndTime = moment(day_time).isSame(endTime, 'day');
+      const day_time = moment(new Date(timeFirstDay)).add(day, 'day').format('YYYY-MM-DD');
+      const isStartTime = moment(new Date(day_time)).isSame(startTime, 'day');
+      const isEndTime = moment(new Date(day_time)).isSame(endTime, 'day');
       const isBetween =
-        moment(day_time).isAfter(startTime, 'day') && moment(day_time).isBefore(endTime, 'day');
+        moment(new Date(day_time)).isAfter(startTime, 'day') &&
+        moment(new Date(day_time)).isBefore(endTime, 'day');
 
       const isTodayAndNotSelected =
         highlightToday &&
         !isStartTime &&
         !isEndTime &&
         !isBetween &&
-        moment(day_time).isSame(today, 'day');
+        moment(new Date(day_time)).isSame(today, 'day');
 
-      const isDayPast = disablePastDay && moment(today).isAfter(day_time, 'day');
+      const isDayPast = disablePastDay && moment(new Date(today)).isAfter(day_time, 'day');
       const isWeekend =
         !isDayPast &&
         !isStartTime &&
         !isEndTime &&
         !isBetween &&
-        [0, 6].includes(moment(day_time).day());
+        [0, 6].includes(moment(new Date(day_time)).day());
 
       const daysInMonth_classes = classNames(
         styles[`rangeCard__day`],
@@ -267,8 +269,9 @@ const RangeCard: React.ForwardRefExoticComponent<
       );
       return (
         <div
-          key={`current-${i}`}
           role="button"
+          aria-label={`current-${day + 1}`}
+          key={`current-${i}`}
           className={daysInMonth_classes}
           onClick={isDayPast ? () => null : (e) => handleSelectedDay(e, day_time)}
           onKeyUp={isDayPast ? () => null : (e) => handleSelectedDay(e, day_time)}
@@ -286,10 +289,10 @@ const RangeCard: React.ForwardRefExoticComponent<
     if (!nextMonthDays) return;
 
     return nextMonthDays.map((day, i) => {
-      const timeDayNextMonth = moment(timeLastDay)
+      const timeDayNextMonth = moment(new Date(timeLastDay))
         .add(day + 1, 'day')
-        .format('YYYY/MM/DD');
-      const isDayPast = disablePastDay && moment(today).isAfter(timeDayNextMonth, 'day');
+        .format('YYYY-MM-DD');
+      const isDayPast = disablePastDay && moment(new Date(today)).isAfter(timeDayNextMonth, 'day');
 
       const nextMonth_classes = classNames(
         prevAndNext_classes,
@@ -303,6 +306,7 @@ const RangeCard: React.ForwardRefExoticComponent<
       return (
         <div
           key={`next-${i}`}
+          aria-label={`next-${day + 1}`}
           role="button"
           className={nextMonth_classes}
           onClick={isDayPast ? () => null : (e) => handleSelectedDay(e, timeDayNextMonth)}
@@ -318,8 +322,8 @@ const RangeCard: React.ForwardRefExoticComponent<
   const handleToggleMonth = (increment: Increment) => {
     const newMonth =
       increment > 0
-        ? moment(currentMonth).add(1, 'month').format('YYYY/MM/DD')
-        : moment(currentMonth).subtract(1, 'month').format('YYYY/MM/DD');
+        ? moment(new Date(currentMonth)).add(1, 'month').format('YYYY-MM-DD')
+        : moment(new Date(currentMonth)).subtract(1, 'month').format('YYYY-MM-DD');
     setCurrentMonth(newMonth);
     setActiveTransition(false);
   };
@@ -327,9 +331,7 @@ const RangeCard: React.ForwardRefExoticComponent<
   const handleArrowClick = (e: MouseEvent<SVGSVGElement>, isNextOrPrevious: boolean) => {
     e.preventDefault();
     setActiveTransition(true);
-    //   if (demo !== 'render2month') {
     setInProp(true);
-    //   }
     setNextOrPrev(isNextOrPrevious);
   };
 
@@ -339,20 +341,36 @@ const RangeCard: React.ForwardRefExoticComponent<
         <div className="d-flex flex-column">
           <div className="d-flex align-items-center justify-content-center">
             <svg
+              role="img"
+              aria-labelledby="svgPrevious"
               className={icon_prev_classes}
-              //   onClick={demo === 'transition' ? () => null : handlePreviousOnClick}
+              focusable={true}
               onClick={(e) => handleArrowClick(e, false)}
             >
+              <title id="svgPrevious">Previous Month</title>
               <use href={`${sprite}#icon-triangle-left`} className="text"></use>
             </svg>
-            <span className="flex-grow-1 d-flex justify-content-center">{`${param.fullMonth} ${param.year}`}</span>
+            <span
+              data-testid="rangeCard_selected_month"
+              className="flex-grow-1 d-flex justify-content-center"
+            >{`${param.fullMonth} ${param.year}`}</span>
           </div>
           <div className="d-flex justify-content-center">{weekHeader}</div>
         </div>
         <div className="d-flex flex-column">
           <div className="d-flex align-items-center justify-content-center ">
-            <span className="flex-grow-1 d-flex justify-content-center">{`${param2.fullMonth} ${param2.year}`}</span>
-            <svg className={icon_next_classes} onClick={(e) => handleArrowClick(e, true)}>
+            <span
+              data-testid="rangeCard_selected_month2"
+              className="flex-grow-1 d-flex justify-content-center"
+            >{`${param2.fullMonth} ${param2.year}`}</span>
+            <svg
+              role="img"
+              aria-labelledby="svgNext"
+              focusable={true}
+              className={icon_next_classes}
+              onClick={(e) => handleArrowClick(e, true)}
+            >
+              <title id="svgNext">Next Month</title>
               <use href={`${sprite}#icon-triangle-right`}> </use>
             </svg>
           </div>
@@ -371,9 +389,7 @@ const RangeCard: React.ForwardRefExoticComponent<
             setInProp(false);
           }}
           onExited={() => {
-            // if (demo !== 'transition') {
             handleToggleMonth(nextOrPrev ? 1 : -1);
-            // }
           }}
         >
           {(state) => {
@@ -381,7 +397,7 @@ const RangeCard: React.ForwardRefExoticComponent<
 
             return (
               <div
-                //   key={demoWithNoKey ? 1 : time}
+                id="rangeCard_transition_ref"
                 key={currentMonth}
                 className={`d-flex gap-3 flex-row${nextOrPrev ? '' : '-reverse'}`}
                 style={{
@@ -391,12 +407,12 @@ const RangeCard: React.ForwardRefExoticComponent<
                 ref={nodeRef}
               >
                 <div className="d-flex gap-3">
-                  <div key={currentMonth} className={box_classes}>
+                  <div data-testid="rangeCard_month1" key={currentMonth} className={box_classes}>
                     {prevMonth(param)}
                     {dayInMonth(param)}
                     {nextMonth(param)}
                   </div>
-                  <div key={currentMonth2} className={box_classes}>
+                  <div data-testid="rangeCard_month2" key={currentMonth2} className={box_classes}>
                     {prevMonth(param2)}
                     {dayInMonth(param2)}
                     {nextMonth(param2)}
