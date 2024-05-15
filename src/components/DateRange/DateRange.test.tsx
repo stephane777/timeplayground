@@ -13,7 +13,7 @@ describe('Date Range', () => {
     const input = getByRole('textbox', { name: 'date range' });
     expect(input).toBeInTheDocument();
     expect(getByText('Date')).toBeInTheDocument();
-    expect(getByPlaceholderText('DD/MM/YYYY - DD/MM/YYYY')).toBeInTheDocument();
+    expect(getByPlaceholderText('DD-MM-YYYY - DD-MM-YYYY')).toBeInTheDocument();
   });
 });
 
@@ -31,8 +31,8 @@ describe('Focus Date range', () => {
     expect(nextIcon).toBeInTheDocument();
   });
   test('should show 2 month & year label', () => {
-    const { fullMonth, year }: Param = getParam(moment().format('YYYY/MM/DD'));
-    const next_month = moment().startOf('month').add(1, 'month').format('YYYY/MM/DD');
+    const { fullMonth, year }: Param = getParam(moment().format('YYYY-MM-DD'));
+    const next_month = moment().startOf('month').add(1, 'month').format('YYYY-MM-DD');
     const { fullMonth: nextFullMonth, year: nextYear }: Param = getParam(next_month);
 
     const month_year = `${fullMonth} ${year}`;
