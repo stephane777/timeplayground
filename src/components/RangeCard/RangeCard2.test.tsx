@@ -187,7 +187,6 @@ describe('MonthCard with no Transition', () => {
     const previous_days = getAllByRole(month1_container, 'button', { name: /^previous-\d+/ });
     const target = moment().subtract(1, 'month').endOf('month').format('DD-MM-YYYY');
 
-    // await userEvent.click(previous_days[previous_days.length - 1]);
     fireEvent.keyUp(previous_days[previous_days.length - 1], {
       key: 'Enter',
       code: 'Enter',
@@ -201,7 +200,42 @@ describe('MonthCard with no Transition', () => {
     expect(input).toHaveDisplayValue(regex);
   });
 
-  it('sould select a start and end date', () => {
+  it('should select a day from next month', async () => {
+    const month1_container = screen.getByTestId('rangeCard_month1');
+
+    const next_days = getAllByRole(month1_container, 'button', { name: /^next-\d+/ });
+    const target = moment().add(1, 'month').startOf('month').format('DD-MM-YYYY');
+
+    await userEvent.click(next_days[0]);
+
+    const input = screen.getByRole('textbox', { name: 'date range' });
+
+    const [d, m, y] = target.split('-');
+    const regex = new RegExp(`${d}-${m}-${y} - [\\w-]+`);
+
+    expect(input).toHaveDisplayValue(regex);
+  });
+
+  it('ARIA: should select a day from next month', () => {
+    const month1_container = screen.getByTestId('rangeCard_month1');
+
+    const next_days = getAllByRole(month1_container, 'button', { name: /^next-\d+/ });
+    const target = moment().add(1, 'month').startOf('month').format('DD-MM-YYYY');
+
+    fireEvent.keyUp(next_days[0], {
+      key: 'Enter',
+      code: 'Enter',
+      charCode: 13,
+    });
+    const input = screen.getByRole('textbox', { name: 'date range' });
+
+    const [d, m, y] = target.split('-');
+    const regex = new RegExp(`${d}-${m}-${y} - [\\w-]+`);
+
+    expect(input).toHaveDisplayValue(regex);
+  });
+
+  it('sould select a start and end date & clear', () => {
     const month1_container = screen.getByTestId('rangeCard_month1');
 
     const fifth_day = moment().set('date', 5).format('DD-MM-YYYY');
@@ -227,6 +261,15 @@ describe('MonthCard with no Transition', () => {
     const regex2 = new RegExp(`${d}-${m}-${y} - ${d2}-${m2}-${y2}`);
 
     expect(input2).toHaveDisplayValue(regex2);
+
+    // Clear
+    const clear_button = screen.getByRole('button', { name: 'Clear' });
+    expect(clear_button).toBeInTheDocument();
+
+    fireEvent.click(clear_button);
+    const input3 = screen.getByRole('textbox', { name: 'date range' });
+
+    expect(input3).toHaveDisplayValue('DD-MM-YYYY - DD-MM-YYYY');
   });
 
   it('should select the last date clicked if the new date selected is older that the previous selected', () => {
@@ -315,5 +358,66 @@ describe('MonthCard with no Transition', () => {
     fireEvent.click(fourteenth_day_button);
     const input2 = screen.getByRole('textbox', { name: 'date range' });
     expect(input2).toHaveDisplayValue(regex);
+  });
+
+  it('should select today', () => {
+    const month1_container = screen.getByTestId('rangeCard_month2');
+
+    const eleventh_day = moment().add(1, 'month').set('date', 11).format('DD-MM-YYYY');
+    const eleventh_day_button = getByRole(month1_container, 'button', { name: 'current-11' });
+
+    fireEvent.click(eleventh_day_button);
+    const input = screen.getByRole('textbox', { name: 'date range' });
+
+    const [d, m, y] = eleventh_day.split('-');
+    const regex = new RegExp(`${d}-${m}-${y} - [\\w-]+`);
+
+    expect(input).toHaveDisplayValue(regex);
+
+    // Select today should replace the existing start date by today
+    const today = moment().format('DD-MM-YYYY');
+    const today_button = screen.getByRole('button', { name: 'Today' });
+    expect(today_button).toBeInTheDocument();
+
+    fireEvent.click(today_button);
+    const input2 = screen.getByRole('textbox', { name: 'date range' });
+
+    const [d2, m2, y2] = today.split('-');
+    const regex2 = new RegExp(`${d2}-${m2}-${y2} - [\\w-]+`);
+    expect(input2).toHaveDisplayValue(regex2);
+  });
+
+  it('should close the dropdown', () => {
+    const month1_container = screen.getByTestId('rangeCard_month1');
+
+    const fifth_day = moment().set('date', 5).format('DD-MM-YYYY');
+    const sixteenth_day = moment().set('date', 16).format('DD-MM-YYYY');
+
+    const fifth_day_button = getByRole(month1_container, 'button', { name: 'current-5' });
+    const sixteenth_day_button = getByRole(month1_container, 'button', { name: 'current-16' });
+
+    // Select start date
+    fireEvent.click(fifth_day_button);
+    const input = screen.getByRole('textbox', { name: 'date range' });
+
+    const [d, m, y] = fifth_day.split('-');
+    const regex = new RegExp(`${d}-${m}-${y} - [\\w-]+`);
+
+    expect(input).toHaveDisplayValue(regex);
+
+    // Select end date
+    fireEvent.click(sixteenth_day_button);
+    const input2 = screen.getByRole('textbox', { name: 'date range' });
+
+    const [d2, m2, y2] = sixteenth_day.split('-');
+    const regex2 = new RegExp(`${d}-${m}-${y} - ${d2}-${m2}-${y2}`);
+
+    expect(input2).toHaveDisplayValue(regex2);
+
+    // Close
+    const done_button = screen.getByRole('button', { name: 'Done' });
+    fireEvent.click(done_button);
+
+    expect(screen.queryByTestId('rangeCard_month2')).not.toBeInTheDocument();
   });
 });

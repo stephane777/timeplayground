@@ -286,9 +286,8 @@ const RangeCard: React.ForwardRefExoticComponent<
   // function to render all the days in next month to complete the current row in the current month
   const nextMonth = (param: Param) => {
     const { nextMonthDays, timeLastDay, today } = param;
-    if (!nextMonthDays) return;
 
-    return nextMonthDays.map((day, i) => {
+    return nextMonthDays?.map((day, i) => {
       const timeDayNextMonth = moment(new Date(timeLastDay))
         .add(day + 1, 'day')
         .format('YYYY-MM-DD');
@@ -310,7 +309,7 @@ const RangeCard: React.ForwardRefExoticComponent<
           role="button"
           className={nextMonth_classes}
           onClick={isDayPast ? () => null : (e) => handleSelectedDay(e, timeDayNextMonth)}
-          onKeyDown={isDayPast ? () => null : (e) => handleSelectedDay(e, timeDayNextMonth)}
+          onKeyUp={isDayPast ? () => null : (e) => handleSelectedDay(e, timeDayNextMonth)}
           tabIndex={0}
         >
           {day + 1}
