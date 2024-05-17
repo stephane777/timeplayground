@@ -3,6 +3,7 @@ import { App, routes } from './App';
 import { Layout } from '../Layout';
 import { customRender } from '../..//utils/testingHelpers/renderWithAllProviders';
 import { screen } from '@testing-library/react';
+import DatePicker from '../DatePicker/DatePicker';
 
 const MockedBerlinClockedPage = () => {
   return <div>{'Mocked Berlin Clock pages'}</div>;
@@ -80,5 +81,17 @@ describe('Render App', () => {
 
     const mocked_bc = screen.getByText(/Mocked Berlin Clock pages/, { exact: false });
     expect(mocked_bc).toBeInTheDocument();
+  });
+  it('should render any component', () => {
+    const { getByRole } = renderWithRouterV6({
+      element: <DatePicker speed={300} />,
+      path: '/',
+    });
+
+    const input = getByRole('textbox', { name: 'date picker' });
+    const img = getByRole('img', { name: 'date picker icon' });
+
+    expect(input).toBeInTheDocument();
+    expect(img).toBeInTheDocument();
   });
 });
