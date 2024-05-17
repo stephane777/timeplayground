@@ -5,7 +5,7 @@ import DateRange from '../DateRange/DateRange';
 import userEvent from '@testing-library/user-event';
 import { Transition } from 'react-transition-group';
 
-import { getTransitionArgs } from '../../utils';
+import { getTransitionArgs } from '../../utils/testingHelpers/transitionGroup';
 
 jest.mock('react-transition-group', () => {
   const FakeTransition = jest.fn(({ children }: { children: () => React.ReactNode }) => children());
