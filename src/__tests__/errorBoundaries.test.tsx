@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import ErrorBoundary from '../utils/errorBoundaries';
 
-import { renderWithRouter } from '../utils/testingHelpers/renderWithRouter';
+import { renderWithRouterV6 } from '../utils/testingHelpers/renderWithRouterV6';
 
 describe('Error boundary', () => {
   const realError = console.error;
@@ -31,7 +31,7 @@ describe('Error boundary', () => {
 
   test('should trigger a console.error', () => {
     // need a router wrapper here because Error boundary will return a JSX.Element containing a Link from react-router-dom
-    renderWithRouter(
+    renderWithRouterV6(
       <ErrorBoundary>
         <ThrowError />
         <p>Render the children</p>
