@@ -19,7 +19,7 @@ export const getParam = (time: string) => {
   // an array with as much element we have from Monday till weekDayFirstOfMonth
   // this array is needed to loop through it and get all the previous day from the 1st of month till fist Monday last month.
   const prevMonthDays: number[] = Array.from({ length: weekDayFirstOfMonth - 1 }, (v, i) => i);
-  const nextMonthDays: number[] = Array.from({ length: 7 - weekDayLastOfMonth }, (v, i) => i) || [];
+  const nextMonthDays: number[] = Array.from({ length: 7 - weekDayLastOfMonth }, (v, i) => i);
 
   const result = {
     today: moment().format('YYYY-MM-DD'),
