@@ -4,6 +4,7 @@ import DatePicker from '../DatePicker/DatePicker';
 import moment from 'moment';
 import userEvent from '@testing-library/user-event';
 import { Transition } from 'react-transition-group';
+import { getTransitionArgs } from '../../utils/testingHelpers/transitionGroup';
 
 jest.mock('react-transition-group', () => {
   const FakeTransition = jest.fn(({ children }: { children: () => React.ReactNode }) => children());
@@ -12,16 +13,6 @@ jest.mock('react-transition-group', () => {
     Transition: FakeTransition,
   };
 });
-
-const getTransitionArgs = (ref: HTMLElement | null) => {
-  return {
-    children: expect.any(Function) as () => React.ReactNode,
-    nodeRef: { current: ref as unknown },
-    onEntered: expect.any(Function) as () => void,
-    onExited: expect.any(Function) as () => void,
-    timeout: { exit: 300 },
-  };
-};
 
 beforeEach(() => {
   jest.resetModules();
@@ -35,7 +26,7 @@ afterEach(() => {
 });
 
 describe('Month Card with Transition', () => {
-  it('should show the Month Card & call Transition with args', () => {
+  it('should show the Month Card & call Transition with default args', () => {
     const today = moment().format('DD/MM/YYYY');
 
     expect(screen.queryByDisplayValue(today)).toBeInTheDocument();
