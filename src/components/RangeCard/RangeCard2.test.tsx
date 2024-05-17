@@ -14,17 +14,17 @@ import { Param } from '../RangeCard/RangeCard';
 import moment from 'moment';
 import userEvent from '@testing-library/user-event';
 
-beforeEach(() => {
-  render(<DateRange speed={300} />, {});
-  fireEvent.focus(screen.getByRole('textbox'));
-});
-
-afterEach(() => {
-  jest.clearAllMocks();
-  cleanup();
-});
-
 describe('MonthCard with no Transition', () => {
+  beforeEach(() => {
+    render(<DateRange speed={300} />, {});
+    fireEvent.focus(screen.getByRole('textbox'));
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+    cleanup();
+  });
+
   it('should trigger the Transition and show next month', async () => {
     const next_month = moment().startOf('month').add(1, 'month').format('YYYY/MM/DD');
     const next_month2 = moment().startOf('month').add(1, 'month').format('YYYY/MM/DD');
@@ -419,5 +419,28 @@ describe('MonthCard with no Transition', () => {
     fireEvent.click(done_button);
 
     expect(screen.queryByTestId('rangeCard_month2')).not.toBeInTheDocument();
+  });
+});
+
+describe('monthCard with props', () => {
+  it('should render the Date Range', () => {
+    const { getByTestId } = render(<DateRange highlightToday disablePastDay speed={300} />);
+    fireEvent.focus(screen.getByRole('textbox'));
+
+    const month1_container = getByTestId('rangeCard_month1');
+    const month2_container = getByTestId('rangeCard_month2');
+
+    expect(month1_container).toBeInTheDocument();
+    expect(month2_container).toBeInTheDocument();
+  });
+
+  it('should cover the case when the 1st of month is Sunday', () => {
+    const { getByText } = render(<DateRange date="2024-09-01" speed={300} />);
+    fireEvent.focus(screen.getByRole('textbox'));
+
+    const { fullMonth, year }: Param = getParam(moment('2024-09-01').format('YYYY-MM-DD'));
+    const next_month_year = `${fullMonth} ${year}`;
+
+    expect(getByText(next_month_year)).toBeInTheDocument();
   });
 });
