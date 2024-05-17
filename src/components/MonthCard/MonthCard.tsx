@@ -238,8 +238,7 @@ const MonthCard: React.ForwardRefExoticComponent<
   // function to render all the days in next month to complete the current row in the current month
   const nextMonth = (param: Param) => {
     const { nextMonthDays, timeLastDay } = param;
-    if (!nextMonthDays) return;
-    return nextMonthDays.map((day, i) => {
+    return nextMonthDays?.map((day, i) => {
       const timeDayNextMonth = timeLastDay + 1000 * 60 * 60 * 24 * (i + 1);
       return (
         <div
