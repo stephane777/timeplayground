@@ -16,10 +16,11 @@ interface DateRange {
   highlightToday?: boolean;
   demo?: 'render2month' | 'transition' | 'renderNewMonth';
   demoWithNoKey?: boolean;
+  date?: string;
 }
 
-const DateRange: React.FC<DateRange> = ({ speed, disablePastDay, highlightToday }) => {
-  const [currentMonth, setCurrentMonth] = useState<string>(moment().format('YYYY-MM-DD'));
+const DateRange: React.FC<DateRange> = ({ speed, disablePastDay, highlightToday, date }) => {
+  const [currentMonth, setCurrentMonth] = useState<string>(moment(date).format('YYYY-MM-DD'));
   const [startTime, setStartTime] = useState<string | null>(null);
   const [endTime, setEndTime] = useState<string | null>(null);
   const [active, setActive] = useState<boolean>(false);
