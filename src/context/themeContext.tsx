@@ -11,7 +11,7 @@ interface ContextValue {
   setTheme?: React.Dispatch<React.SetStateAction<Theme>>;
 }
 
-export const ThemeContext = createContext<ContextValue>({ theme: 'light' });
+export const ThemeContext = createContext<ContextValue>({ theme: 'dark' });
 
 /** Below is for the Chrome React dev Tools extension
  * to display the name of the context instead
@@ -28,7 +28,7 @@ export const useTheme = () => {
 };
 
 const usePassedDownValues = () => {
-  const [theme, setTheme] = useState<Theme>('light');
+  const [theme, setTheme] = useState<Theme>('dark');
 
   //The state should be memoized to maintain the referential equality/ same location in memory. If not
   // every time this context is called a new location in memory will be created for the values.
