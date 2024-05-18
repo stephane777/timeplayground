@@ -13,9 +13,10 @@ interface DatePicker {
   speed: number;
   demo?: 'render2month' | 'transition' | 'renderNewMonth';
   demoWithNoKey?: boolean;
+  showLabel?: boolean;
 }
 
-const DatePicker: React.FC<DatePicker> = ({ speed, demo, demoWithNoKey }) => {
+const DatePicker: React.FC<DatePicker> = ({ speed, demo, demoWithNoKey, showLabel = true }) => {
   const [time, setTime] = useState<number>(0);
   const [active, setActive] = useState<boolean>(false);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
@@ -69,9 +70,11 @@ const DatePicker: React.FC<DatePicker> = ({ speed, demo, demoWithNoKey }) => {
   return (
     <div className={styles[`datePicker`]}>
       <InputGroup>
-        <Form.Label htmlFor="date" className="align-self-center me-4">
-          Date
-        </Form.Label>
+        {showLabel && (
+          <Form.Label htmlFor="date" className="align-self-center me-4">
+            Date
+          </Form.Label>
+        )}
         <Form.Control
           type="text"
           id="date"
