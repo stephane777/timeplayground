@@ -94,13 +94,15 @@ const MonthCard: React.ForwardRefExoticComponent<
   const icon_prev_classes = classNames(
     styles['monthCard__icon-prevMonth'],
     styles[
-      (cx({
+      cx({
         'monthCard__icon-prevMonth--light': theme === 'light',
         'monthCard__icon-prevMonth--dark': theme === 'dark',
-      }),
+      })
+    ],
+    styles[
       cx({
         'monthCard__icon-prevMonth--disabled': demo === 'transition',
-      }))
+      })
     ]
   );
 
