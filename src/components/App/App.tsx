@@ -6,9 +6,9 @@ import styles from './App.module.scss';
 import classNames from 'classnames';
 import { Layout } from '../Layout';
 
-const Date_Picker_Page = lazy(() => import('../../pages/DatePickerPage'));
-const Date_Range_Page = lazy(() => import('../../pages/DateRangePage'));
-const Berlin_Clock_Page = lazy(() => import('../../pages/BerlinClockPage'));
+const Date_Picker_Page = lazy(() => import('../../pages/DatePicker/DatePickerPage'));
+const Date_Range_Page = lazy(() => import('../../pages/DateRange/DateRangePage'));
+const Berlin_Clock_Page = lazy(() => import('../../pages/BerlinClock/BerlinClockPage'));
 
 const Loader: FC<{ text: string }> = ({ text }) => (
   <div style={{ background: 'hsl(65, 65, 60)' }}>Loading {text}...</div>

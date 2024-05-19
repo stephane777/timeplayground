@@ -18,7 +18,7 @@ describe('MainNavbar', () => {
       </MemoryRouter>
     );
     const nav = screen.getByRole('navigation');
-    expect(nav).toHaveAttribute('data-bs-theme', 'light');
+    expect(nav).toHaveAttribute('data-bs-theme', 'dark');
 
     expect(screen.getByRole('banner')).toBeInTheDocument();
   });

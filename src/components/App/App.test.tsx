@@ -17,15 +17,15 @@ const MockedDateRangePage = () => {
   return <div>{'Mocked Date Range pages'}</div>;
 };
 
-jest.mock('../../pages/BerlinClockPage', () => {
+jest.mock('../../pages/BerlinClock/BerlinClockPage', () => {
   return jest.fn(() => <MockedBerlinClockedPage />);
 });
 
-jest.mock('../../pages/DatePickerPage', () => {
+jest.mock('../../pages/DatePicker/DatePickerPage', () => {
   return jest.fn(() => <MockedDatePickerPage />);
 });
 
-jest.mock('../../pages/DateRangePage', () => {
+jest.mock('../../pages/DateRange/DateRangePage', () => {
   return jest.fn(() => <MockedDateRangePage />);
 });
 
