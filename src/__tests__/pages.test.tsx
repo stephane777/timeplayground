@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import BerlinClockPage from '../pages/BerlinClockPage';
-import DateRangePage from '../pages/DateRangePage';
-import DatePickerPage from '../pages/DatePickerPage';
+import BerlinClockPage from '../pages/BerlinClock/BerlinClockPage';
+import DateRangePage from '../pages/DateRange/DateRangePage';
+import DatePickerPage from '../pages/DatePicker/DatePickerPage';
 
 const realError = console.error;
 const realWarning = console.warn;

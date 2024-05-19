@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 // import { CopyBlock, hybrid } from 'react-code-blocks';
-import DateRange from '../components/DateRange/DateRange';
+import DateRange from '../../components/DateRange/DateRange';
 import Container from 'react-bootstrap/Container';
 // import Row from 'react-bootstrap/Row';
 // import Col from 'react-bootstrap/Col';
@@ -10,7 +10,7 @@ import Container from 'react-bootstrap/Container';
 // import Figure from 'react-bootstrap/Figure';
 // import img2 from '../../assets/img/png/MonthCard_Next.png';
 // import img1 from '../../assets/img/png/MonthCard_prev.png';
-import styles from '../components/DateRange/DateRange.module.scss';
+import styles from '../../components/DateRange/DateRange.module.scss';
 
 const DateRangePage: FC = () => {
   return (

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import BerlinClock from '../components/BerlinClock/BerlinClock';
-import styles from '../components/App/App.module.scss';
-import styles2 from '../components/BerlinClock/BerlinClock.module.scss';
+import { BerlinClock } from '../../components/BerlinClock';
+import styles from '../../components/App/App.module.scss';
+import styles2 from '../../components/BerlinClock/BerlinClock.module.scss';
 import Container from 'react-bootstrap/Container';
 
 const BerlinClockPage: FC = () => {
