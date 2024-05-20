@@ -15,23 +15,6 @@
       fill: var(--bs-gray-300);
     }
   }
-
-  &__input--dark {
-    border: 1px solid $gray-600;
-    background-color: $dark;
-    color: $white;
-    &::placeholder {
-      color: white;
-    }
-    &:focus {
-      background-color: $dark;
-      color: white;
-    }
-  }
-  &__inputgroup--dark {
-    border: 1px solid $gray-600;
-    background-color: $dark;
-  }
   &__container {
     margin: 0 auto;
     width: 350px;
