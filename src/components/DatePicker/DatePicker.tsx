@@ -98,6 +98,7 @@ const DatePicker: React.FC<DatePicker> = ({ speed, demo, demoWithNoKey, showLabe
             speed={speed}
             demo={demo}
             demoWithNoKey={demoWithNoKey}
+            showLabel={showLabel}
           />
         )}
       </InputGroup>

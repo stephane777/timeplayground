@@ -25,6 +25,7 @@ interface MonthCardProps {
   speed: number;
   demo?: 'render2month' | 'transition' | 'renderNewMonth';
   demoWithNoKey?: boolean;
+  showLabel?: boolean;
 }
 
 export type Param = ReturnType<typeof getParam>;
@@ -37,7 +38,10 @@ type TransitionStyle = {
 
 const MonthCard: React.ForwardRefExoticComponent<
   React.RefAttributes<HTMLDivElement> & MonthCardProps
-> = forwardRef(function ({ time, setTime, setSelectedDay, speed, demo, demoWithNoKey }, ref) {
+> = forwardRef(function (
+  { time, setTime, setSelectedDay, speed, demo, demoWithNoKey, showLabel },
+  ref
+) {
   const { theme } = useTheme();
 
   // when activeTransition is true react render prev, current & next month needed for the animation
@@ -274,6 +278,11 @@ const MonthCard: React.ForwardRefExoticComponent<
     styles[
       cx({
         'monthCard__container--visible': isDemo,
+      })
+    ],
+    styles[
+      cx({
+        'monthCard__container--showLabel': showLabel,
       })
     ]
   );

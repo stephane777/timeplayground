@@ -4,7 +4,7 @@
     border: 1px solid rgb(222, 226, 230);
     position: absolute;
     top: 39px;
-    left: 55px;
+    left: 2px;
     width: auto;
     height: auto;
     display: flex;
@@ -22,6 +22,9 @@
     }
     &--visible {
       overflow: visible;
+    }
+    &--showLabel {
+      left: 55px;
     }
   }
 
