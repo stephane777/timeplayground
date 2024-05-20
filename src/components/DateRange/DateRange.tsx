@@ -56,14 +56,6 @@ const DateRange: React.FC<DateRange> = ({ speed, disablePastDay, highlightToday,
     };
   }, []);
 
-  const inputTheme = cx({
-    'dateRange__input--dark': theme === 'dark',
-  });
-
-  const inputGroupTheme = cx({
-    'dateRange__inputgroup--dark': theme === 'dark',
-  });
-
   const calendar_icon_classes = cx({
     'dateRange__calendar-icon': true,
     [`dateRange__calendar-icon--${theme}`]: true,
@@ -71,7 +63,7 @@ const DateRange: React.FC<DateRange> = ({ speed, disablePastDay, highlightToday,
 
   return (
     <div className={styles[`dateRange`]}>
-      <InputGroup>
+      <InputGroup data-bs-theme={theme}>
         <Form.Label htmlFor="date" className="align-self-center me-4">
           Date
         </Form.Label>
@@ -82,10 +74,10 @@ const DateRange: React.FC<DateRange> = ({ speed, disablePastDay, highlightToday,
           aria-label="date range"
           placeholder="DD-MM-YYYY - DD-MM-YYYY"
           ref={controlInputRef}
-          className={inputTheme}
+          autoComplete="off"
           onFocus={() => setActive(true)}
         />
-        <InputGroup.Text id="cal_icon" className={inputGroupTheme}>
+        <InputGroup.Text id="cal_icon">
           <svg className={calendar_icon_classes}>
             <use href={`${sprite}#icon-calendar`}></use>
           </svg>

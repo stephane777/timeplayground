@@ -14,19 +14,7 @@
       fill: var(--bs-gray-300);
     }
   }
-
-  &__input--dark {
-    background-color: $dark;
-    color: $white;
-    &::placeholder {
-      color: white;
-    }
-  }
-  &__inputgroup--dark {
-    background-color: $dark;
-  }
   &__container {
     margin: 0 auto;
-    width: 260px;
   }
 }

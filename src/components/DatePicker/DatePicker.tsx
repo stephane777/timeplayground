@@ -53,14 +53,6 @@ const DatePicker: React.FC<DatePicker> = ({ speed, demo, demoWithNoKey, showLabe
     };
   }, []);
 
-  const inputTheme = cx({
-    'datePicker__input--dark': theme === 'dark',
-  });
-
-  const inputGroupTheme = cx({
-    'datePicker__inputgroup--dark': theme === 'dark',
-  });
-
   const calendar_icon_classes = cx({
     'datePicker__calendar-icon': true,
     'datePicker__calendar-icon--light': theme === 'light',
@@ -69,7 +61,7 @@ const DatePicker: React.FC<DatePicker> = ({ speed, demo, demoWithNoKey, showLabe
 
   return (
     <div className={styles[`datePicker`]}>
-      <InputGroup>
+      <InputGroup data-bs-theme={theme}>
         {showLabel && (
           <Form.Label htmlFor="date" className="align-self-center me-4">
             Date
@@ -82,10 +74,10 @@ const DatePicker: React.FC<DatePicker> = ({ speed, demo, demoWithNoKey, showLabe
           aria-label="date picker"
           placeholder="DD/MM/YYYY"
           ref={controlInputRef}
-          className={inputTheme}
           onFocus={() => setActive(true)}
+          autoComplete="off"
         />
-        <InputGroup.Text id="cal_icon" className={inputGroupTheme}>
+        <InputGroup.Text id="cal_icon">
           <svg
             className={calendar_icon_classes}
             role="img"
