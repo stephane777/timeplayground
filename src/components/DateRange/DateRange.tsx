@@ -65,7 +65,7 @@ const DateRange: React.FC<DateRange> = ({ speed, disablePastDay, highlightToday,
     <div className={styles[`dateRange`]}>
       <InputGroup data-bs-theme={theme}>
         <Form.Label htmlFor="date" className="align-self-center me-4">
-          Date
+          Dates
         </Form.Label>
         <Form.Control
           type="text"
