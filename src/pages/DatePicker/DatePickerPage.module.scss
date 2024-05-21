@@ -1,0 +1,29 @@
+@import '../../styles/utils/variables';
+
+.datePickerPage {
+  &__wrapper {
+    padding-top: 128px;
+    display: flex;
+  }
+  &__container {
+    margin: 0 auto;
+    max-width: 260px;
+  }
+  &__sidebar {
+    position: sticky;
+    top: 100px;
+    border-left: 1px solid #1f2b41;
+  }
+  &__sidebar-btn {
+    text-decoration: none;
+    display: flex;
+    justify-content: start;
+    font-size: 12px;
+    &:hover {
+      cursor: pointer;
+    }
+    &--active {
+      text-decoration: underline;
+    }
+  }
+}
