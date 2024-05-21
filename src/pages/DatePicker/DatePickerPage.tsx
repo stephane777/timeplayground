@@ -89,7 +89,7 @@ const DatePickerPage: FC = () => {
     <Container fluid="sm" className={styles[`datePickerPage__wrapper`]}>
       <Row className="mb-7">
         <Col xxl={9}>
-          <Container className="flex">
+          <Container>
             <section className="mt-0">
               <h1 className="">Date Picker</h1>
               <div className={styles[`datePickerPage__container`]}>
