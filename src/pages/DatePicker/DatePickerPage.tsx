@@ -66,7 +66,9 @@ const DatePickerPage: FC = () => {
     ref: React.MutableRefObject<HTMLElement | null>
   ) => {
     e.preventDefault();
-    ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (ref.current) {
+      scrollTo({ top: ref?.current?.offsetTop - 90, behavior: 'smooth' });
+    }
   };
 
   const sidebar_btn_classes = (btn: string) =>
