@@ -12,7 +12,7 @@ describe('Date Range', () => {
 
     const input = getByRole('textbox', { name: 'date range' });
     expect(input).toBeInTheDocument();
-    expect(getByText('Date')).toBeInTheDocument();
+    expect(getByText('Dates')).toBeInTheDocument();
     expect(getByPlaceholderText('DD-MM-YYYY - DD-MM-YYYY')).toBeInTheDocument();
   });
 });
