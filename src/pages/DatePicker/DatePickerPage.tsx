@@ -1,22 +1,26 @@
 import React, { FC, useRef, MouseEvent, useState, useEffect, useCallback, useMemo } from 'react';
-
 import { CopyBlock, hybrid } from 'react-code-blocks';
-import Tab from 'react-bootstrap/Tab';
-import Tabs from 'react-bootstrap/Tabs';
-import DatePicker from '../../components/DatePicker/DatePicker';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import codeblocks from '../../codeblocks/datepicker_cb';
-import Button from 'react-bootstrap/Button';
-import Badge from 'react-bootstrap/Badge';
-import Figure from 'react-bootstrap/Figure';
-import img2 from '../../assets/img/png/MonthCard_Next.png';
-import classNames from 'classnames';
-import img1 from '../../assets/img/png/MonthCard_prev.png';
-import styles from './DatePickerPage.module.scss';
 import { ButtonGroup } from 'react-bootstrap';
 import { useTheme } from '../../context/themeContext';
+import DatePicker from '../../components/DatePicker/DatePicker';
+import codeblocks from '../../codeblocks/datepicker_cb';
+import classNames from 'classnames';
+import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
+import Figure from 'react-bootstrap/Figure';
+import styles from './DatePickerPage.module.scss';
+import Badge from 'react-bootstrap/Badge';
+import Tabs from 'react-bootstrap/Tabs';
+import img2 from '../../assets/img/png/MonthCard_next_dark.png';
+import img1 from '../../assets/img/png/MonthCard_prev_dark.png';
+import img4 from '../../assets/img/png/MonthCard_next_light.png';
+
+import img3 from '../../assets/img/png/MonthCard_prev_light.png';
+import Tab from 'react-bootstrap/Tab';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
+const cx = classNames.bind(styles);
 
 const DatePickerPage: FC = () => {
   const [activeSection, setActiveSection] = useState<string | null>(null);
@@ -65,12 +69,24 @@ const DatePickerPage: FC = () => {
     ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  const sidebar_classes = classNames(styles[`datePickerPage__sidebar`]);
+  const sidebar_btn_classes = (btn: string) =>
+    classNames(
+      styles[
+        cx({
+          [`datePickerPage__sidebar-btn`]: true,
+        })
+      ],
+      styles[
+        cx({
+          [`datePickerPage__sidebar-btn--active`]: btn === activeSection,
+        })
+      ]
+    );
 
   return (
     <Container fluid="sm" className={styles[`datePickerPage__wrapper`]}>
-      <Row>
-        <Col>
+      <Row className="mb-7">
+        <Col xxl={9}>
           <Container className="flex">
             <section className="mt-0">
               <h1 className="">Date Picker</h1>
@@ -82,38 +98,39 @@ const DatePickerPage: FC = () => {
             </section>
 
             <section ref={overview_ref} data-section="overview">
-              <h3 className="my-5">Overview:</h3>
+              <h2 className="my-5">Overview:</h2>
               <p>
-                This was a project I&apos;ve build few years back and it is time to refactor it with
-                Typescript and a smooth animation with{' '}
+                This was a project I&apos;ve build few years back and it is time to refresh it with
+                type safty and a smooth animation with{' '}
                 <Button
-                  className="p-0 text-decoration-none border-0"
+                  data-bs-theme={theme}
+                  className="p-0 text-decoration-none border-0 align-baseline"
                   variant="link"
                   href="https://reactcommunity.org/react-transition-group/"
                 >
                   react-transition-group
                 </Button>
-                .
-                <br />
-                The date picker is built with Form.Control type=&apos;text&apos; from{' '}
+                . The date picker is built with Form.Control type=&apos;text&apos; from{' '}
                 <Button
-                  className="p-0 text-decoration-none border-0"
+                  data-bs-theme={theme}
+                  className="p-0 text-decoration-none border-0 align-baseline"
                   variant="link"
                   href="https://react-bootstrap.netlify.app/"
                 >
                   React Bootstrap
                 </Button>{' '}
-                package. The dropdown is entirely built with React.
-                <br />
-                Before jumping into details let&apos;s break down what we need to achieve. First
-                when the user click the arrow right or left we need to render 2 months side by side.
-                Then the transition is active for few milliseconds. When the animation is ending
-                setting the new state <Badge bg="secondary">time</Badge> which will render the new
-                month.
+                package. The dropdown is entirely built with React. Before jumping into details
+                let&apos;s break down what we need to achieve. First when the user click the arrow
+                right or left we need to render 2 months side by side. Then the transition is active
+                for few milliseconds. When the animation is ending setting the new state{' '}
+                <Badge bg={theme === 'dark' ? 'secondary' : 'light'} className="fs-7">
+                  time
+                </Badge>{' '}
+                which will render the new month.
               </p>
             </section>
             <section ref={render_2_month_ref} data-section="render_2_month">
-              <h3 className="my-5">Render current month & next or previous month: </h3>
+              <h2 className="my-5">Render current month & next or previous month: </h2>
 
               <Container>
                 <Tabs
@@ -123,7 +140,7 @@ const DatePickerPage: FC = () => {
                   data-bs-theme={theme}
                 >
                   <Tab eventKey="description" title="Description">
-                    <Row>
+                    <Row className="mt-5">
                       <Col lg="3">
                         <div className={styles[`datePickerPage__container`]}>
                           <DatePicker
@@ -146,34 +163,40 @@ const DatePickerPage: FC = () => {
                         <ol>
                           <li>
                             <p>
-                              <Badge bg="secondary">activeTransition</Badge> when true the date
-                              picker is rendered with 2 months.
+                              <Badge bg={theme === 'dark' ? 'secondary' : 'light'} className="fs-7">
+                                activeTransition
+                              </Badge>{' '}
+                              when true the date picker is rendered with 2 months.
                             </p>
                           </li>
                           <li>
                             <p>
-                              <Badge bg="secondary">inProp</Badge> state is needed for
-                              react-transition-group Transition component
+                              <Badge bg={theme === 'dark' ? 'secondary' : 'light'} className="fs-7">
+                                inProp
+                              </Badge>{' '}
+                              state is needed for react-transition-group Transition component
                             </p>
                           </li>
                           <li>
                             <p>
-                              <Badge bg="secondary">nextOrPrev</Badge> state to handle which month
-                              previous or next the user want to see.
+                              <Badge bg={theme === 'dark' ? 'secondary' : 'light'} className="fs-7">
+                                nextOrPrev
+                              </Badge>{' '}
+                              state to handle which month previous or next the user want to see.
                             </p>
                           </li>
                         </ol>
                       </Col>
                     </Row>
 
-                    <Row>
+                    <Row className="mt-5">
                       <Col lg="6">
                         <Figure>
                           <Figure.Image
                             width={480}
                             height={250}
                             alt="user clicked previous month"
-                            src={img1}
+                            src={theme === 'dark' ? img1 : img3}
                           />
                           <Figure.Caption>User clicked previous month.</Figure.Caption>
                         </Figure>
@@ -184,7 +207,7 @@ const DatePickerPage: FC = () => {
                             width={530}
                             height={250}
                             alt="user clicked next month"
-                            src={img2}
+                            src={theme === 'dark' ? img2 : img4}
                           />
                           <Figure.Caption>User clicked next month.</Figure.Caption>
                         </Figure>
@@ -192,7 +215,7 @@ const DatePickerPage: FC = () => {
                     </Row>
                   </Tab>
                   <Tab eventKey="code" title="Code">
-                    <Row>
+                    <Row className="mt-5">
                       <CopyBlock
                         language="tsx"
                         showLineNumbers
@@ -208,7 +231,7 @@ const DatePickerPage: FC = () => {
               </Container>
             </section>
             <section ref={transition_ref} data-section="transition">
-              <h3 className="my-5">The transition:</h3>
+              <h2 className="my-5">The transition:</h2>
               <Container>
                 <Tabs
                   defaultActiveKey="description2"
@@ -217,7 +240,7 @@ const DatePickerPage: FC = () => {
                   data-bs-theme={theme}
                 >
                   <Tab eventKey="description2" title="Description">
-                    <Row className="mb-5">
+                    <Row className="mt-5">
                       <Col lg="3">
                         <div className={styles[`datePickerPage__container`]}>
                           <DatePicker showLabel={false} speed={1000} demo={'transition'} />
@@ -225,13 +248,19 @@ const DatePickerPage: FC = () => {
                       </Col>
                       <Col lg="9">
                         <p>
-                          At the time the user click next month <Badge bg="secondary">inProp</Badge>{' '}
+                          At the time the user click next month{' '}
+                          <Badge bg={theme === 'dark' ? 'secondary' : 'light'} className="fs-7">
+                            inProp
+                          </Badge>{' '}
                           state is set to true. The entering phase is executed following by the
                           exiting phase. For our date picker we are only interested for one phase,
                           here I went for the exiting phase. That means the Transition component
                           have the callback onEntered to set the{' '}
-                          <Badge bg="secondary">inProp</Badge> state to false which will trigger the
-                          exiting phase thus our animation. <br />
+                          <Badge bg={theme === 'dark' ? 'secondary' : 'light'} className="fs-7">
+                            inProp
+                          </Badge>{' '}
+                          state to false which will trigger the exiting phase thus our animation.{' '}
+                          <br />
                           At the end of the animation the drop down show the next month but we still
                           have the initial month shown in the input and we still have the initial
                           month and the next month side by side. <br />
@@ -240,7 +269,7 @@ const DatePickerPage: FC = () => {
                     </Row>
                   </Tab>
                   <Tab eventKey="code2" title="Code">
-                    <Row>
+                    <Row className="mt-5">
                       <Col>
                         <CopyBlock
                           language="tsx"
@@ -257,7 +286,7 @@ const DatePickerPage: FC = () => {
               </Container>
             </section>
             <section ref={render_selected} data-section="render_selected">
-              <h3 className="my-5">Render the new selected month:</h3>
+              <h2 className="my-5">Render the new selected month:</h2>
               <Container>
                 <Row>
                   <Col lg="3">
@@ -272,11 +301,16 @@ const DatePickerPage: FC = () => {
                   </Col>
                   <Col lg="9">
                     <p>
-                      We can now trigger <Badge bg="secondary">time</Badge> state update with the
-                      new time, this will rerender DatePicker component and update the input with
-                      only one month showing in the dropdown because{' '}
-                      <Badge bg="secondary">activeTransition</Badge> was set to false at the same
-                      time. <br />
+                      We can now trigger{' '}
+                      <Badge bg={theme === 'dark' ? 'secondary' : 'light'} className="fs-7">
+                        time
+                      </Badge>{' '}
+                      state update with the new time, this will rerender DatePicker component and
+                      update the input with only one month showing in the dropdown because{' '}
+                      <Badge bg={theme === 'dark' ? 'secondary' : 'light'} className="fs-7">
+                        activeTransition
+                      </Badge>{' '}
+                      was set to false at the same time. <br />
                       Oh it seems we have an issue here. We supposed to have the animation ending at
                       the time DatePicker component is rendered with the new month. It looks like
                       that the Transition container which have the css animation applied translate
@@ -294,7 +328,10 @@ const DatePickerPage: FC = () => {
                       <li>
                         <p>
                           The animation is ending with the new month card visible, triggering a{' '}
-                          <Badge bg="secondary">time</Badge> state update{' '}
+                          <Badge bg={theme === 'dark' ? 'secondary' : 'light'} className="fs-7">
+                            time
+                          </Badge>{' '}
+                          state update{' '}
                         </p>
                       </li>
                       <li>
@@ -306,7 +343,7 @@ const DatePickerPage: FC = () => {
                     </ol>
                   </Col>
                 </Row>
-                <Row>
+                <Row className="mt-5">
                   <Col lg="3">
                     <div className={styles[`datePickerPage__container`]}>
                       <DatePicker
@@ -320,16 +357,22 @@ const DatePickerPage: FC = () => {
                   <Col lg="9">
                     <p>
                       React rerender the DatePicker component following{' '}
-                      <Badge bg="secondary">time</Badge> state update. While this component should
-                      rerender all its children we can assume that the Transition container
-                      hasn&apos;t changed at all, so during the reconciliation phase React
-                      doesn&apos;t unmount this dom node. Because of this the css transition is
-                      still the same and we can see it translating back to its initial position. To
-                      fix this we need to tell React to unmount Transition container when a new time
-                      is set. We can simply add a key tag to the transition container with the value
-                      of <Badge bg="secondary">time</Badge> state. That way each time we set a new
-                      time the transition container is unmounted from the Dom and a new one is
-                      mounted. The final work is now to make only month card length visible.
+                      <Badge bg={theme === 'dark' ? 'secondary' : 'light'} className="fs-7">
+                        time
+                      </Badge>{' '}
+                      state update. While this component should rerender all its children we can
+                      assume that the Transition container hasn&apos;t changed at all, so during the
+                      reconciliation phase React doesn&apos;t unmount this DOM node. Because of this
+                      the css transition is still the same and we can see it translating back to its
+                      initial position. To fix this we need to tell React to unmount Transition
+                      container when a new time is set. We can simply add a key tag to the
+                      transition container with the value of{' '}
+                      <Badge bg={theme === 'dark' ? 'secondary' : 'light'} className="fs-7">
+                        time
+                      </Badge>{' '}
+                      state. That way each time we set a new time the transition container is
+                      unmounted from the DOM and a new one is mounted. The final work is now to make
+                      only month card length visible.
                     </p>
                   </Col>
                 </Row>
@@ -337,12 +380,16 @@ const DatePickerPage: FC = () => {
             </section>
           </Container>
         </Col>
-        <Col xl={3} className="position-relative d-none d-xxl-block">
-          <section className={sidebar_classes}>
-            <ButtonGroup vertical className="d-flex justify-content-start align-content-start">
+        <Col xxl={3} className="position-relative d-none d-xxl-block">
+          <section className={styles[`datePickerPage__sidebar`]}>
+            <ButtonGroup
+              vertical
+              className="d-flex justify-content-start align-content-start"
+              data-bs-theme={theme}
+            >
               <Button
                 active={activeSection === 'overview'}
-                className={styles[`datePickerPage__sidebar-btn`]}
+                className={sidebar_btn_classes('overview')}
                 variant="link"
                 onClick={(e) => {
                   handleScrollToRef(e, overview_ref);
@@ -352,7 +399,7 @@ const DatePickerPage: FC = () => {
               </Button>
               <Button
                 active={activeSection === 'render_2_month'}
-                className={styles[`datePickerPage__sidebar-btn`]}
+                className={sidebar_btn_classes('render_2_month')}
                 variant="link"
                 onClick={(e) => {
                   handleScrollToRef(e, render_2_month_ref);
@@ -362,7 +409,7 @@ const DatePickerPage: FC = () => {
               </Button>
               <Button
                 active={activeSection === 'transition'}
-                className={styles[`datePickerPage__sidebar-btn`]}
+                className={sidebar_btn_classes('transition')}
                 variant="link"
                 onClick={(e) => {
                   handleScrollToRef(e, transition_ref);
@@ -372,7 +419,7 @@ const DatePickerPage: FC = () => {
               </Button>
               <Button
                 active={activeSection === 'render_selected'}
-                className={styles[`datePickerPage__sidebar-btn`]}
+                className={sidebar_btn_classes('render_selected')}
                 variant="link"
                 onClick={(e) => {
                   handleScrollToRef(e, render_selected);

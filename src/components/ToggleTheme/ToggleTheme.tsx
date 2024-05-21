@@ -18,8 +18,14 @@ const ToggleTheme: FC<Props> = (props: Props) => {
     <div className={props.className}>
       {/* dark */}
       {theme === 'dark' && (
-        <button type="button" onClick={handleToggleTheme} aria-label="light button">
-          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 32 32">
+        <button
+          type="button"
+          onClick={handleToggleTheme}
+          aria-label="light button"
+          data-bs-theme={theme}
+          className="mb-1"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 32 32">
             <g fill="none" fillRule="evenodd" transform="translate(-440 -200)">
               <path
                 fill="white"
@@ -36,8 +42,8 @@ const ToggleTheme: FC<Props> = (props: Props) => {
       )}
       {/* light */}
       {theme === 'light' && (
-        <button aria-label="dark button" onClick={handleToggleTheme}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+        <button aria-label="dark button" onClick={handleToggleTheme} data-bs-theme={theme}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 32 32">
             <g fill="none" fillRule="evenodd" transform="translate(-442 -200)">
               <g fill="currentColor" transform="translate(356 144)">
                 <path

@@ -11,14 +11,23 @@ import Container from 'react-bootstrap/Container';
 const MainNavbar: FC = () => {
   const { theme } = useTheme();
   return (
-    <Navbar expand="lg" bg={theme} data-bs-theme={theme}>
-      <Container>
+    <Navbar
+      className={styles[`mainNavBar__container`]}
+      expand="lg"
+      bg={theme === 'dark' ? 'dark' : 'white'}
+      data-bs-theme={theme}
+      data-testid="MainNavbar"
+    >
+      <Container fluid className="mx-5">
         <Navbar.Brand href="/">Time Playground</Navbar.Brand>
-        <ToggleTheme className="me-auto" />
-        <Navbar.Toggle
-          aria-controls="main-navbar-nav"
-          className={styles[`mainNavBar__toggler-icon`]}
-        />
+        <div className="d-flex align-items-center">
+          <Navbar.Toggle
+            aria-controls="main-navbar-nav"
+            className={styles[`mainNavBar__toggler-icon`]}
+          />
+          <ToggleTheme className="d-lg-none" />
+        </div>
+
         <Navbar.Collapse id="main-navbar-nav">
           <Nav className="ms-auto" navbarScroll>
             <Nav.Link as={NavLink} to="/datepicker">
@@ -32,6 +41,7 @@ const MainNavbar: FC = () => {
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
+        <ToggleTheme className="d-none d-lg-block " />
       </Container>
     </Navbar>
   );
