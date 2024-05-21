@@ -10,14 +10,15 @@ describe('ToggleTheme', () => {
     expect(screen.getByText('dark')).toBeInTheDocument();
   });
 
-  test('toggle theme icon should be dark at initial render', () => {
+  test('toggle theme icon should be light at initial render', () => {
+    // if it's already dark should we show the light icon right ?
     render(
       <ThemeProvider>
         <ToggleTheme />
       </ThemeProvider>
     );
-    const dark_button = screen.getByRole('button', { name: 'dark button' });
-    const light_button = screen.queryByRole('button', { name: 'light button' });
+    const light_button = screen.getByRole('button', { name: 'light button' });
+    const dark_button = screen.queryByRole('button', { name: 'dark button' });
     expect(dark_button).not.toBeInTheDocument();
     expect(light_button).toBeInTheDocument();
   });

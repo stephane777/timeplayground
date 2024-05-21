@@ -66,7 +66,9 @@ const DatePickerPage: FC = () => {
     ref: React.MutableRefObject<HTMLElement | null>
   ) => {
     e.preventDefault();
-    ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (ref.current) {
+      scrollTo({ top: ref?.current?.offsetTop - 90, behavior: 'smooth' });
+    }
   };
 
   const sidebar_btn_classes = (btn: string) =>
@@ -87,7 +89,7 @@ const DatePickerPage: FC = () => {
     <Container fluid="sm" className={styles[`datePickerPage__wrapper`]}>
       <Row className="mb-7">
         <Col xxl={9}>
-          <Container className="flex">
+          <Container>
             <section className="mt-0">
               <h1 className="">Date Picker</h1>
               <div className={styles[`datePickerPage__container`]}>

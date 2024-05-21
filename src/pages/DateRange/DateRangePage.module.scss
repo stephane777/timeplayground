@@ -1,0 +1,11 @@
+@import '../../styles/utils/variables';
+
+.dateRangePage {
+  &__wrapper {
+    padding: 128px 0;
+  }
+  &__container {
+    margin: 0 auto;
+    max-width: 360px;
+  }
+}

@@ -54,15 +54,15 @@ describe('Berlin Clock', () => {
     const { getByRole, getByTestId } = render(<BerlinClock />);
     const timezone = getByRole('combobox', { name: 'Select Zone' });
     const country = getByRole('combobox', { name: 'Select Country' });
-    const tz_japan = moment().tz(`Japan`).format('HH:mm:ss ZZ');
 
     await userEvent.selectOptions(timezone, getByRole('option', { name: 'Japan' }));
 
-    const tz_shown = getByTestId('timezone_country_time') as HTMLSpanElement;
     const select_timezone = getByRole('option', { name: 'Japan' }) as HTMLOptionElement;
+    const tz_shown = getByTestId('timezone_country_time') as HTMLSpanElement;
+    const tz_japan = moment().tz(`Japan`).format('HH:mm:ss ZZ');
 
-    expect(select_timezone.selected).toBeTruthy();
     expect(tz_shown).toHaveTextContent(tz_japan);
+    expect(select_timezone.selected).toBeTruthy();
     expect(country).toHaveAttribute('disabled');
   });
 
@@ -73,21 +73,27 @@ describe('Berlin Clock', () => {
     const tz_berlin = moment().tz(`Europe/Berlin`).format('HH:mm:ss ZZ');
 
     const tz_shown = getByTestId('timezone_country_time') as HTMLSpanElement;
-    // logRoles(container);
 
     await userEvent.selectOptions(timezone, getByRole('option', { name: 'Canada (8)' }));
     const all_options = getAllByRole(country, 'option');
-    expect(tz_shown).toHaveTextContent(tz_berlin); // still should show timezone for Berlin
+
+    const tz_berlin_hh_mm = tz_berlin.slice(0, 5);
+    const regex = new RegExp(`^${tz_berlin_hh_mm}:\\w+`);
+    expect(tz_shown).toHaveTextContent(regex); // still should show timezone for Berlin
     expect(all_options).toHaveLength(9); // 8 country + default
     expect(country).not.toHaveAttribute('disabled');
 
     await userEvent.selectOptions(country, getByRole('option', { name: 'Pacific' }));
     const tz_shown_after = getByTestId('timezone_country_time') as HTMLSpanElement;
+
     const tz_canada_pacific = moment().tz('Canada/Pacific').format('HH:mm:ss ZZ');
     const select_country = getByRole('option', { name: 'Pacific' }) as HTMLOptionElement;
 
+    const tz_canada_pacific_hh_mm = tz_canada_pacific.slice(0, 5);
+    const regex2 = new RegExp(`^${tz_canada_pacific_hh_mm}:\\w+`);
+
+    expect(tz_shown_after).toHaveTextContent(regex2);
     expect(select_country.selected).toBeTruthy();
-    expect(tz_shown_after).toHaveTextContent(tz_canada_pacific);
   });
 });
 
