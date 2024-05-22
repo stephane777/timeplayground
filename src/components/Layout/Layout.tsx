@@ -2,6 +2,7 @@ import { FC } from 'react';
 import MainNavbar from '../MainNavbar/MainNavbar';
 import { Outlet } from 'react-router-dom';
 import ErrorBoundary from '../../utils/errorBoundaries';
+import Footer from '../Footer/Footer';
 
 const Layout: FC = () => {
   return (
@@ -12,7 +13,9 @@ const Layout: FC = () => {
       <main>
         <Outlet />
       </main>
-      <footer className="my-5">Footer</footer>
+      <footer>
+        <Footer />
+      </footer>
     </ErrorBoundary>
   );
 };

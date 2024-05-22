@@ -21,7 +21,7 @@ describe('Layout', () => {
     expect(screen.getByRole('button', { name: 'Toggle navigation' }));
     expect(screen.getByRole('main')).toBeInTheDocument();
     expect(screen.getByRole('contentinfo')).toBeInTheDocument();
-    expect(screen.getAllByRole('link')).toHaveLength(4);
+    expect(screen.getAllByRole('link')).toHaveLength(8);
 
     // test Outlet
     expect(screen.queryByText('fake text')).toBeInTheDocument();
