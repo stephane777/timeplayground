@@ -73,11 +73,8 @@ const DatePickerPage: FC = () => {
 
   const sidebar_btn_classes = (btn: string) =>
     classNames(
-      styles[
-        cx({
-          [`datePickerPage__sidebar-btn`]: true,
-        })
-      ],
+      styles['datePickerPage__sidebar-btn'],
+      styles[`datePickerPage__sidebar-btn--${theme}`],
       styles[
         cx({
           [`datePickerPage__sidebar-btn--active`]: btn === activeSection,
@@ -85,6 +82,10 @@ const DatePickerPage: FC = () => {
       ]
     );
 
+  const sidebar_classes = classNames(
+    styles[`datePickerPage__sidebar`],
+    styles[`datePickerPage__sidebar--border-${theme}`]
+  );
   return (
     <Container fluid="sm" className={styles[`datePickerPage__wrapper`]}>
       <Row className="mb-7">
@@ -383,7 +384,7 @@ const DatePickerPage: FC = () => {
           </Container>
         </Col>
         <Col xxl={3} className="position-relative d-none d-xxl-block">
-          <section className={styles[`datePickerPage__sidebar`]}>
+          <section className={sidebar_classes}>
             <ButtonGroup
               vertical
               className="d-flex justify-content-start align-content-start"
