@@ -12,18 +12,27 @@
   &__sidebar {
     position: sticky;
     top: 100px;
-    border-left: 1px solid #1f2b41;
+    &--border-light {
+      border-left: 1px solid $gray-200;
+    }
+    &--border-dark {
+      border-left: 1px solid #1f2b41;
+    }
   }
   &__sidebar-btn {
     text-decoration: none;
     display: flex;
     justify-content: start;
     font-size: 12px;
+
     &:hover {
       cursor: pointer;
     }
-    &--active {
-      text-decoration: underline;
+    &--light {
+      color: $dark;
+    }
+    &--dark {
+      color: $gray-300;
     }
   }
 }
