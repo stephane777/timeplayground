@@ -1,23 +1,29 @@
 import React from 'react';
 import { useTheme } from '../../context/themeContext';
 import { NavLink } from 'react-router-dom';
-// import classNames from 'classnames/bind';
+import classNames from 'classnames';
 import styles from './Footer.module.scss';
 import Container from 'react-bootstrap/Container';
 import sprite from '../../assets/img/svg/sprite.svg';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-
 import Nav from 'react-bootstrap/Nav';
+import Button from 'react-bootstrap/Button';
+
 // import { Button, ListGroup } from 'react-bootstrap';
 
 const Footer = () => {
   const { theme } = useTheme();
 
+  const footer_classes = classNames(
+    styles['footer__container'],
+    styles[`footer__container--${theme}`]
+  );
+
   return (
-    <div className={styles[`footer__container`]}>
+    <div className={footer_classes}>
       <Container>
-        <Row className="mt-5">
+        <Row className="my-5 ">
           <Col sm={3}>
             <h6 className={styles['footer__heading']}>Time Playground</h6>
             <Nav data-bs-theme={theme} as="ul" className="flex-column" aria-label="footer menu">
@@ -79,8 +85,55 @@ const Footer = () => {
               </Nav.Item>
             </Nav>
           </Col>
+          <Col sm={3}>
+            <h6 className={styles['footer__heading']} data-bs-theme={theme}>
+              Links
+            </h6>
+            <Nav data-bs-theme={theme} as="ul" className="flex-column" aria-label="footer links">
+              <Nav.Item>
+                <Button
+                  data-bs-theme={theme}
+                  className={styles['footer__link']}
+                  variant="link"
+                  href="https://en.wikipedia.org/wiki/Mengenlehreuhr"
+                >
+                  Mengenlehreuhr
+                </Button>
+              </Nav.Item>
+              <Nav.Item>
+                <Button
+                  data-bs-theme={theme}
+                  className={styles['footer__link']}
+                  variant="link"
+                  href="https://www.codewars.com/dashboard"
+                >
+                  code wars
+                </Button>{' '}
+              </Nav.Item>
+              <Nav.Item>
+                <Button
+                  data-bs-theme={theme}
+                  className={styles['footer__link']}
+                  variant="link"
+                  href="https://momentjs.com/docs/"
+                >
+                  moment.js docs
+                </Button>
+              </Nav.Item>
+              <Nav.Item>
+                <Button
+                  data-bs-theme={theme}
+                  className={styles['footer__link']}
+                  variant="link"
+                  href="https://momentjs.com/timezone/docs/"
+                >
+                  timezone moment.js
+                </Button>
+              </Nav.Item>
+            </Nav>
+          </Col>
         </Row>
-        <Row>
+        <Row className="mt-5">
           <ul
             className="d-flex justify-content-center align-items-center gap-3"
             aria-label="footer copyright"
@@ -89,6 +142,7 @@ const Footer = () => {
             <li>
               <a href="https://github.com/stephane777" className="d-inline-block">
                 <svg
+                  data-bs-theme={theme}
                   role="img"
                   aria-labelledby="github_icon"
                   focusable={true}
