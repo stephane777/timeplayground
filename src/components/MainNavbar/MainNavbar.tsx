@@ -1,18 +1,25 @@
 import { FC } from 'react';
+import { NavLink } from 'react-router-dom';
+import { useTheme } from '../../context/themeContext';
+import ToggleTheme from '../ToggleTheme/ToggleTheme';
+import classNames from 'classnames';
+import styles from './MainNavbar.module.scss';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import { NavLink } from 'react-router-dom';
-import ToggleTheme from '../ToggleTheme/ToggleTheme';
-import { useTheme } from '../../context/themeContext';
-import styles from './MainNavbar.module.scss';
 
 import Container from 'react-bootstrap/Container';
 
 const MainNavbar: FC = () => {
   const { theme } = useTheme();
+
+  const mainNavbar_classes = classNames(
+    styles[`mainNavBar__container`],
+    styles[`mainNavBar__container--${theme}`]
+  );
+
   return (
     <Navbar
-      className={styles[`mainNavBar__container`]}
+      className={mainNavbar_classes}
       expand="lg"
       bg={theme === 'dark' ? 'dark' : 'white'}
       data-bs-theme={theme}

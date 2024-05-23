@@ -1,9 +1,14 @@
 .mainNavBar {
   &__container {
-    border-bottom: 1px solid #1f2b41;
     position: fixed;
     z-index: 100;
     width: 100%;
+    &--light {
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+    }
+    &--dark {
+      border-bottom: 1px solid #1f2b41;
+    }
   }
   &__toggler-icon {
     border: none;
