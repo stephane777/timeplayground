@@ -1,6 +1,8 @@
 import React, { FC, ReactNode } from 'react';
 
 import { useTheme } from '../../context/themeContext';
+import classNames from 'classnames';
+import styles from './ToggleTheme.module.scss';
 
 interface Props {
   children?: ReactNode;
@@ -14,15 +16,21 @@ const ToggleTheme: FC<Props> = (props: Props) => {
     setTheme!((theme) => (theme === 'light' ? 'dark' : 'light'));
   };
 
+  const toggleTheme_classes = classNames(props.className, styles['toggleTheme__container']);
+  const toggleTheme_btn_classes = classNames(
+    styles[`toggleTheme__btn--${theme}`],
+    styles[`toggleTheme__btn`]
+  );
   return (
-    <div className={props.className}>
+    <div className={toggleTheme_classes}>
       {/* dark */}
       {theme === 'dark' && (
         <button
           type="button"
           onClick={handleToggleTheme}
           aria-label="light button"
-          className="mb-1"
+          // className="mb-1"
+          className={toggleTheme_btn_classes}
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 32 32">
             <g fill="none" fillRule="evenodd" transform="translate(-440 -200)">
@@ -41,7 +49,12 @@ const ToggleTheme: FC<Props> = (props: Props) => {
       )}
       {/* light */}
       {theme === 'light' && (
-        <button type="button" aria-label="dark button" onClick={handleToggleTheme}>
+        <button
+          type="button"
+          aria-label="dark button"
+          onClick={handleToggleTheme}
+          className={toggleTheme_btn_classes}
+        >
           <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 32 32">
             <g fill="none" fillRule="evenodd" transform="translate(-442 -200)">
               <g fill="currentColor" transform="translate(356 144)">
