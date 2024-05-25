@@ -56,7 +56,14 @@
       }
     }
   },
-  "ignorePatterns": ["dist", "public", "node_modules", "webpack.*.js", "cypress"],
+  "ignorePatterns": [
+    "dist",
+    "public",
+    "node_modules",
+    "webpack.*.js",
+    "cypress",
+    "cypress.config.ts"
+  ],
   "overrides": [
     {
       "extends": ["plugin:@typescript-eslint/disable-type-checked"],
