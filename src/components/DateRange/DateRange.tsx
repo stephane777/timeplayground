@@ -78,7 +78,13 @@ const DateRange: React.FC<DateRange> = ({ speed, disablePastDay, highlightToday,
           onFocus={() => setActive(true)}
         />
         <InputGroup.Text id="cal_icon">
-          <svg className={calendar_icon_classes}>
+          <svg
+            className={calendar_icon_classes}
+            role="img"
+            aria-labelledby="calendar_icon"
+            focusable="false"
+          >
+            <title id="calendar_icon">date picker icon</title>
             <use href={`${sprite}#icon-calendar`}></use>
           </svg>
         </InputGroup.Text>
