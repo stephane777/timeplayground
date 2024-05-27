@@ -55,8 +55,7 @@ const DatePicker: React.FC<DatePicker> = ({ speed, demo, demoWithNoKey, showLabe
 
   const calendar_icon_classes = cx({
     'datePicker__calendar-icon': true,
-    'datePicker__calendar-icon--light': theme === 'light',
-    'datePicker__calendar-icon--dark': theme === 'dark',
+    [`datePicker__calendar-icon--${theme}`]: true,
   });
 
   return (
@@ -81,10 +80,10 @@ const DatePicker: React.FC<DatePicker> = ({ speed, demo, demoWithNoKey, showLabe
           <svg
             className={calendar_icon_classes}
             role="img"
-            aria-labelledby="svgTitle"
+            aria-labelledby="calendar_icon"
             focusable="false"
           >
-            <title id="svgTitle">date picker icon</title>
+            <title id="calendar_icon">date picker icon</title>
             <use href={`${sprite}#icon-calendar`}></use>
           </svg>
         </InputGroup.Text>

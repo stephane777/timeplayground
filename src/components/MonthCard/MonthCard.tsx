@@ -65,8 +65,7 @@ const MonthCard: React.ForwardRefExoticComponent<
 
   // Toggle month theme classNames
   const togglemonth = cx({
-    'monthCard__toggleMonth--dark': theme === 'dark',
-    'monthCard__toggleMonth--light': theme === 'light',
+    [`monthCard__toggleMonth--${theme}`]: true,
   });
 
   const togglemonth_classes = classNames(
@@ -78,12 +77,7 @@ const MonthCard: React.ForwardRefExoticComponent<
   );
 
   const weekDay_classes = classNames(
-    styles[
-      cx({
-        'monthCard__weekday--light': theme === 'light',
-        'monthCard__weekday--dark': theme === 'dark',
-      })
-    ],
+    styles[`monthCard__weekday--${theme}`],
     'd-flex',
     'justify-content-center'
   );
@@ -97,12 +91,7 @@ const MonthCard: React.ForwardRefExoticComponent<
   // icon prev classes
   const icon_prev_classes = classNames(
     styles['monthCard__icon-prevMonth'],
-    styles[
-      cx({
-        'monthCard__icon-prevMonth--light': theme === 'light',
-        'monthCard__icon-prevMonth--dark': theme === 'dark',
-      })
-    ],
+    styles[`monthCard__icon-prevMonth--${theme}`],
     styles[
       cx({
         'monthCard__icon-prevMonth--disabled': demo === 'transition',
@@ -113,35 +102,34 @@ const MonthCard: React.ForwardRefExoticComponent<
   // icon next classes
   const icon_next_classes = classNames(
     styles['monthCard__icon-nextMonth'],
-    styles[
-      cx({
-        'monthCard__icon-nextMonth--light': theme === 'light',
-        'monthCard__icon-nextMonth--dark': theme === 'dark',
-      })
-    ]
+    styles[`monthCard__icon-nextMonth--${theme}`]
   );
 
   const transition_container_classes = classNames(
     styles['monthCard__transition-container'],
-    styles[
-      cx({
-        'monthCard__transition-container--light': theme === 'light',
-        'monthCard__transition-container--dark': theme === 'dark',
-      })
-    ]
+    styles[`monthCard__transition-container--${theme}`]
   );
 
   const box_classes = classNames(
     styles['monthCard__container-box'],
-    styles[
-      cx({
-        'monthCard__container-box--light': theme === 'light',
-        'monthCard__container-box--dark': theme === 'dark',
-      })
-    ],
+    styles[`monthCard__container-box--${theme}`],
     'd-flex',
     'flex-wrap',
     'text'
+  );
+
+  const monthCard_container_classes = classNames(
+    styles['monthCard__container'],
+    styles[
+      cx({
+        'monthCard__container--visible': isDemo,
+      })
+    ],
+    styles[
+      cx({
+        'monthCard__container--showLabel': showLabel,
+      })
+    ]
   );
 
   const defaultStyle: CSSProperties = {
@@ -218,10 +206,7 @@ const MonthCard: React.ForwardRefExoticComponent<
         styles[`monthCard__day`],
         styles[
           cx({
-            'monthCard__day--selected-light':
-              theme === 'light' && isCurrentMonth && selectedDay === day + 1,
-            'monthCard__day--selected-dark':
-              theme === 'dark' && isCurrentMonth && selectedDay === day + 1,
+            [`monthCard__day--selected-${theme}`]: isCurrentMonth && selectedDay === day + 1,
           })
         ]
       );
@@ -272,20 +257,6 @@ const MonthCard: React.ForwardRefExoticComponent<
     setTime(time);
     setActiveTransition(false);
   };
-
-  const monthCard_container_classes = classNames(
-    styles['monthCard__container'],
-    styles[
-      cx({
-        'monthCard__container--visible': isDemo,
-      })
-    ],
-    styles[
-      cx({
-        'monthCard__container--showLabel': showLabel,
-      })
-    ]
-  );
 
   const handlePreviousOnClick: MouseEventHandler<SVGSVGElement> = (e) => {
     e.preventDefault();
