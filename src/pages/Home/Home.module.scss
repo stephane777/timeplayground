@@ -1,0 +1,14 @@
+@import '../../styles/utils/variables';
+
+.HomePage {
+  &__wrapper {
+    padding: 128px 0;
+  }
+  &__container {
+    margin: 0 auto;
+    max-width: 360px;
+  }
+  & li {
+    font-size: 10px;
+  }
+}
