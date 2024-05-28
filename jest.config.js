@@ -20,6 +20,8 @@ module.exports = {
     '!src/**/index.ts',
     '!src/codeblocks/**',
     '!**/*.d.ts',
+    '!**/*.cy.*',
+    '!**/cypress/**',
     '!**/node_modules/**',
     '!**/vendor/**',
   ],
