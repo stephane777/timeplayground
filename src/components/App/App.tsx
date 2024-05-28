@@ -1,10 +1,10 @@
-import { Suspense, lazy, FC, ReactNode } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-
+import { Suspense, lazy, FC, ReactNode } from 'react';
 import { useTheme } from '../../context/themeContext';
-import styles from './App.module.scss';
-import classNames from 'classnames';
 import { Layout } from '../Layout';
+import classNames from 'classnames';
+import HomePage from '../../pages/Home/HomePage';
+import styles from './App.module.scss';
 
 const Date_Picker_Page = lazy(() => import('../../pages/DatePicker/DatePickerPage'));
 const Date_Range_Page = lazy(() => import('../../pages/DateRange/DateRangePage'));
@@ -22,11 +22,7 @@ export const routes = [
     children: [
       {
         index: true,
-        element: (
-          <Suspense fallback={<Loader text="Berlin Clock page" />}>
-            <Berlin_Clock_Page />
-          </Suspense>
-        ),
+        element: <HomePage />,
       },
       {
         path: 'datepicker',

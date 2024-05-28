@@ -2,19 +2,18 @@ import { renderWithRouterV6 } from '../../utils/testingHelpers/renderWithRouterV
 import { App, routes } from './App';
 import { Layout } from '../Layout';
 import { customRender } from '../..//utils/testingHelpers/renderWithAllProviders';
-import { screen } from '@testing-library/react';
 import DatePicker from '../DatePicker/DatePicker';
 
 const MockedBerlinClockedPage = () => {
-  return <div>{'Mocked Berlin Clock pages'}</div>;
+  return <div>{'Mocked Berlin Clock page'}</div>;
 };
 
 const MockedDatePickerPage = () => {
-  return <div>{'Mocked Date Picker pages'}</div>;
+  return <div>{'Mocked Date Picker page'}</div>;
 };
 
 const MockedDateRangePage = () => {
-  return <div>{'Mocked Date Range pages'}</div>;
+  return <div>{'Mocked Date Range page'}</div>;
 };
 
 jest.mock('../../pages/BerlinClock/BerlinClockPage', () => {
@@ -30,57 +29,44 @@ jest.mock('../../pages/DateRange/DateRangePage', () => {
 });
 
 describe('Navigate through App', () => {
-  it('should show loading component at initial render ( lazy loading)', () => {
-    const { getByText } = renderWithRouterV6(<Layout />, routes);
+  it('should show home page at initial render', () => {
+    const { getAllByRole } = renderWithRouterV6(<Layout />, routes);
 
-    const loading_text = getByText(/Loading Berlin Clock page/, { exact: false });
-    expect(loading_text).toBeInTheDocument();
-  });
-
-  it('should lazy load Berlin Clock on initial render', async () => {
-    const { findByText } = renderWithRouterV6(<Layout />, routes);
-
-    const mocked_bc = await findByText(/Mocked Berlin Clock pages/i);
-    expect(mocked_bc).toBeInTheDocument();
+    const headings = getAllByRole('heading');
+    expect(headings).toHaveLength(9);
   });
 
   it('should navigate to Date Picker page', async () => {
     const { findByText, getByRole, user } = renderWithRouterV6(<Layout />, routes);
-
-    const mocked_bc = await findByText(/Mocked Berlin Clock pages/i);
-    expect(mocked_bc).toBeInTheDocument();
 
     const link = getByRole('link', { name: 'Date Picker' });
     expect(link).toBeInTheDocument();
 
     await user.click(link);
 
-    const mocked_dp = await findByText(/Mocked Date Picker pages/i);
+    const mocked_dp = await findByText(/Mocked Date Picker page/i);
     expect(mocked_dp).toBeInTheDocument();
   });
 
   it('should navigate to Date Range page', async () => {
     const { findByText, getByRole, user } = renderWithRouterV6(<Layout />, routes);
 
-    const mocked_bc = await findByText(/Mocked Berlin Clock pages/i);
-    expect(mocked_bc).toBeInTheDocument();
-
     const link = getByRole('link', { name: 'Date Range' });
     expect(link).toBeInTheDocument();
 
     await user.click(link);
 
-    const mocked_dr = await findByText(/Mocked Date Range pages/i);
+    const mocked_dr = await findByText(/Mocked Date Range page/i);
     expect(mocked_dr).toBeInTheDocument();
   });
 });
 
 describe('Render App', () => {
   it('should render App without crashing', () => {
-    customRender(<App />);
+    const { getAllByRole } = customRender(<App />);
 
-    const mocked_bc = screen.getByText(/Mocked Berlin Clock pages/, { exact: false });
-    expect(mocked_bc).toBeInTheDocument();
+    const home_page_headings = getAllByRole('heading');
+    expect(home_page_headings).toHaveLength(9);
   });
   it('should render any component', () => {
     const { getByRole } = renderWithRouterV6({
