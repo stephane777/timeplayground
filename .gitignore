@@ -131,3 +131,12 @@ dist
 
 # Git
 --fix
+
+# Cypress
+
+screenshotsFolder
+videosFolder
+downloadsFolder
+cypress/downloads
+cypress/screenshots
+cypress/videos

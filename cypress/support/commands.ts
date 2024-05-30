@@ -25,13 +25,28 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 //
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       login(email: string, password: string): Chainable<void>
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
-//   }
-// }
+export {};
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      getDataTest(dataTestSelector: string): Chainable<Element>;
+      getAriaLabel(dataTestSelector: string): Chainable<Element>;
+      getDataTestId(dataTestSelector: string): Chainable<Element>;
+      //   drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
+      //   dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
+      //   visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
+    }
+  }
+}
+
+Cypress.Commands.add<any>('getDataTest', (dataTestSelector) => {
+  return cy.get(`[data-test="${dataTestSelector}"]`);
+});
+
+Cypress.Commands.add<any>('getDataTestId', (dataTestSelector) => {
+  return cy.get(`[data-testId="${dataTestSelector}"]`);
+});
+
+Cypress.Commands.add<any>('getAriaLabel', (dataTestSelector) => {
+  return cy.get(`[aria-label="${dataTestSelector}"]`);
+});
