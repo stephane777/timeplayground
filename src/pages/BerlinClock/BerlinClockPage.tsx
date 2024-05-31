@@ -1,8 +1,6 @@
 import React, { FC } from 'react';
 import { BerlinClock } from '../../components/BerlinClock';
-// import styles from '../../components/App/App.module.scss';
 import styles from './BerlinClockPage.module.scss';
-// import styles2 from '../../components/BerlinClock/BerlinClock.module.scss';
 import Container from 'react-bootstrap/Container';
 import { Button } from 'react-bootstrap';
 import { useTheme } from '../../context/themeContext';
@@ -19,7 +17,7 @@ const BerlinClockPage: FC = () => {
       </section>
 
       <section>
-        <h2 className="mt-7 mb-5">Overview:</h2>I came accross the <em>Berlin Clock</em> or &nbsp;
+        <h2 className="mt-7 mb-5">Overview:</h2>I came across the <em>Berlin Clock</em> or &nbsp;
         <Button
           data-bs-theme={theme}
           className="p-0 text-decoration-none border-0 align-baseline"
