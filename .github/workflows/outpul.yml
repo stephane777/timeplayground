@@ -1,0 +1,10 @@
+name: Output information
+on: workflow_dispatch
+jobs: 
+  infos:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output Github context
+      # Search for github actions context
+      # Search for github actions function or expression
+        run: echo "${{ toJSON(github) }}"
