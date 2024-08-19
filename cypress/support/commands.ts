@@ -44,7 +44,7 @@ Cypress.Commands.add<any>('getDataTest', (dataTestSelector) => {
 });
 
 Cypress.Commands.add<any>('getDataTestId', (dataTestSelector) => {
-  return cy.get(`[data-testId="${dataTestSelector}"]`);
+  return cy.get(`[data-testid="${dataTestSelector}"]`);
 });
 
 Cypress.Commands.add<any>('getAriaLabel', (dataTestSelector) => {

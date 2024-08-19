@@ -29,7 +29,7 @@ const ToggleTheme: FC<Props> = (props: Props) => {
           type="button"
           onClick={handleToggleTheme}
           aria-label="light button"
-          // className="mb-1"
+          data-testid="light_theme_button"
           className={toggleTheme_btn_classes}
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 32 32">
@@ -52,6 +52,7 @@ const ToggleTheme: FC<Props> = (props: Props) => {
         <button
           type="button"
           aria-label="dark button"
+          data-testid="dark_theme_button"
           onClick={handleToggleTheme}
           className={toggleTheme_btn_classes}
         >
