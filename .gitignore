@@ -132,11 +132,9 @@ dist
 # Git
 --fix
 
-# Cypress
+# Playwright
+playwright-report/
+test-results/
 
-screenshotsFolder
-videosFolder
-downloadsFolder
-cypress/downloads
-cypress/screenshots
-cypress/videos
+# pnpm
+pnpm-lock.yaml
